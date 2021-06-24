@@ -33,7 +33,10 @@
                motion:framePosition="100"
                android:alpha="0" />
        </KeyFrameSet>
-        <OnSwipe motion:touchAnchorSide="bottom" />
+        <OnSwipe
+            motion:touchAnchorId="@+id/tvTemp"
+            motion:touchAnchorSide="bottom" />
+
     </Transition>
 
     <ConstraintSet android:id="@+id/start">
@@ -49,6 +52,14 @@
             android:id="@+id/tvL"
             motion:layout_constraintEnd_toEndOf="@+id/tvTemp"
             motion:layout_constraintTop_toBottomOf="@+id/tvTemp" />
+        <Constraint
+            android:layout_height="wrap_content"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintHorizontal_bias="0.0"
+            motion:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="0dp"
+            motion:layout_constraintTop_toBottomOf="@+id/tvH"
+            android:id="@+id/rvHourlyForecast" />
     </ConstraintSet>
 
     <ConstraintSet android:id="@+id/end">
@@ -70,5 +81,13 @@
             android:layout_height="1dp"
             motion:layout_editor_absoluteX="224dp"
             motion:layout_constraintTop_toBottomOf="@+id/tvTemp" />
+        <Constraint
+            android:layout_height="wrap_content"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintHorizontal_bias="0.0"
+            motion:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="0dp"
+            motion:layout_constraintTop_toBottomOf="@+id/tvH"
+            android:id="@+id/rvHourlyForecast" />
     </ConstraintSet>
 </MotionScene>
