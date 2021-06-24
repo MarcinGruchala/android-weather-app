@@ -39,7 +39,21 @@ class MainActivity : AppCompatActivity() {
             HourlyForecast("8AM",20),
             HourlyForecast("9AM",20),
         )
+
+        var dailyForecastList = listOf(
+            DailyForecast("Friday",28,15),
+            DailyForecast("Saturday", 34,21),
+            DailyForecast("Sunday",29,14),
+            DailyForecast("Monday",24,12),
+            DailyForecast("Tuesday",19,13),
+            DailyForecast("Wednesday",23,16)
+        )
+
+
         binding.rvHourlyForecast.layoutManager = LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false)
         binding.rvHourlyForecast.adapter = HourlyForecastAdapter(hourlyForecastList)
+
+        binding.rvDailyForecast.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false)
+        binding.rvDailyForecast.adapter = DailyForecastAdapter(dailyForecastList)
     }
 }

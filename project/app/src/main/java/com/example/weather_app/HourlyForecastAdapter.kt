@@ -29,8 +29,5 @@ class HourlyForecastAdapter(
         holder.tvHourlyTemp.text = forecasts[position].temp.toString()
     }
 
-    override fun getItemCount(): Int {
-        return forecasts.size
-    }
-
+    override fun getItemCount(): Int = forecasts.size
 }

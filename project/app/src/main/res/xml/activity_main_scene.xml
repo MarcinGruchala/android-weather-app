@@ -60,6 +60,13 @@
             android:layout_width="0dp"
             motion:layout_constraintTop_toBottomOf="@+id/tvH"
             android:id="@+id/rvHourlyForecast" />
+        <Constraint
+            android:layout_height="wrap_content"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="0dp"
+            motion:layout_constraintTop_toBottomOf="@+id/rvHourlyForecast"
+            android:id="@+id/rvDailyForecast" />
     </ConstraintSet>
 
     <ConstraintSet android:id="@+id/end">
