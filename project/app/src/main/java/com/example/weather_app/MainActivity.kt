@@ -49,11 +49,20 @@ class MainActivity : AppCompatActivity() {
             DailyForecast("Wednesday",23,16)
         )
 
+        val currentWeatherDataList = listOf(
+            CurrentWeatherData("SUNRISE","6:42 AM","SUNSET","8:49PM"),
+            CurrentWeatherData("CHANCE OF RAIN","30%","HUMIDITY","69%")
+
+        )
+
 
         binding.rvHourlyForecast.layoutManager = LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false)
         binding.rvHourlyForecast.adapter = HourlyForecastAdapter(hourlyForecastList)
 
         binding.rvDailyForecast.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false)
         binding.rvDailyForecast.adapter = DailyForecastAdapter(dailyForecastList)
+
+        binding.rvCurrentWeatherData.layoutManager = LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
+        binding.rvCurrentWeatherData.adapter = CurrentWeatherDataAdapter(currentWeatherDataList)
     }
 }

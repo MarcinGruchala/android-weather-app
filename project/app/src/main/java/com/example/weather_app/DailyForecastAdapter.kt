@@ -7,10 +7,11 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 class DailyForecastAdapter(
-    var forecasts: List<DailyForecast>
+    private var forecasts: List<DailyForecast>
 ) : RecyclerView.Adapter<DailyForecastAdapter.DailyForecastViewHolder>() {
 
-    class DailyForecastViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
+    class DailyForecastViewHolder(itemView: View)
+        : RecyclerView.ViewHolder(itemView){
         val tvDay: TextView = itemView.findViewById(R.id.tvDay)
         val tvDailyH: TextView = itemView.findViewById(R.id.tvDailyH)
         val tvDailyL: TextView = itemView.findViewById(R.id.tvDailyL)

@@ -8,4 +8,5 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="light_blue">#29AECF</color>
+    <color name="weather_data_header">#a7ced6</color>
 </resources>
