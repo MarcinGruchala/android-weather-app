@@ -1,4 +1,4 @@
-package com.example.weather_app
+package com.example.weather_app.adapters
 
 import android.util.Log
 import android.view.LayoutInflater
@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.weather_app.R
+import com.example.weather_app.data.VerticalWeatherData
 
 private  const val DAILY_FORECAST_VIEW_TYPE = 10
 private const val CURRENT_WEATHER_DATA_VIEW_TYPE = 20

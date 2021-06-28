@@ -1,13 +1,15 @@
-package com.example.weather_app
+package com.example.weather_app.adapters
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.weather_app.data.HourlyForecastData
+import com.example.weather_app.R
 
 class HourlyForecastAdapter(
-    var forecasts: List<HourlyForecast>
+    var forecasts: List<HourlyForecastData>
 ) : RecyclerView.Adapter<HourlyForecastAdapter.HourlyForecastViewHolder>() {
 
     class HourlyForecastViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
