@@ -14,7 +14,7 @@
         android:layout_marginTop="8dp"
         android:text=""
         android:textColor="@color/weather_data_header"
-        android:textSize="20sp"
+        android:textSize="17sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -34,7 +34,7 @@
         android:layout_marginTop="8dp"
         android:text=""
         android:textColor="@color/weather_data_header"
-        android:textSize="20sp"
+        android:textSize="17sp"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -47,7 +47,7 @@
         android:layout_marginTop="8dp"
         android:text=""
         android:textColor="@color/white"
-        android:textSize="25sp"
+        android:textSize="22sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvDataHeaderLeft" />
 
@@ -60,7 +60,7 @@
         android:layout_marginTop="8dp"
         android:text=""
         android:textColor="@color/white"
-        android:textSize="25sp"
+        android:textSize="22sp"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toBottomOf="@+id/tvDataHeaderRight" />
 

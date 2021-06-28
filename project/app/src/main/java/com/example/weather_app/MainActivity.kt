@@ -46,23 +46,31 @@ class MainActivity : AppCompatActivity() {
             DailyForecast("Sunday",29,14),
             DailyForecast("Monday",24,12),
             DailyForecast("Tuesday",19,13),
-            DailyForecast("Wednesday",23,16)
-        )
+            DailyForecast("Wednesday",23,16),
+            DailyForecast("Thursday",22,17),
+            DailyForecast("Friday",21,16),
+            DailyForecast("Sunday",29,14),
+            DailyForecast("Sunday",29,14)
+            )
 
         val currentWeatherDataList = listOf(
             CurrentWeatherData("SUNRISE","6:42 AM","SUNSET","8:49PM"),
-            CurrentWeatherData("CHANCE OF RAIN","30%","HUMIDITY","69%")
-
+            CurrentWeatherData("CHANCE OF RAIN","30%","HUMIDITY","69%"),
+            CurrentWeatherData("Wind","NNW 4 mph", "FEELS LIKE","77"),
+            CurrentWeatherData("PRECIPITATION", "0 in","PRESSURE","29.8 inHg"),
+            CurrentWeatherData("VISIBILITY","10 mi","UV INDEX","0"),
+            CurrentWeatherData("AIR QUALITY INDEX", "38","AIR QUALITY", "Good")
         )
+
+        val verticalWeatherData = VerticalWeatherData(dailyForecastList,currentWeatherDataList)
 
 
         binding.rvHourlyForecast.layoutManager = LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false)
         binding.rvHourlyForecast.adapter = HourlyForecastAdapter(hourlyForecastList)
 
-        binding.rvDailyForecast.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false)
-        binding.rvDailyForecast.adapter = DailyForecastAdapter(dailyForecastList)
+        binding.rvVerticalWeatherData.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        binding.rvVerticalWeatherData.adapter = VerticalWeatherDataAdapter(verticalWeatherData)
 
-        binding.rvCurrentWeatherData.layoutManager = LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
-        binding.rvCurrentWeatherData.adapter = CurrentWeatherDataAdapter(currentWeatherDataList)
+
     }
 }
