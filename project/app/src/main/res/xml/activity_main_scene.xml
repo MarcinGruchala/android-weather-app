@@ -36,6 +36,9 @@
         <OnSwipe
             motion:touchAnchorId="@+id/tvTemp"
             motion:touchAnchorSide="bottom" />
+        <OnSwipe
+            motion:touchAnchorId="@+id/rvHourlyForecast"
+            motion:touchAnchorSide="bottom" />
 
     </Transition>
 

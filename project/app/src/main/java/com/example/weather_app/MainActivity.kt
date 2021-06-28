@@ -5,14 +5,14 @@ import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weather_app.databinding.ActivityMainBinding
 
-private lateinit var binding: ActivityMainBinding
 class MainActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        var hourlyForecastList = listOf(
+        val hourlyForecastList = listOf(
             HourlyForecast("Now",20),
             HourlyForecast("10AM",20),
             HourlyForecast("11AM",20),
@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
             HourlyForecast("9AM",20),
         )
 
-        var dailyForecastList = listOf(
+        val dailyForecastList = listOf(
             DailyForecast("Friday",28,15),
             DailyForecast("Saturday", 34,21),
             DailyForecast("Sunday",29,14),
@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity() {
             DailyForecast("Thursday",22,17),
             DailyForecast("Friday",21,16),
             DailyForecast("Sunday",29,14),
-            DailyForecast("Sunday",29,14)
+            DailyForecast("Monday",24,12)
             )
 
         val currentWeatherDataList = listOf(

@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
+private  const val DAILY_FORECAST_VIEW_TYPE = 10
+private const val CURRENT_WEATHER_DATA_VIEW_TYPE = 20
 class VerticalWeatherDataAdapter(
     private val data: VerticalWeatherData
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
@@ -27,10 +29,10 @@ class VerticalWeatherDataAdapter(
         }
 
     override fun getItemViewType(position: Int): Int {
-        if (position<10){
-            return 0
+        if (position<data.dailyForecastList.size){
+            return DAILY_FORECAST_VIEW_TYPE
         }
-        return 1
+        return CURRENT_WEATHER_DATA_VIEW_TYPE
     }
 
     override fun onCreateViewHolder(
@@ -38,7 +40,7 @@ class VerticalWeatherDataAdapter(
         viewType: Int
     ): RecyclerView.ViewHolder {
         when(viewType){
-            0 -> {
+            DAILY_FORECAST_VIEW_TYPE -> {
                 val view = LayoutInflater.from(parent.context).inflate(
                     R.layout.item_daily_forecast,
                     parent,
@@ -61,18 +63,18 @@ class VerticalWeatherDataAdapter(
         Log.d("VerticalWeatherData", "position $position")
         Log.d("VerticalWeatherData", "viewHolder: ${holder.itemViewType}")
         when(holder.itemViewType){
-            0 -> {
+            DAILY_FORECAST_VIEW_TYPE -> {
                 val viewHolder = holder as VerticalWeatherDataDailyForecastViewHolder
                 viewHolder.tvDay.text = data.dailyForecastList[position].day
                 viewHolder.tvDailyH.text = data.dailyForecastList[position].tempH.toString()
                 viewHolder.tvDailyL.text = data.dailyForecastList[position].tempL.toString()
             }
-            1 -> {
+            CURRENT_WEATHER_DATA_VIEW_TYPE -> {
                 val viewHolder = holder as VerticalWeatherDataCurrentWeatherDataViewHolder
-                viewHolder.tvHeaderLeft.text = data.currentWeatherDataList[position-10].headerLeft
-                viewHolder.tvHeaderRight.text = data.currentWeatherDataList[position-10].headerRight
-                viewHolder.tvValueLeft.text = data.currentWeatherDataList[position-10].valueLeft
-                viewHolder.tvValueRight.text = data.currentWeatherDataList[position-10].valueRight
+                viewHolder.tvHeaderLeft.text = data.currentWeatherDataList[position-data.dailyForecastList.size].headerLeft
+                viewHolder.tvHeaderRight.text = data.currentWeatherDataList[position-data.dailyForecastList.size].headerRight
+                viewHolder.tvValueLeft.text = data.currentWeatherDataList[position-data.dailyForecastList.size].valueLeft
+                viewHolder.tvValueRight.text = data.currentWeatherDataList[position-data.dailyForecastList.size].valueRight
             }
         }
     }
