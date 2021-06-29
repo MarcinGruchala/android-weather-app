@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weather_app.R
-import com.example.weather_app.data.VerticalWeatherData
+import com.example.weather_app.models.VerticalWeatherData
 
 private  const val DAILY_FORECAST_VIEW_TYPE = 10
 private const val CURRENT_WEATHER_DATA_VIEW_TYPE = 20

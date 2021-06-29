@@ -1,4 +1,4 @@
-package com.example.weather_app.data
+package com.example.weather_app.models
 
 class VerticalWeatherData(
     val dailyForecastList: List<DailyForecastData>,

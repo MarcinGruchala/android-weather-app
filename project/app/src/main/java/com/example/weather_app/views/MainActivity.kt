@@ -3,16 +3,18 @@ package com.example.weather_app.views
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weather_app.BuildConfig
 import com.example.weather_app.adapters.HourlyForecastAdapter
 import com.example.weather_app.adapters.VerticalWeatherDataAdapter
-import com.example.weather_app.data.CurrentWeatherData
-import com.example.weather_app.data.DailyForecastData
-import com.example.weather_app.data.HourlyForecastData
-import com.example.weather_app.data.VerticalWeatherData
+import com.example.weather_app.models.CurrentWeatherData
+import com.example.weather_app.models.DailyForecastData
+import com.example.weather_app.models.HourlyForecastData
+import com.example.weather_app.models.VerticalWeatherData
 import com.example.weather_app.databinding.ActivityMainBinding
+import com.example.weather_app.viewmodels.MainActivityViewModel
 import com.example.weather_app.webservices.OpenWeatherAPIClient
 import retrofit2.HttpException
 import java.io.IOException
@@ -24,11 +26,15 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        val viewModel: MainActivityViewModel by viewModels()
+
+        recyclerViewsSetup()
+
 
 
         lifecycleScope.launchWhenCreated {
             val response = try {
-                OpenWeatherAPIClient.api.getCurrentWeatherData("Bydgoszcz", BuildConfig.APIKEY)
+                OpenWeatherAPIClient.api.getCurrentWeatherData("Bydgoszcz", BuildConfig.APIKEY,"metric")
             }catch (e: IOException){
                 return@launchWhenCreated
 
@@ -94,12 +100,22 @@ class MainActivity : AppCompatActivity() {
         val verticalWeatherData = VerticalWeatherData(dailyForecastList,currentWeatherDataList)
 
 
-        binding.rvHourlyForecast.layoutManager = LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false)
-        binding.rvHourlyForecast.adapter = HourlyForecastAdapter(hourlyForecastList)
+    }
 
-        binding.rvVerticalWeatherData.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        binding.rvVerticalWeatherData.adapter = VerticalWeatherDataAdapter(verticalWeatherData)
-
-
+    private fun recyclerViewsSetup(){
+//        binding.rvHourlyForecast.layoutManager = LinearLayoutManager(
+//            this,
+//            LinearLayoutManager.HORIZONTAL,
+//            false
+//        )
+//        binding.rvHourlyForecast.adapter = HourlyForecastAdapter(hourlyForecastList)
+//
+//        binding.rvVerticalWeatherData.layoutManager = LinearLayoutManager(
+//            this,
+//            LinearLayoutManager.VERTICAL,
+//            false
+//        )
+//        binding.rvVerticalWeatherData.adapter = VerticalWeatherDataAdapter(verticalWeatherData)
+//
     }
 }

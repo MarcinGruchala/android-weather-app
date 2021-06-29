@@ -10,6 +10,7 @@ interface OpenWeatherAPIService {
     @GET("weather")
     suspend fun getCurrentWeatherData(
         @Query("q") city: String,
-        @Query("appid") key: String
+        @Query("appid") key: String,
+        @Query("units") units: String
     ) : Response<CurrentWeatherDataResponse>
 }

@@ -5,7 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.weather_app.data.HourlyForecastData
+import com.example.weather_app.models.HourlyForecastData
 import com.example.weather_app.R
 
 class HourlyForecastAdapter(

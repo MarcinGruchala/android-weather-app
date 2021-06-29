@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="Bydgoszcz"
+        android:text="@string/no_data"
         android:textColor="#FFFFFF"
         android:textSize="40sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -25,7 +25,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Sunny"
+        android:text="@string/no_data"
         android:textColor="@color/white"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -37,7 +37,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="20"
+        android:text="@string/no_data"
         android:textColor="@color/white"
         android:textSize="96sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -48,7 +48,7 @@
         android:id="@+id/tvH"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="H:27"
+        android:text="@string/no_data"
         android:textColor="@color/white"
         android:textSize="20sp"
         tools:layout_editor_absoluteX="150dp"
@@ -58,7 +58,7 @@
         android:id="@+id/tvL"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="L:18"
+        android:text="@string/no_data"
         android:textColor="@color/white"
         android:textSize="20sp"
         tools:layout_editor_absoluteX="224dp"
@@ -75,27 +75,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvH" />
 
-    <!--    <androidx.recyclerview.widget.RecyclerView-->
-    <!--        android:id="@+id/rvDailyForecast"-->
-    <!--        android:layout_width="0dp"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_marginTop="20dp"-->
-    <!--        android:orientation="vertical"-->
-    <!--        app:layout_constraintBottom_toTopOf="@+id/rvCurrentWeatherData"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintHorizontal_bias="0.5"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toBottomOf="@+id/rvHourlyForecast" />-->
-
-    <!--    <androidx.constraintlayout.widget.Guideline-->
-    <!--        android:id="@+id/guideline2"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_marginTop="658dp"-->
-    <!--        android:orientation="horizontal"-->
-    <!--        app:layout_constraintGuide_percent="0.9"-->
-    <!--        app:layout_constraintTop_toTopOf="parent" />-->
-
     <ImageButton
 
         android:id="@+id/button"
@@ -106,9 +85,9 @@
         android:layout_marginBottom="8dp"
         android:background="@color/light_blue"
         android:src="@drawable/ic_cities_list_light"
-        android:text="Button"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:contentDescription="@string/cities_list" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvVerticalWeatherData"
@@ -120,14 +99,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rvHourlyForecast" />
 
-    <!--    <androidx.recyclerview.widget.RecyclerView-->
-    <!--        android:id="@+id/rvCurrentWeatherData"-->
-    <!--        android:layout_width="0dp"-->
-    <!--        android:layout_height="0dp"-->
-    <!--        app:layout_constraintBottom_toTopOf="@+id/button"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintHorizontal_bias="0.0"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toBottomOf="@+id/rvDailyForecast" />-->
 
 </androidx.constraintlayout.motion.widget.MotionLayout>
