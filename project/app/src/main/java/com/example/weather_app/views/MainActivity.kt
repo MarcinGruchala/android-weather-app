@@ -2,7 +2,10 @@ package com.example.weather_app.views
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.weather_app.BuildConfig
 import com.example.weather_app.adapters.HourlyForecastAdapter
 import com.example.weather_app.adapters.VerticalWeatherDataAdapter
 import com.example.weather_app.data.CurrentWeatherData
@@ -10,6 +13,10 @@ import com.example.weather_app.data.DailyForecastData
 import com.example.weather_app.data.HourlyForecastData
 import com.example.weather_app.data.VerticalWeatherData
 import com.example.weather_app.databinding.ActivityMainBinding
+import com.example.weather_app.webservices.OpenWeatherAPIClient
+import retrofit2.HttpException
+import java.io.IOException
+
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -17,6 +24,22 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+
+        lifecycleScope.launchWhenCreated {
+            val response = try {
+                OpenWeatherAPIClient.api.getCurrentWeatherData("Bydgoszcz", BuildConfig.APIKEY)
+            }catch (e: IOException){
+                return@launchWhenCreated
+
+            }
+            catch (e: HttpException){
+                return@launchWhenCreated
+            }
+            if (response.isSuccessful && response.body() != null ) {
+                Log.d("MainActivity", "Temp: ${response.body()!!.main.temp}")
+            }
+        }
 
         val hourlyForecastList = listOf(
             HourlyForecastData("Now",20),
