@@ -1,5 +1,6 @@
 package com.example.weather_app.adapters
 
+import android.provider.Settings.System.getString
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,7 +29,7 @@ class HourlyForecastAdapter(
 
     override fun onBindViewHolder(holder: HourlyForecastViewHolder, position: Int) {
         holder.tvHour.text = forecasts[position].hour
-        holder.tvHourlyTemp.text = forecasts[position].temp.toString()
+        holder.tvHourlyTemp.text = "${forecasts[position].temp.toInt()}°"
     }
 
     override fun getItemCount(): Int = forecasts.size

@@ -7,6 +7,7 @@ import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weather_app.R
+import com.example.weather_app.adapters.HourlyForecastAdapter
 import com.example.weather_app.models.CurrentWeatherData
 import com.example.weather_app.models.DailyForecastData
 import com.example.weather_app.models.HourlyForecastData
@@ -33,8 +34,8 @@ class MainActivity : AppCompatActivity() {
         }
         viewModel.currentWeatherData.observe(this,currentWeatherDataObserver)
 
-        val weatherForecastDataObserver = Observer<WeatherForecastDataResponse> { newData ->
-            updateRecyclerViews(newData)
+        val weatherForecastDataObserver = Observer<WeatherForecastDataResponse> { _ ->
+            updateRecyclerViews()
         }
         viewModel.weatherForecastData.observe(this,weatherForecastDataObserver)
 
@@ -99,15 +100,12 @@ class MainActivity : AppCompatActivity() {
             LinearLayoutManager.HORIZONTAL,
             false
         )
-        //binding.rvHourlyForecast.adapter = HourlyForecastAdapter(hourlyForecastList)
 
         binding.rvVerticalWeatherData.layoutManager = LinearLayoutManager(
             this,
             LinearLayoutManager.VERTICAL,
             false
         )
-        //binding.rvVerticalWeatherData.adapter = VerticalWeatherDataAdapter(verticalWeatherData)
-
     }
 
     private fun updateTopScreenUI(data: CurrentWeatherDataResponse){
@@ -131,8 +129,9 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
-    private fun  updateRecyclerViews(data: WeatherForecastDataResponse){
-        Log.d("MainActivity", "${data.hourly}")
+    private fun  updateRecyclerViews(){
+        binding.rvHourlyForecast.adapter = HourlyForecastAdapter(viewModel.getHourlyForecastList())
+        //binding.rvVerticalWeatherData.adapter = VerticalWeatherDataAdapter(verticalWeatherData)
 
     }
 }
