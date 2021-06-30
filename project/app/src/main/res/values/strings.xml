@@ -2,4 +2,5 @@
     <string name="app_name">weather-app</string>
     <string name="no_data">--</string>
     <string name="cities_list">cities list</string>
+    <string name="main_temp">%1$d°</string>
 </resources>

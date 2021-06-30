@@ -4,9 +4,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
+import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weather_app.BuildConfig
+import com.example.weather_app.R
 import com.example.weather_app.adapters.HourlyForecastAdapter
 import com.example.weather_app.adapters.VerticalWeatherDataAdapter
 import com.example.weather_app.models.CurrentWeatherData
@@ -16,36 +18,42 @@ import com.example.weather_app.models.VerticalWeatherData
 import com.example.weather_app.databinding.ActivityMainBinding
 import com.example.weather_app.viewmodels.MainActivityViewModel
 import com.example.weather_app.webservices.OpenWeatherAPIClient
+import com.example.weather_app.webservices.model.CurrentWeatherDataResponse
 import retrofit2.HttpException
 import java.io.IOException
 
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+    val viewModel: MainActivityViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        val viewModel: MainActivityViewModel by viewModels()
 
-        recyclerViewsSetup()
+        //recyclerViewsSetup()
 
-
-
-        lifecycleScope.launchWhenCreated {
-            val response = try {
-                OpenWeatherAPIClient.api.getCurrentWeatherData("Bydgoszcz", BuildConfig.APIKEY,"metric")
-            }catch (e: IOException){
-                return@launchWhenCreated
-
-            }
-            catch (e: HttpException){
-                return@launchWhenCreated
-            }
-            if (response.isSuccessful && response.body() != null ) {
-                Log.d("MainActivity", "Temp: ${response.body()!!.main.temp}")
-            }
+        val currentWeatherDataObserver = Observer<CurrentWeatherDataResponse> { _ ->
+            updateUI()
         }
+        viewModel.currentWeatherData.observe(this,currentWeatherDataObserver)
+
+
+
+//        lifecycleScope.launchWhenCreated {
+//            val response = try {
+//                OpenWeatherAPIClient.api.getCurrentWeatherData("Bydgoszcz", BuildConfig.APIKEY,"metric")
+//            }catch (e: IOException){
+//                return@launchWhenCreated
+//
+//            }
+//            catch (e: HttpException){
+//                return@launchWhenCreated
+//            }
+//            if (response.isSuccessful && response.body() != null ) {
+//                Log.d("MainActivity", "Temp: ${response.body()!!.main.temp}")
+//            }
+//        }
 
         val hourlyForecastList = listOf(
             HourlyForecastData("Now",20),
@@ -117,5 +125,13 @@ class MainActivity : AppCompatActivity() {
 //        )
 //        binding.rvVerticalWeatherData.adapter = VerticalWeatherDataAdapter(verticalWeatherData)
 //
+    }
+
+    private fun updateUI(){
+        binding.tvTemp.text = getString(
+            R.string.main_temp,
+            viewModel.currentWeatherData.value?.main?.temp?.toInt()
+        )
+
     }
 }
