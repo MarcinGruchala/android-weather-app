@@ -5,22 +5,16 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.weather_app.BuildConfig
 import com.example.weather_app.R
-import com.example.weather_app.adapters.HourlyForecastAdapter
-import com.example.weather_app.adapters.VerticalWeatherDataAdapter
 import com.example.weather_app.models.CurrentWeatherData
 import com.example.weather_app.models.DailyForecastData
 import com.example.weather_app.models.HourlyForecastData
 import com.example.weather_app.models.VerticalWeatherData
 import com.example.weather_app.databinding.ActivityMainBinding
 import com.example.weather_app.viewmodels.MainActivityViewModel
-import com.example.weather_app.webservices.OpenWeatherAPIClient
-import com.example.weather_app.webservices.model.CurrentWeatherDataResponse
-import retrofit2.HttpException
-import java.io.IOException
+import com.example.weather_app.webservices.model.current_weather_data.CurrentWeatherDataResponse
+import com.example.weather_app.webservices.model.weather_forecast_data.WeatherForecastDataResponse
 import java.util.*
 
 
@@ -32,12 +26,17 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        //recyclerViewsSetup()
+        recyclerViewsSetup()
 
         val currentWeatherDataObserver = Observer<CurrentWeatherDataResponse> { newData ->
-            updateUI(newData)
+            updateTopScreenUI(newData)
         }
         viewModel.currentWeatherData.observe(this,currentWeatherDataObserver)
+
+        val weatherForecastDataObserver = Observer<WeatherForecastDataResponse> { newData ->
+            updateRecyclerViews(newData)
+        }
+        viewModel.weatherForecastData.observe(this,weatherForecastDataObserver)
 
         val hourlyForecastList = listOf(
             HourlyForecastData("Now",20),
@@ -111,7 +110,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun updateUI(data: CurrentWeatherDataResponse){
+    private fun updateTopScreenUI(data: CurrentWeatherDataResponse){
         binding.tvCity.text = data.name
         binding.tvWeatherDescription.text = data.weather[0].description.replaceFirstChar {
             if (it.isLowerCase()) it.titlecase(
@@ -130,7 +129,10 @@ class MainActivity : AppCompatActivity() {
             R.string.main_L_temp,
             data.main.temp_min.toInt()
         )
+    }
 
+    private fun  updateRecyclerViews(data: WeatherForecastDataResponse){
+        Log.d("MainActivity", "${data.hourly}")
 
     }
 }

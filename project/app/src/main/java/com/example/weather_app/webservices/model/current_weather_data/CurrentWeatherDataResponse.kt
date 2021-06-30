@@ -1,4 +1,4 @@
-package com.example.weather_app.webservices.model
+package com.example.weather_app.webservices.model.current_weather_data
 
 data class CurrentWeatherDataResponse(
     val base: String,
