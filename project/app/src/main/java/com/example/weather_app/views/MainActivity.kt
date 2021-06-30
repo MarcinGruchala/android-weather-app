@@ -21,6 +21,7 @@ import com.example.weather_app.webservices.OpenWeatherAPIClient
 import com.example.weather_app.webservices.model.CurrentWeatherDataResponse
 import retrofit2.HttpException
 import java.io.IOException
+import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -33,27 +34,10 @@ class MainActivity : AppCompatActivity() {
 
         //recyclerViewsSetup()
 
-        val currentWeatherDataObserver = Observer<CurrentWeatherDataResponse> { _ ->
-            updateUI()
+        val currentWeatherDataObserver = Observer<CurrentWeatherDataResponse> { newData ->
+            updateUI(newData)
         }
         viewModel.currentWeatherData.observe(this,currentWeatherDataObserver)
-
-
-
-//        lifecycleScope.launchWhenCreated {
-//            val response = try {
-//                OpenWeatherAPIClient.api.getCurrentWeatherData("Bydgoszcz", BuildConfig.APIKEY,"metric")
-//            }catch (e: IOException){
-//                return@launchWhenCreated
-//
-//            }
-//            catch (e: HttpException){
-//                return@launchWhenCreated
-//            }
-//            if (response.isSuccessful && response.body() != null ) {
-//                Log.d("MainActivity", "Temp: ${response.body()!!.main.temp}")
-//            }
-//        }
 
         val hourlyForecastList = listOf(
             HourlyForecastData("Now",20),
@@ -111,27 +95,42 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun recyclerViewsSetup(){
-//        binding.rvHourlyForecast.layoutManager = LinearLayoutManager(
-//            this,
-//            LinearLayoutManager.HORIZONTAL,
-//            false
-//        )
-//        binding.rvHourlyForecast.adapter = HourlyForecastAdapter(hourlyForecastList)
-//
-//        binding.rvVerticalWeatherData.layoutManager = LinearLayoutManager(
-//            this,
-//            LinearLayoutManager.VERTICAL,
-//            false
-//        )
-//        binding.rvVerticalWeatherData.adapter = VerticalWeatherDataAdapter(verticalWeatherData)
-//
+        binding.rvHourlyForecast.layoutManager = LinearLayoutManager(
+            this,
+            LinearLayoutManager.HORIZONTAL,
+            false
+        )
+        //binding.rvHourlyForecast.adapter = HourlyForecastAdapter(hourlyForecastList)
+
+        binding.rvVerticalWeatherData.layoutManager = LinearLayoutManager(
+            this,
+            LinearLayoutManager.VERTICAL,
+            false
+        )
+        //binding.rvVerticalWeatherData.adapter = VerticalWeatherDataAdapter(verticalWeatherData)
+
     }
 
-    private fun updateUI(){
+    private fun updateUI(data: CurrentWeatherDataResponse){
+        binding.tvCity.text = data.name
+        binding.tvWeatherDescription.text = data.weather[0].description.replaceFirstChar {
+            if (it.isLowerCase()) it.titlecase(
+                Locale.getDefault()
+            ) else it.toString()
+        }
         binding.tvTemp.text = getString(
             R.string.main_temp,
-            viewModel.currentWeatherData.value?.main?.temp?.toInt()
+            data.main.temp.toInt()
         )
+        binding.tvH.text = getString(
+            R.string.main_H_temp,
+            data.main.temp_max.toInt()
+        )
+        binding.tvL.text = getString(
+            R.string.main_L_temp,
+            data.main.temp_min.toInt()
+        )
+
 
     }
 }

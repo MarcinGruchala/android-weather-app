@@ -18,7 +18,11 @@ class MainActivityViewModel : ViewModel() {
     init {
         viewModelScope.launch launchWhenCreated@{
             val response = try {
-                OpenWeatherAPIClient.api.getCurrentWeatherData("Bydgoszcz", BuildConfig.APIKEY,"metric")
+                OpenWeatherAPIClient.api.getCurrentWeatherData(
+                    "Bydgoszcz",
+                    BuildConfig.APIKEY,
+                    "metric"
+                )
             }catch (e: IOException){
                 return@launchWhenCreated
 
