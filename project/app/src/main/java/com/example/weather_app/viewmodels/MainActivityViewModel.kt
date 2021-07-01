@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.weather_app.BuildConfig
 import com.example.weather_app.models.HourlyForecastData
+import com.example.weather_app.models.VerticalWeatherData
 import com.example.weather_app.webservices.OpenWeatherAPIClient
 import com.example.weather_app.webservices.model.current_weather_data.CurrentWeatherDataResponse
 import com.example.weather_app.webservices.model.weather_forecast_data.Hourly
@@ -81,12 +82,19 @@ class MainActivityViewModel : ViewModel() {
     }
 
     private fun  convertUnixTimestamp(unixTimeStamp: Int): String{
+        Log.d("Hour", Timestamp(unixTimeStamp.toLong()*1000L).hours.toString())
         return when(val hour = Timestamp(unixTimeStamp.toLong()*1000L).hours){
-            in 0..12 -> "$hour AM"
-            in 13..24 -> "${hour-12} PM"
+            in 0..11 -> "$hour AM"
+            12 -> "12 PM"
+            in 13..23 -> "${hour-12} PM"
+            24 -> "24 AM"
             else -> hour.toString()
         }
     }
+
+//    fun getVerticalWeatherDataList(): List<VerticalWeatherData>{
+//
+//    }
 
 
 }

@@ -39,34 +39,6 @@ class MainActivity : AppCompatActivity() {
         }
         viewModel.weatherForecastData.observe(this,weatherForecastDataObserver)
 
-        val hourlyForecastList = listOf(
-            HourlyForecastData("Now",20),
-            HourlyForecastData("10AM",20),
-            HourlyForecastData("11AM",20),
-            HourlyForecastData("12PM",21),
-            HourlyForecastData("13PM",21),
-            HourlyForecastData("14PM",21),
-            HourlyForecastData("15PM",22),
-            HourlyForecastData("16PM",22),
-            HourlyForecastData("17PM",22),
-            HourlyForecastData("18PM",22),
-            HourlyForecastData("19PM",21),
-            HourlyForecastData("20PM",21),
-            HourlyForecastData("21PM",20),
-            HourlyForecastData( "22PM",20),
-            HourlyForecastData("23PM",19),
-            HourlyForecastData("24AM",19),
-            HourlyForecastData("1AM",19),
-            HourlyForecastData("2AM",18),
-            HourlyForecastData("3AM",18),
-            HourlyForecastData("4AM",18),
-            HourlyForecastData("5AM",17),
-            HourlyForecastData("6AM",18),
-            HourlyForecastData("7AM",19),
-            HourlyForecastData("8AM",20),
-            HourlyForecastData("9AM",20),
-        )
-
         val dailyForecastList = listOf(
             DailyForecastData("Friday",28,15),
             DailyForecastData("Saturday", 34,21),
