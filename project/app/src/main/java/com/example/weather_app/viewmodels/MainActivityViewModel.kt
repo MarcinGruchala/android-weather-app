@@ -1,6 +1,5 @@
 package com.example.weather_app.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -72,24 +71,13 @@ class MainActivityViewModel : ViewModel() {
         for (i in 1..24){
             list.add(
                 HourlyForecastData(
-                    getHourFromUnixTimestamp(weatherForecastData.value!!.hourly[i].dt),
+                    getTimeFromUnixTimestamp(weatherForecastData.value!!.hourly[i].dt, false),
                     weatherForecastData.value!!.hourly[i].temp.toInt()
                 )
             )
         }
         return list
 
-    }
-
-    private fun  getHourFromUnixTimestamp(unixTimeStamp: Int): String{
-        Log.d("Hour", Timestamp(unixTimeStamp.toLong()*1000L).hours.toString())
-        return when(val hour = Timestamp(unixTimeStamp.toLong()*1000L).hours){
-            in 0..11 -> "$hour AM"
-            12 -> "12 PM"
-            in 13..23 -> "${hour-12} PM"
-            24 -> "24 AM"
-            else -> hour.toString()
-        }
     }
 
     fun getVerticalWeatherDataList(): VerticalWeatherData{
@@ -128,8 +116,8 @@ class MainActivityViewModel : ViewModel() {
 
     private fun getCurrentWeatherDataList(): List<CurrentWeatherData>{
         return listOf(
-            CurrentWeatherData("SUNRISE", getTimeFromUnixTimestamp(currentWeatherData.value!!.sys.sunrise)
-                ,"SUNSET", getTimeFromUnixTimestamp(currentWeatherData.value!!.sys.sunset)),
+            CurrentWeatherData("SUNRISE", getTimeFromUnixTimestamp(currentWeatherData.value!!.sys.sunrise, true)
+                ,"SUNSET", getTimeFromUnixTimestamp(currentWeatherData.value!!.sys.sunset, true)),
             CurrentWeatherData("PRESSURE","${currentWeatherData.value!!.main.pressure} Pa",
                 "HUMIDITY","${currentWeatherData.value!!.main.humidity}%"),
             CurrentWeatherData("Wind","${currentWeatherData.value!!.wind.speed} km/h",
@@ -139,7 +127,22 @@ class MainActivityViewModel : ViewModel() {
         )
     }
 
-    private fun getTimeFromUnixTimestamp(unixTimeStamp: Int): String{
-        return "${Timestamp(unixTimeStamp*1000L).hours}:${Timestamp(unixTimeStamp*1000L).minutes}"
+    private fun getTimeFromUnixTimestamp(unixTimeStamp: Int, minutes: Boolean): String{
+        var hour = Timestamp(unixTimeStamp*1000L).hours
+        val clockPeriod = get12HourClockPeriod(hour)
+        if( hour == 0 ) hour = 12
+        if (minutes){
+            val minutes = Timestamp(unixTimeStamp*1000L).minutes
+            return "$hour:$minutes $clockPeriod"
+        }
+        return "$hour $clockPeriod"
+    }
+
+    private fun get12HourClockPeriod(hour: Int): String{
+        return when(hour){
+            in 0..11, 24 -> "AM"
+            in 12..23 -> "PM"
+            else -> hour.toString()
+        }
     }
 }
