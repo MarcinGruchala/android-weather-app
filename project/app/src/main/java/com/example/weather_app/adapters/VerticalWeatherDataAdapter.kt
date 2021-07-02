@@ -1,6 +1,5 @@
 package com.example.weather_app.adapters
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -62,14 +61,12 @@ class VerticalWeatherDataAdapter(
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        Log.d("VerticalWeatherData", "position $position")
-        Log.d("VerticalWeatherData", "viewHolder: ${holder.itemViewType}")
         when(holder.itemViewType){
             DAILY_FORECAST_VIEW_TYPE -> {
                 val viewHolder = holder as VerticalWeatherDataDailyForecastViewHolder
                 viewHolder.tvDay.text = data.dailyForecastList[position].day
-                viewHolder.tvDailyH.text = data.dailyForecastList[position].tempH.toString()
-                viewHolder.tvDailyL.text = data.dailyForecastList[position].tempL.toString()
+                viewHolder.tvDailyH.text = "${data.dailyForecastList[position].tempH}°"
+                viewHolder.tvDailyL.text = "${data.dailyForecastList[position].tempL}°"
             }
             CURRENT_WEATHER_DATA_VIEW_TYPE -> {
                 val viewHolder = holder as VerticalWeatherDataCurrentWeatherDataViewHolder
