@@ -5,5 +5,5 @@
     <string name="main_temp">%1$d°</string>
     <string name="main_H_temp">H:%1$d°</string>
     <string name="main_L_temp">L:%1$d°</string>
-    <string name="hourly_temp">%1$d°</string>
+    <string name="secondary_temp">%1$d°</string>
 </resources>

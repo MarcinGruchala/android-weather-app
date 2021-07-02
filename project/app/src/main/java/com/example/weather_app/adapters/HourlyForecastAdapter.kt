@@ -1,35 +1,34 @@
 package com.example.weather_app.adapters
 
-import android.provider.Settings.System.getString
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.weather_app.models.HourlyForecastData
 import com.example.weather_app.R
+import com.example.weather_app.databinding.ItemHourlyForecastBinding
+import com.example.weather_app.models.HourlyForecastData
 
 class HourlyForecastAdapter(
-    var forecasts: List<HourlyForecastData>
+    private var forecasts: List<HourlyForecastData>
 ) : RecyclerView.Adapter<HourlyForecastAdapter.HourlyForecastViewHolder>() {
 
-    class HourlyForecastViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val tvHour: TextView = itemView.findViewById(R.id.tvHour)
-        val tvHourlyTemp: TextView = itemView.findViewById(R.id.tvHourlyTemp)
-    }
+    class HourlyForecastViewHolder(val binding: ItemHourlyForecastBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HourlyForecastViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(
-            R.layout.item_hourly_forecast,
+        return HourlyForecastViewHolder(ItemHourlyForecastBinding.inflate(
+            LayoutInflater.from(parent.context),
             parent,
             false
-        )
-        return HourlyForecastViewHolder(view)
+        ))
     }
 
     override fun onBindViewHolder(holder: HourlyForecastViewHolder, position: Int) {
-        holder.tvHour.text = forecasts[position].hour
-        holder.tvHourlyTemp.text = "${forecasts[position].temp.toInt()}°"
+        holder.binding.apply {
+            tvHour.text = forecasts[position].hour
+            tvHourlyTemp.text = holder.itemView.context.getString(
+                R.string.secondary_temp,
+                forecasts[position].temp
+            )
+        }
     }
 
     override fun getItemCount(): Int = forecasts.size
