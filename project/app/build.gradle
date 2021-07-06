@@ -1,6 +1,8 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
 }
 
 def apiCredentialsFile = rootProject.file("apicredentials.properties")
@@ -56,6 +58,20 @@ dependencies {
 
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.3.1'
     implementation 'androidx.activity:activity-ktx:1.2.3'
+
+//    // Dagger Core
+//    implementation "com.google.dagger:dagger:2.37"
+//    kapt "com.google.dagger:dagger-compiler:2.37"
+//
+//    // Dagger Android
+//    api 'com.google.dagger:dagger-android:2.37'
+//    api 'com.google.dagger:dagger-android-support:2.37'
+//    kapt 'com.google.dagger:dagger-android-processor:2.37'
+
+    // Dagger - Hilt
+    implementation "com.google.dagger:hilt-android:2.37"
+    kapt "com.google.dagger:hilt-android-compiler:2.37"
+
 
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
