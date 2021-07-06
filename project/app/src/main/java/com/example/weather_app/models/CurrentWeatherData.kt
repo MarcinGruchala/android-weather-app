@@ -1,6 +1,4 @@
-package com.example.weather_app
-
-import java.io.StringReader
+package com.example.weather_app.models
 
 data class CurrentWeatherData(
     val headerLeft: String,
