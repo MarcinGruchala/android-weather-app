@@ -1,5 +1,6 @@
 package com.example.weather_app.di
 
+import com.example.weather_app.BuildConfig
 import com.example.weather_app.webservices.OpenWeatherAPIService
 import dagger.Module
 import dagger.Provides
@@ -20,4 +21,9 @@ object WebServiceModule {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
         .create(OpenWeatherAPIService::class.java)
+
+    @Singleton
+    @Provides
+    fun provideApiKey(): String = BuildConfig.APIKEY
+
 }

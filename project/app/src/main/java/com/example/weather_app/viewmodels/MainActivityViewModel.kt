@@ -3,7 +3,6 @@ package com.example.weather_app.viewmodels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.weather_app.BuildConfig
 import com.example.weather_app.models.CurrentWeatherData
 import com.example.weather_app.models.DailyForecastData
 import com.example.weather_app.models.HourlyForecastData
@@ -22,7 +21,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainActivityViewModel @Inject constructor(
-    private val repository: RepositoryImpl
+    private val repository: RepositoryImpl,
+    private val apiKey: String
 ) : ViewModel() {
 
     val currentWeatherData: MutableLiveData<CurrentWeatherDataResponse> by lazy {
@@ -37,7 +37,7 @@ class MainActivityViewModel @Inject constructor(
         viewModelScope.launch launchWhenCreated@{
             val currentWeatherDayResponse = try {
                 repository.getCurrentWeatherDataResponse(
-                    BuildConfig.APIKEY,
+                    apiKey,
                     "Bydgoszcz",
                     "metric")
             }catch (e: IOException){
@@ -54,7 +54,7 @@ class MainActivityViewModel @Inject constructor(
                         currentWeatherData.value?.coord!!.lat,
                         currentWeatherData.value?.coord!!.lon,
                         "current,minutely,alerts",
-                        BuildConfig.APIKEY,
+                        apiKey,
                         "metric"
                     )
                 }catch (e: IOException){
