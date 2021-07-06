@@ -1,4 +1,4 @@
-package com.example.weather_app.dependency_injection_modules
+package com.example.weather_app.di
 
 import com.example.weather_app.webservices.OpenWeatherAPIService
 import dagger.Module

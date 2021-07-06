@@ -9,7 +9,6 @@ import com.example.weather_app.models.DailyForecastData
 import com.example.weather_app.models.HourlyForecastData
 import com.example.weather_app.models.VerticalWeatherData
 import com.example.weather_app.repository.RepositoryImpl
-import com.example.weather_app.webservices.OpenWeatherAPIClient
 import com.example.weather_app.webservices.model.current_weather_data.CurrentWeatherDataResponse
 import com.example.weather_app.webservices.model.weather_forecast_data.WeatherForecastDataResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -51,7 +50,7 @@ class MainActivityViewModel @Inject constructor(
                 currentWeatherData.value = currentWeatherDayResponse.body()
 
                 val weatherForecastDataResponse = try {
-                    OpenWeatherAPIClient.api.getWeatherForecastData(
+                    repository.getWeatherForecastDataResponse(
                         currentWeatherData.value?.coord!!.lat,
                         currentWeatherData.value?.coord!!.lon,
                         "current,minutely,alerts",
