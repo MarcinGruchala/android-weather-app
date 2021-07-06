@@ -8,16 +8,24 @@ import com.example.weather_app.models.CurrentWeatherData
 import com.example.weather_app.models.DailyForecastData
 import com.example.weather_app.models.HourlyForecastData
 import com.example.weather_app.models.VerticalWeatherData
+import com.example.weather_app.repository.RepositoryImpl
 import com.example.weather_app.webservices.OpenWeatherAPIClient
 import com.example.weather_app.webservices.model.current_weather_data.CurrentWeatherDataResponse
 import com.example.weather_app.webservices.model.weather_forecast_data.WeatherForecastDataResponse
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
 import java.sql.Timestamp
 import java.util.*
+import javax.inject.Inject
 
-class MainActivityViewModel : ViewModel() {
+
+@HiltViewModel
+class MainActivityViewModel @Inject constructor(
+    private val repository: RepositoryImpl
+) : ViewModel() {
+
     val currentWeatherData: MutableLiveData<CurrentWeatherDataResponse> by lazy {
         MutableLiveData<CurrentWeatherDataResponse>()
     }
@@ -28,20 +36,19 @@ class MainActivityViewModel : ViewModel() {
 
     init {
         viewModelScope.launch launchWhenCreated@{
-            val currentWeatherDayaResponse = try {
-                OpenWeatherAPIClient.api.getCurrentWeatherData(
-                    "Bydgoszcz",
+            val currentWeatherDayResponse = try {
+                repository.getCurrentWeatherDataResponse(
                     BuildConfig.APIKEY,
-                    "metric"
-                )
+                    "Bydgoszcz",
+                    "metric")
             }catch (e: IOException){
                 return@launchWhenCreated
 
             } catch (e: HttpException){
                 return@launchWhenCreated
             }
-            if (currentWeatherDayaResponse.isSuccessful && currentWeatherDayaResponse.body() != null ) {
-                currentWeatherData.value = currentWeatherDayaResponse.body()
+            if (currentWeatherDayResponse.isSuccessful && currentWeatherDayResponse.body() != null ) {
+                currentWeatherData.value = currentWeatherDayResponse.body()
 
                 val weatherForecastDataResponse = try {
                     OpenWeatherAPIClient.api.getWeatherForecastData(
@@ -57,7 +64,7 @@ class MainActivityViewModel : ViewModel() {
                 } catch (e: HttpException){
                     return@launchWhenCreated
                 }
-                if (weatherForecastDataResponse.isSuccessful && currentWeatherDayaResponse.body() != null){
+                if (weatherForecastDataResponse.isSuccessful && currentWeatherDayResponse.body() != null){
                     weatherForecastData.value = weatherForecastDataResponse.body()
                 }
             }

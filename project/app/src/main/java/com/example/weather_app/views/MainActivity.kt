@@ -17,9 +17,10 @@ import com.example.weather_app.databinding.ActivityMainBinding
 import com.example.weather_app.viewmodels.MainActivityViewModel
 import com.example.weather_app.webservices.model.current_weather_data.CurrentWeatherDataResponse
 import com.example.weather_app.webservices.model.weather_forecast_data.WeatherForecastDataResponse
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
-
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val viewModel: MainActivityViewModel by viewModels()
