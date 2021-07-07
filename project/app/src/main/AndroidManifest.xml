@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Weatherapp">
         <activity android:name=".views.CitySelectionActivity" />
-        <activity android:name=".views.MainActivity">
+        <activity android:name=".views.WeatherForecastActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
