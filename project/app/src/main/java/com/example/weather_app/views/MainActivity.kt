@@ -1,5 +1,6 @@
 package com.example.weather_app.views
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -30,6 +31,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         recyclerViewsSetup()
+        setUpClickListeners()
 
         val currentWeatherDataObserver = Observer<CurrentWeatherDataResponse> { newData ->
             updateTopScreenUI(newData)
@@ -41,6 +43,14 @@ class MainActivity : AppCompatActivity() {
         }
         viewModel.weatherForecastData.observe(this,weatherForecastDataObserver)
 
+    }
+
+    private fun setUpClickListeners(){
+        binding.btnCitySelection.setOnClickListener {
+            Intent(this,CitySelectionActivity::class.java).also {
+                startActivity(it)
+            }
+        }
     }
 
     private fun recyclerViewsSetup(){
