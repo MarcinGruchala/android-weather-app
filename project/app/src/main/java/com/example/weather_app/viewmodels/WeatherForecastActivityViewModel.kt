@@ -20,7 +20,7 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class MainActivityViewModel @Inject constructor(
+class WeatherForecastActivityViewModel @Inject constructor(
     private val repository: RepositoryImpl,
     private val apiKey: String
 ) : ViewModel() {

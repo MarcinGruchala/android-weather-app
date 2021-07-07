@@ -61,6 +61,11 @@ class CitySelectionAdapter(
                 val viewHolder= holder as CitySelectionViewHolder
                 viewHolder.binding.apply {
                     tvUnitSelection.text = "°C/°F"
+
+                    btnCitySearch.setOnClickListener {
+
+                    }
+
                 }
             }
         }
