@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weather_app.adapters.CitySelectionAdapter
 import com.example.weather_app.databinding.ActivityCitySelectionBinding
@@ -11,7 +12,7 @@ import com.example.weather_app.models.CityShortcutData
 import com.example.weather_app.viewmodels.CitySelectionActivityViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
-private  const val TAG = "CitySelectionActivity"
+private const val TAG = "CitySelectionActivity"
 @AndroidEntryPoint
 class CitySelectionActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCitySelectionBinding
@@ -22,6 +23,14 @@ class CitySelectionActivity : AppCompatActivity() {
         setContentView(binding.root)
         recyclerViewsSetup()
         updateRecyclerView()
+
+        val isCitiesListUpdatedObserver = Observer<Boolean> { newValue ->
+            if (newValue){
+                updateRecyclerView()
+                viewModel.isCitiesListUpdated.value = false
+            }
+        }
+        viewModel.isCitiesListUpdated.observe(this,isCitiesListUpdatedObserver)
     }
 
     private fun recyclerViewsSetup(){
@@ -33,17 +42,16 @@ class CitySelectionActivity : AppCompatActivity() {
     }
 
     private fun updateRecyclerView(){
-        val testList = listOf<CityShortcutData>(
-            CityShortcutData("Bydgoszcz","12:53",30),
-            CityShortcutData("Warsow","12:23",28),
-            CityShortcutData("Wroclaw","12:53",32),
-            CityShortcutData("Sydney","9:00",14)
-        )
 
-        binding.rvCitySelection.adapter = CitySelectionAdapter(testList) { item ->
+        binding.rvCitySelection.adapter = CitySelectionAdapter(viewModel.getCitySelectionList()!!,
+        itemClickListener = { item ->
             Log.d(TAG,"new location: ${item.cityName}")
             viewModel.updateMainWeatherForecastLocation(item.cityName)
             finish()
-        }
+
+        },
+        citySearchClickListener = { cityName ->
+            viewModel.updateCitySelectionList(cityName)
+        })
     }
 }

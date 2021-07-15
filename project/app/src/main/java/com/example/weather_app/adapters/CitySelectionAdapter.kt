@@ -3,19 +3,23 @@ package com.example.weather_app.adapters
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.activity.viewModels
 import androidx.recyclerview.widget.RecyclerView
 
 import com.example.weather_app.databinding.ItemCitySelectionBinding
 import com.example.weather_app.databinding.ItemCityShortcutBinding
 import com.example.weather_app.models.CityShortcutData
+import com.example.weather_app.viewmodels.CitySelectionActivityViewModel
 
 private const val TAG = "CitySelectionAdapter"
 private const val CITY_SHORTCUT_VIEW_TYPE = 10
 private const val CITY_SELECTION_VIEW_TYPE = 20
 class CitySelectionAdapter(
     private val data: List<CityShortcutData>,
-    private val itemClickListener: (CityShortcutData) -> Unit
+    private val itemClickListener: (CityShortcutData) -> Unit,
+    private val citySearchClickListener: (String) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
 
     class CityShortcutViewHolder(val binding: ItemCityShortcutBinding)
         : RecyclerView.ViewHolder(binding.root)
@@ -65,7 +69,8 @@ class CitySelectionAdapter(
                     tvUnitSelection.text = "°C/°F"
 
                     btnCitySearch.setOnClickListener {
-                        val cityName = etCity.text
+                        val cityName = etCity.text.toString()
+                        citySearchClickListener(cityName)
                         Log.d(TAG, "city: $cityName")
                     }
 
@@ -75,4 +80,5 @@ class CitySelectionAdapter(
     }
 
     override fun getItemCount(): Int = data.size+1
+
 }
