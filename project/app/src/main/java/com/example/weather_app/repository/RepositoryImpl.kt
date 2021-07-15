@@ -9,6 +9,8 @@ class RepositoryImpl(
     private val webservice: OpenWeatherAPIService
 ) : Repository {
 
+    var weatherForecastLocation: String = "Bydgoszcz"
+
     override suspend fun getCurrentWeatherDataResponse(
         apiKey: String,
         forecastLocation: String,

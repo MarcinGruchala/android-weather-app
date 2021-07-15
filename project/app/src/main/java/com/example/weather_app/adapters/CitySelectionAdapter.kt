@@ -9,11 +9,12 @@ import com.example.weather_app.databinding.ItemCitySelectionBinding
 import com.example.weather_app.databinding.ItemCityShortcutBinding
 import com.example.weather_app.models.CityShortcutData
 
-
+private const val TAG = "CitySelectionAdapter"
 private const val CITY_SHORTCUT_VIEW_TYPE = 10
 private const val CITY_SELECTION_VIEW_TYPE = 20
 class CitySelectionAdapter(
-    private val data: List<CityShortcutData>
+    private val data: List<CityShortcutData>,
+    private val itemClickListener: (CityShortcutData) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     class CityShortcutViewHolder(val binding: ItemCityShortcutBinding)
@@ -47,7 +48,7 @@ class CitySelectionAdapter(
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        Log.d("CitySelectionAdapter","binding position: $position")
+        Log.d(TAG,"binding position: $position")
         when(holder.itemViewType){
             CITY_SHORTCUT_VIEW_TYPE ->{
                 val viewHolder = holder as CityShortcutViewHolder
@@ -56,6 +57,7 @@ class CitySelectionAdapter(
                     tvCityTemp.text = data[position].temp.toString()
                     tvLocalTime.text = data[position].localTime
                 }
+                viewHolder.itemView.setOnClickListener { itemClickListener(data[position]) }
             }
             CITY_SELECTION_VIEW_TYPE ->{
                 val viewHolder= holder as CitySelectionViewHolder
@@ -63,7 +65,8 @@ class CitySelectionAdapter(
                     tvUnitSelection.text = "°C/°F"
 
                     btnCitySearch.setOnClickListener {
-
+                        val cityName = etCity.text
+                        Log.d(TAG, "city: $cityName")
                     }
 
                 }
