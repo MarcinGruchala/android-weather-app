@@ -1,6 +1,7 @@
 package com.example.weather_app.viewmodels
 
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.weather_app.models.CurrentWeatherData
@@ -33,12 +34,28 @@ class WeatherForecastActivityViewModel @Inject constructor(
         MutableLiveData<WeatherForecastDataResponse>()
     }
 
+    private val weatherForecastLocationObserver = Observer<String> { _ ->
+        viewModelScope.launch launchWhenCreated@{
+            downloadWeatherData()
+        }
+    }
+
+
+
     init {
+        viewModelScope.launch launchWhenCreated@{
+            downloadWeatherData()
+        }
+
+        repository.weatherForecastLocation.observeForever(weatherForecastLocationObserver)
+    }
+
+    private suspend fun downloadWeatherData(){
         viewModelScope.launch launchWhenCreated@{
             val currentWeatherDayResponse = try {
                 repository.getCurrentWeatherDataResponse(
                     apiKey,
-                    "Bydgoszcz",
+                    repository.weatherForecastLocation.value!!,
                     "metric")
             }catch (e: IOException){
                 return@launchWhenCreated
