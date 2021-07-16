@@ -1,35 +1,32 @@
 package com.example.weather_app.views
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weather_app.R
 import com.example.weather_app.adapters.HourlyForecastAdapter
 import com.example.weather_app.adapters.VerticalWeatherDataAdapter
-import com.example.weather_app.models.CurrentWeatherData
-import com.example.weather_app.models.DailyForecastData
-import com.example.weather_app.models.HourlyForecastData
-import com.example.weather_app.models.VerticalWeatherData
-import com.example.weather_app.databinding.ActivityMainBinding
-import com.example.weather_app.viewmodels.MainActivityViewModel
+import com.example.weather_app.databinding.ActivityWeatherForecastBinding
+import com.example.weather_app.viewmodels.WeatherForecastActivityViewModel
 import com.example.weather_app.webservices.model.current_weather_data.CurrentWeatherDataResponse
 import com.example.weather_app.webservices.model.weather_forecast_data.WeatherForecastDataResponse
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityMainBinding
-    private val viewModel: MainActivityViewModel by viewModels()
+class WeatherForecastActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityWeatherForecastBinding
+    private val viewModel: WeatherForecastActivityViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityWeatherForecastBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         recyclerViewsSetup()
+        setUpClickListeners()
 
         val currentWeatherDataObserver = Observer<CurrentWeatherDataResponse> { newData ->
             updateTopScreenUI(newData)
@@ -41,6 +38,14 @@ class MainActivity : AppCompatActivity() {
         }
         viewModel.weatherForecastData.observe(this,weatherForecastDataObserver)
 
+    }
+
+    private fun setUpClickListeners(){
+        binding.btnCitySelection.setOnClickListener {
+            Intent(this,CitySelectionActivity::class.java).also {
+                startActivity(it)
+            }
+        }
     }
 
     private fun recyclerViewsSetup(){

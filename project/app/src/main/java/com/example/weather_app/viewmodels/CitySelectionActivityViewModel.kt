@@ -1,0 +1,110 @@
+package com.example.weather_app.viewmodels
+
+import android.content.Context
+import android.util.Log
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.weather_app.di.WeatherApplication
+import com.example.weather_app.models.CityShortcutData
+import com.example.weather_app.repository.RepositoryImpl
+import com.example.weather_app.utils.ClockUtils
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
+import retrofit2.HttpException
+import java.io.IOException
+import javax.inject.Inject
+
+private const val TAG = "CitySelectionViewModel"
+@HiltViewModel
+class CitySelectionActivityViewModel @Inject constructor(
+    private val repository: RepositoryImpl,
+    private val apiKey: String,
+    applicationContext: WeatherApplication
+) : ViewModel() {
+
+    private val cityListSharedPreferences =applicationContext.getSharedPreferences("citySelectionList", Context.MODE_PRIVATE)
+    private val cityListSharedPreferencesEditor = cityListSharedPreferences.edit()
+
+    val citySelectionList: MutableLiveData<MutableList<CityShortcutData>> by lazy {
+        MutableLiveData<MutableList<CityShortcutData>>()
+    }
+
+    val isCitiesListUpdated: MutableLiveData<Boolean> by lazy {
+        MutableLiveData<Boolean>(false)
+    }
+
+    fun updateMainWeatherForecastLocation(newLocation: String){
+        repository.weatherForecastLocation.value = newLocation
+    }
+
+    fun getCitySelectionList() {
+        val citiesNameList = loadCitySelectionListFromSharedPref()
+        Log.d(TAG, "Updated List: $citiesNameList")
+        val cityShortcutDataList = mutableListOf<CityShortcutData>()
+        viewModelScope.launch launchWhenCreated@{
+            for (city in citiesNameList){
+                val currentWeatherDataResponse = try {
+                    repository.getCurrentWeatherDataResponse(
+                        apiKey,
+                        city,
+                        "metric")
+                }catch (e: IOException){
+                    return@launchWhenCreated
+
+                } catch (e: HttpException){
+                    return@launchWhenCreated
+                }
+                if (currentWeatherDataResponse.isSuccessful && currentWeatherDataResponse.body() != null ){
+                    val utcTime = currentWeatherDataResponse.body()!!.dt-7200
+                    val timeZone = currentWeatherDataResponse.body()!!.timezone
+                    val temp = currentWeatherDataResponse.body()!!.main.temp.toInt()
+                    val localTime = ClockUtils.getTimeFromUnixTimestamp(
+                        ClockUtils.getLocalTime(utcTime, timeZone),
+                        true,
+                        false
+                    )
+                    cityShortcutDataList.add(
+                        CityShortcutData(
+                            city,
+                            localTime,
+                            temp
+                        )
+                    )
+                }
+            }
+            citySelectionList.value = cityShortcutDataList
+        }
+    }
+
+    fun addNewLocationToCitySelectionList(cityName: String) {
+        addNewLocationToCitySelectionListSharedPref(cityName)
+        getCitySelectionList()
+    }
+
+    private fun loadCitySelectionListFromSharedPref(): List<String>{
+        val citiesList = cityListSharedPreferences.getStringSet(
+            "citySelectionList", setOf("Bydgoszcz")
+        )
+        if (citiesList != null) {
+            return citiesList.toList()
+        }
+        return mutableListOf("Bydgoszcz")
+    }
+
+    private fun addNewLocationToCitySelectionListSharedPref(cityName: String){
+        val citiesSet = cityListSharedPreferences.getStringSet(
+            "citySelectionList",
+            setOf("Bydgoszcz")
+        )
+        Log.d(TAG, "Before add: $citiesSet")
+        val newCitiesSet: MutableSet<String> = citiesSet!!.toMutableSet()
+        newCitiesSet.add(cityName)
+        Log.d(TAG, "After add: $newCitiesSet")
+        cityListSharedPreferencesEditor.apply {
+            putStringSet("citySelectionList", newCitiesSet)
+            apply()
+        }
+    }
+
+}

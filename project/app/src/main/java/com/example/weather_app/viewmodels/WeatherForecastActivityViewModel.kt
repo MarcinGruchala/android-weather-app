@@ -1,6 +1,7 @@
 package com.example.weather_app.viewmodels
 
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.weather_app.models.CurrentWeatherData
@@ -8,6 +9,7 @@ import com.example.weather_app.models.DailyForecastData
 import com.example.weather_app.models.HourlyForecastData
 import com.example.weather_app.models.VerticalWeatherData
 import com.example.weather_app.repository.RepositoryImpl
+import com.example.weather_app.utils.ClockUtils
 import com.example.weather_app.webservices.model.current_weather_data.CurrentWeatherDataResponse
 import com.example.weather_app.webservices.model.weather_forecast_data.WeatherForecastDataResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,7 +22,7 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class MainActivityViewModel @Inject constructor(
+class WeatherForecastActivityViewModel @Inject constructor(
     private val repository: RepositoryImpl,
     private val apiKey: String
 ) : ViewModel() {
@@ -33,12 +35,26 @@ class MainActivityViewModel @Inject constructor(
         MutableLiveData<WeatherForecastDataResponse>()
     }
 
+    private val weatherForecastLocationObserver = Observer<String> { _ ->
+        viewModelScope.launch launchWhenCreated@{
+            downloadWeatherData()
+        }
+    }
+
     init {
+        viewModelScope.launch launchWhenCreated@{
+            downloadWeatherData()
+        }
+
+        repository.weatherForecastLocation.observeForever(weatherForecastLocationObserver)
+    }
+
+    private suspend fun downloadWeatherData(){
         viewModelScope.launch launchWhenCreated@{
             val currentWeatherDayResponse = try {
                 repository.getCurrentWeatherDataResponse(
                     apiKey,
-                    "Bydgoszcz",
+                    repository.weatherForecastLocation.value!!,
                     "metric")
             }catch (e: IOException){
                 return@launchWhenCreated
@@ -77,7 +93,11 @@ class MainActivityViewModel @Inject constructor(
         for (i in 1..24){
             list.add(
                 HourlyForecastData(
-                    getTimeFromUnixTimestamp(weatherForecastData.value!!.hourly[i].dt, false),
+                    ClockUtils.getTimeFromUnixTimestamp(
+                        weatherForecastData.value!!.hourly[i].dt,
+                        false,
+                        true
+                    ),
                     weatherForecastData.value!!.hourly[i].temp.toInt()
                 )
             )
@@ -98,7 +118,7 @@ class MainActivityViewModel @Inject constructor(
         for (i in 0..7){
             dailyForecastList.add(
                 DailyForecastData(
-                    getDayFromUnixTimestamp(weatherForecastData.value!!.daily[i].dt),
+                    ClockUtils.getDayFromUnixTimestamp(weatherForecastData.value!!.daily[i].dt),
                     weatherForecastData.value!!.daily[i].temp.max.toInt(),
                     weatherForecastData.value!!.daily[i].temp.min.toInt()
                 )
@@ -107,23 +127,10 @@ class MainActivityViewModel @Inject constructor(
         return dailyForecastList
     }
 
-    private fun getDayFromUnixTimestamp(unixTimeStamp: Int): String{
-        return when(val day = Timestamp(unixTimeStamp.toLong()*1000L).day){
-            0 -> "Sunday"
-            1 -> "Monday"
-            2 -> "Tuesday"
-            3 -> "Wednesday"
-            4 -> "Thursday"
-            5 -> "Friday"
-            6 -> "Saturday"
-            else -> "Day: $day"
-        }
-    }
-
     private fun getCurrentWeatherDataList(): List<CurrentWeatherData>{
         return listOf(
-            CurrentWeatherData("SUNRISE", getTimeFromUnixTimestamp(currentWeatherData.value!!.sys.sunrise, true)
-                ,"SUNSET", getTimeFromUnixTimestamp(currentWeatherData.value!!.sys.sunset, true)),
+            CurrentWeatherData("SUNRISE", ClockUtils.getTimeFromUnixTimestamp(currentWeatherData.value!!.sys.sunrise, true, true)
+                ,"SUNSET",ClockUtils.getTimeFromUnixTimestamp(currentWeatherData.value!!.sys.sunset, true,true)),
             CurrentWeatherData("PRESSURE","${currentWeatherData.value!!.main.pressure} Pa",
                 "HUMIDITY","${currentWeatherData.value!!.main.humidity}%"),
             CurrentWeatherData("Wind","${currentWeatherData.value!!.wind.speed} km/h",
@@ -133,22 +140,4 @@ class MainActivityViewModel @Inject constructor(
         )
     }
 
-    private fun getTimeFromUnixTimestamp(unixTimeStamp: Int, minutes: Boolean): String{
-        var hour = Timestamp(unixTimeStamp*1000L).hours
-        val clockPeriod = get12HourClockPeriod(hour)
-        if( hour == 0 ) hour = 12
-        if (minutes){
-            val minutes = Timestamp(unixTimeStamp*1000L).minutes
-            return "$hour:$minutes $clockPeriod"
-        }
-        return "$hour $clockPeriod"
-    }
-
-    private fun get12HourClockPeriod(hour: Int): String{
-        return when(hour){
-            in 0..11, 24 -> "AM"
-            in 12..23 -> "PM"
-            else -> hour.toString()
-        }
-    }
 }
