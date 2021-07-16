@@ -17,10 +17,10 @@ class RepositoryImpl(
         MutableLiveData<String>("Bydgoszcz")
     }
 
-    val citySelectionList: MutableLiveData<MutableList<CityShortcutData>> by lazy {
-        MutableLiveData<MutableList<CityShortcutData>>(mutableListOf(
-            CityShortcutData("Bydgoszcz","12:53",30),
-            CityShortcutData("Wroclaw","12:53",32),
+    val citySelectionList: MutableLiveData<MutableList<String>> by lazy {
+        MutableLiveData<MutableList<String>>(mutableListOf(
+            "Bydgoszcz",
+            "Wroclaw"
         ))
     }
 

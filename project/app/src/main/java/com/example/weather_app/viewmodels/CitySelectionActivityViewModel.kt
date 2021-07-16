@@ -19,6 +19,10 @@ class CitySelectionActivityViewModel @Inject constructor(
     private val apiKey: String
 ) : ViewModel() {
 
+    val citySelectionList: MutableLiveData<MutableList<CityShortcutData>> by lazy {
+        MutableLiveData<MutableList<CityShortcutData>>()
+    }
+
     val isCitiesListUpdated: MutableLiveData<Boolean> by lazy {
         MutableLiveData<Boolean>(false)
     }
@@ -27,70 +31,47 @@ class CitySelectionActivityViewModel @Inject constructor(
         repository.weatherForecastLocation.value = newLocation
     }
 
-    fun getCitySelectionList() = repository.citySelectionList.value
-
-    fun addNewLocationToCitySelectionList(cityName: String) {
+    fun getCitySelectionList() {
+        val citiesNameList = repository.citySelectionList.value!!
+        val cityShortcutDataList = mutableListOf<CityShortcutData>()
         viewModelScope.launch launchWhenCreated@{
-            val currentWeatherDayResponse = try {
-                repository.getCurrentWeatherDataResponse(
-                    apiKey,
-                    cityName,
-                    "metric")
-            }catch (e: IOException){
-                return@launchWhenCreated
-
-            } catch (e: HttpException){
-                return@launchWhenCreated
-            }
-            if (currentWeatherDayResponse.isSuccessful && currentWeatherDayResponse.body() != null ){
-                val utcTime = currentWeatherDayResponse.body()!!.dt-7200
-                val timeZone = currentWeatherDayResponse.body()!!.timezone
-                val temp = currentWeatherDayResponse.body()!!.main.temp.toInt()
-                val localTime = ClockUtils.getTimeFromUnixTimestamp(
-                    ClockUtils.getLocalTime(utcTime, timeZone),
-                    true,
-                    false
-                )
-                repository.citySelectionList.value!!.add(
-                    CityShortcutData(
-                        cityName,
-                        localTime,
-                        temp
-                    )
-                )
-                isCitiesListUpdated.value = true
-            }
-        }
-    }
-
-    fun updateCityLocationList() {
-        viewModelScope.launch launchWhenCreated@{
-            for (city in repository.citySelectionList.value!!) {
-                val currentWeatherDayResponse = try {
+            for (city in citiesNameList){
+                val currentWeatherDataResponse = try {
                     repository.getCurrentWeatherDataResponse(
                         apiKey,
-                        city.cityName,
-                        "metric"
-                    )
-                } catch (e: IOException) {
+                        city,
+                        "metric")
+                }catch (e: IOException){
                     return@launchWhenCreated
 
-                } catch (e: HttpException) {
+                } catch (e: HttpException){
                     return@launchWhenCreated
                 }
-                if (currentWeatherDayResponse.isSuccessful && currentWeatherDayResponse.body() != null) {
-                    val utcTime = currentWeatherDayResponse.body()!!.dt-7200
-                    val timeZone = currentWeatherDayResponse.body()!!.timezone
-                    val temp = currentWeatherDayResponse.body()!!.main.temp.toInt()
+                if (currentWeatherDataResponse.isSuccessful && currentWeatherDataResponse.body() != null ){
+                    val utcTime = currentWeatherDataResponse.body()!!.dt-7200
+                    val timeZone = currentWeatherDataResponse.body()!!.timezone
+                    val temp = currentWeatherDataResponse.body()!!.main.temp.toInt()
                     val localTime = ClockUtils.getTimeFromUnixTimestamp(
                         ClockUtils.getLocalTime(utcTime, timeZone),
                         true,
                         false
                     )
-                    city.localTime = localTime
-                    city.temp = temp
+                    cityShortcutDataList.add(
+                        CityShortcutData(
+                            city,
+                            localTime,
+                            temp
+                        )
+                    )
                 }
             }
+            citySelectionList.value = cityShortcutDataList
         }
     }
+
+    fun addNewLocationToCitySelectionList(cityName: String) {
+        repository.citySelectionList.value!!.add(cityName)
+        getCitySelectionList()
+    }
+
 }

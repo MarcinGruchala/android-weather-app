@@ -8,6 +8,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weather_app.adapters.CitySelectionAdapter
 import com.example.weather_app.databinding.ActivityCitySelectionBinding
+import com.example.weather_app.models.CityShortcutData
 import com.example.weather_app.viewmodels.CitySelectionActivityViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -20,8 +21,15 @@ class CitySelectionActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityCitySelectionBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        viewModel.getCitySelectionList()
         recyclerViewsSetup()
-        updateRecyclerView()
+
+        val citySelectionListObserver = Observer<MutableList<CityShortcutData>> { _ ->
+            updateRecyclerView()
+        }
+        viewModel.citySelectionList.observe(this,citySelectionListObserver)
+
 
         val isCitiesListUpdatedObserver = Observer<Boolean> { newValue ->
             if (newValue){
@@ -41,9 +49,8 @@ class CitySelectionActivity : AppCompatActivity() {
     }
 
     private fun updateRecyclerView(){
-        viewModel.updateCityLocationList()
 
-        binding.rvCitySelection.adapter = CitySelectionAdapter(viewModel.getCitySelectionList()!!,
+        binding.rvCitySelection.adapter = CitySelectionAdapter(viewModel.citySelectionList.value!!,
         itemClickListener = { item ->
             Log.d(TAG,"new location: ${item.cityName}")
             viewModel.updateMainWeatherForecastLocation(item.cityName)
