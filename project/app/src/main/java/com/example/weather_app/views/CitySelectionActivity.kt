@@ -61,4 +61,5 @@ class CitySelectionActivity : AppCompatActivity() {
             viewModel.addNewLocationToCitySelectionList(cityName)
         })
     }
+
 }

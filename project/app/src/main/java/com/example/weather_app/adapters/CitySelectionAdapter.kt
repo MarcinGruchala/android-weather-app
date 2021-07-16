@@ -28,8 +28,6 @@ class CitySelectionAdapter(
         : RecyclerView.ViewHolder(binding.root)
 
     override fun getItemViewType(position: Int): Int {
-        Log.d("CitySelectionAdapter","position: $position")
-        Log.d("CitySelectionAdapter","itemCount: $itemCount")
         if (position == itemCount-1){
             return CITY_SELECTION_VIEW_TYPE
         }
@@ -52,7 +50,6 @@ class CitySelectionAdapter(
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        Log.d(TAG,"binding position: $position")
         when(holder.itemViewType){
             CITY_SHORTCUT_VIEW_TYPE ->{
                 val viewHolder = holder as CityShortcutViewHolder
@@ -71,7 +68,7 @@ class CitySelectionAdapter(
                     btnCitySearch.setOnClickListener {
                         val cityName = etCity.text.toString()
                         citySearchClickListener(cityName)
-                        Log.d(TAG, "city: $cityName")
+                        Log.d(TAG, "Search city: $cityName")
                     }
 
                 }

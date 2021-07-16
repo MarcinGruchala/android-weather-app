@@ -13,16 +13,11 @@ class RepositoryImpl(
     private val webservice: OpenWeatherAPIService
 ) : Repository {
 
+
     val weatherForecastLocation: MutableLiveData<String> by lazy {
         MutableLiveData<String>("Bydgoszcz")
     }
 
-    val citySelectionList: MutableLiveData<MutableList<String>> by lazy {
-        MutableLiveData<MutableList<String>>(mutableListOf(
-            "Bydgoszcz",
-            "Wroclaw"
-        ))
-    }
 
     override suspend fun getCurrentWeatherDataResponse(
         apiKey: String,
