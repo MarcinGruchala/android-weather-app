@@ -8,7 +8,6 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weather_app.adapters.CitySelectionAdapter
 import com.example.weather_app.databinding.ActivityCitySelectionBinding
-import com.example.weather_app.models.CityShortcutData
 import com.example.weather_app.viewmodels.CitySelectionActivityViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -42,6 +41,7 @@ class CitySelectionActivity : AppCompatActivity() {
     }
 
     private fun updateRecyclerView(){
+        viewModel.updateCityLocationList()
 
         binding.rvCitySelection.adapter = CitySelectionAdapter(viewModel.getCitySelectionList()!!,
         itemClickListener = { item ->
@@ -51,7 +51,7 @@ class CitySelectionActivity : AppCompatActivity() {
 
         },
         citySearchClickListener = { cityName ->
-            viewModel.updateCitySelectionList(cityName)
+            viewModel.addNewLocationToCitySelectionList(cityName)
         })
     }
 }

@@ -5,13 +5,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.weather_app.models.CityShortcutData
 import com.example.weather_app.repository.RepositoryImpl
+import com.example.weather_app.utils.ClockUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
 import javax.inject.Inject
 
-private const val TAG = "CitySelectionActivityViewModel"
+private const val TAG = "CitySelectionViewModel"
 @HiltViewModel
 class CitySelectionActivityViewModel @Inject constructor(
     private val repository: RepositoryImpl,
@@ -28,7 +29,7 @@ class CitySelectionActivityViewModel @Inject constructor(
 
     fun getCitySelectionList() = repository.citySelectionList.value
 
-    fun updateCitySelectionList(cityName: String) {
+    fun addNewLocationToCitySelectionList(cityName: String) {
         viewModelScope.launch launchWhenCreated@{
             val currentWeatherDayResponse = try {
                 repository.getCurrentWeatherDataResponse(
@@ -42,11 +43,19 @@ class CitySelectionActivityViewModel @Inject constructor(
                 return@launchWhenCreated
             }
             if (currentWeatherDayResponse.isSuccessful && currentWeatherDayResponse.body() != null ){
+                val utcTime = currentWeatherDayResponse.body()!!.dt-7200
+                val timeZone = currentWeatherDayResponse.body()!!.timezone
+                val temp = currentWeatherDayResponse.body()!!.main.temp.toInt()
+                val localTime = ClockUtils.getTimeFromUnixTimestamp(
+                    ClockUtils.getLocalTime(utcTime, timeZone),
+                    true,
+                    false
+                )
                 repository.citySelectionList.value!!.add(
                     CityShortcutData(
-                        cityName,getLocalTime(),
-                        currentWeatherDayResponse.body()!!.main.temp.
-                        toInt()
+                        cityName,
+                        localTime,
+                        temp
                     )
                 )
                 isCitiesListUpdated.value = true
@@ -54,8 +63,34 @@ class CitySelectionActivityViewModel @Inject constructor(
         }
     }
 
-    private fun getLocalTime(): String{
-        return ""
-    }
+    fun updateCityLocationList() {
+        viewModelScope.launch launchWhenCreated@{
+            for (city in repository.citySelectionList.value!!) {
+                val currentWeatherDayResponse = try {
+                    repository.getCurrentWeatherDataResponse(
+                        apiKey,
+                        city.cityName,
+                        "metric"
+                    )
+                } catch (e: IOException) {
+                    return@launchWhenCreated
 
+                } catch (e: HttpException) {
+                    return@launchWhenCreated
+                }
+                if (currentWeatherDayResponse.isSuccessful && currentWeatherDayResponse.body() != null) {
+                    val utcTime = currentWeatherDayResponse.body()!!.dt-7200
+                    val timeZone = currentWeatherDayResponse.body()!!.timezone
+                    val temp = currentWeatherDayResponse.body()!!.main.temp.toInt()
+                    val localTime = ClockUtils.getTimeFromUnixTimestamp(
+                        ClockUtils.getLocalTime(utcTime, timeZone),
+                        true,
+                        false
+                    )
+                    city.localTime = localTime
+                    city.temp = temp
+                }
+            }
+        }
+    }
 }
