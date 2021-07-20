@@ -51,15 +51,19 @@ class CitySelectionActivity : AppCompatActivity() {
     private fun updateRecyclerView(){
 
         binding.rvCitySelection.adapter = CitySelectionAdapter(viewModel.citySelectionList.value!!,
-        itemClickListener = { item ->
-            Log.d(TAG,"new location: ${item.cityName}")
-            viewModel.updateMainWeatherForecastLocation(item.cityName)
-            finish()
-
-        },
-        citySearchClickListener = { cityName ->
-            viewModel.addNewLocationToCitySelectionList(cityName)
-        })
+            viewModel.getUnitMode(),
+            itemClickListener = { item ->
+                Log.d(TAG,"new location: ${item.cityName}")
+                viewModel.updateMainWeatherForecastLocation(item.cityName)
+                finish()
+                                },
+            citySearchClickListener = { cityName ->
+                viewModel.addNewLocationToCitySelectionList(cityName)
+                                      },
+            unitSelectionClickListener = {
+                viewModel.changeUnit()
+            }
+        )
     }
 
 }

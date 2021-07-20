@@ -1,23 +1,24 @@
 package com.example.weather_app.adapters
 
-import android.util.Log
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.activity.viewModels
 import androidx.recyclerview.widget.RecyclerView
-
+import com.example.weather_app.R
 import com.example.weather_app.databinding.ItemCitySelectionBinding
 import com.example.weather_app.databinding.ItemCityShortcutBinding
 import com.example.weather_app.models.CityShortcutData
-import com.example.weather_app.viewmodels.CitySelectionActivityViewModel
+import com.example.weather_app.models.UnitOfMeasurement
 
 private const val TAG = "CitySelectionAdapter"
 private const val CITY_SHORTCUT_VIEW_TYPE = 10
 private const val CITY_SELECTION_VIEW_TYPE = 20
 class CitySelectionAdapter(
     private val data: List<CityShortcutData>,
+    private val unitMode: UnitOfMeasurement,
     private val itemClickListener: (CityShortcutData) -> Unit,
-    private val citySearchClickListener: (String) -> Unit
+    private val citySearchClickListener: (String) -> Unit,
+    private val unitSelectionClickListener: () -> UnitOfMeasurement
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
 
@@ -55,27 +56,46 @@ class CitySelectionAdapter(
                 val viewHolder = holder as CityShortcutViewHolder
                 viewHolder.binding.apply {
                     tvCityName.text = data[position].cityName
-                    tvCityTemp.text = data[position].temp.toString()
+                    tvCityTemp.text = viewHolder.itemView.context.getString(
+                        R.string.main_temp,
+                        data[position].temp
+                    )
                     tvLocalTime.text = data[position].localTime
                 }
                 viewHolder.itemView.setOnClickListener { itemClickListener(data[position]) }
             }
+
             CITY_SELECTION_VIEW_TYPE ->{
                 val viewHolder= holder as CitySelectionViewHolder
                 viewHolder.binding.apply {
-                    tvUnitSelection.text = "°C/°F"
+
+                    if (unitMode == UnitOfMeasurement.METRIC){
+                        tvFahrenheit.setTextColor(Color.GRAY)
+                    }
+                    else{
+                        tvCelsius.setTextColor(Color.GRAY)
+                    }
 
                     btnCitySearch.setOnClickListener {
                         val cityName = etCity.text.toString()
                         citySearchClickListener(cityName)
-                        Log.d(TAG, "Search city: $cityName")
                     }
 
+                    clUnitSelection.setOnClickListener {
+                        if(unitSelectionClickListener() == UnitOfMeasurement.METRIC){
+                            tvFahrenheit.setTextColor(Color.GRAY)
+                        }
+                        else{
+                            tvCelsius.setTextColor(Color.GRAY)
+                        }
+
+                    }
                 }
             }
         }
     }
 
     override fun getItemCount(): Int = data.size+1
+
 
 }

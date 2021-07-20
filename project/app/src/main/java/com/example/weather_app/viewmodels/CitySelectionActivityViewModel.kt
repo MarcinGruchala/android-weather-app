@@ -3,10 +3,12 @@ package com.example.weather_app.viewmodels
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.weather_app.di.WeatherApplication
 import com.example.weather_app.models.CityShortcutData
+import com.example.weather_app.models.UnitOfMeasurement
 import com.example.weather_app.repository.RepositoryImpl
 import com.example.weather_app.utils.ClockUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -34,6 +36,16 @@ class CitySelectionActivityViewModel @Inject constructor(
         MutableLiveData<Boolean>(false)
     }
 
+    private val unitOfMeasurementObserver = Observer<UnitOfMeasurement> { _ ->
+        viewModelScope.launch launchWhenCreated@{
+            getCitySelectionList()
+        }
+    }
+
+    init {
+        repository.unitOfMeasurement.observeForever(unitOfMeasurementObserver)
+    }
+
     fun updateMainWeatherForecastLocation(newLocation: String){
         repository.weatherForecastLocation.value = newLocation
     }
@@ -48,7 +60,8 @@ class CitySelectionActivityViewModel @Inject constructor(
                     repository.getCurrentWeatherDataResponse(
                         apiKey,
                         city,
-                        "metric")
+                        repository.unitOfMeasurement.value!!.value
+                    )
                 }catch (e: IOException){
                     return@launchWhenCreated
 
@@ -105,6 +118,17 @@ class CitySelectionActivityViewModel @Inject constructor(
             putStringSet("citySelectionList", newCitiesSet)
             apply()
         }
+    }
+
+    fun getUnitMode() = repository.unitOfMeasurement.value!!
+
+    fun changeUnit(): UnitOfMeasurement{
+        if (repository.unitOfMeasurement.value == UnitOfMeasurement.METRIC) {
+            repository.unitOfMeasurement.value = UnitOfMeasurement.IMPERIAL
+            return UnitOfMeasurement.IMPERIAL
+        }
+        repository.unitOfMeasurement.value = UnitOfMeasurement.METRIC
+        return UnitOfMeasurement.METRIC
     }
 
 }
