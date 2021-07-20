@@ -8,4 +8,7 @@
     <string name="secondary_temp">%1$d°</string>
     <string name="btnSearch">Search</string>
     <string name="etCityHint">Enter city</string>
+    <string name="celsius">°C</string>
+    <string name="unitDivider">/</string>
+    <string name="fahrenheit">°F</string>
 </resources>

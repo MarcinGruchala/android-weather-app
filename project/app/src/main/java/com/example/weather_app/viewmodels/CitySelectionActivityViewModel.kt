@@ -120,15 +120,15 @@ class CitySelectionActivityViewModel @Inject constructor(
         }
     }
 
-    fun changeUnit(){
-        Log.d(TAG, "Unit change")
-        if (repository.unitOfMeasurement.value == UnitOfMeasurement.METRIC){
+    fun getUnitMode() = repository.unitOfMeasurement.value!!
+
+    fun changeUnit(): UnitOfMeasurement{
+        if (repository.unitOfMeasurement.value == UnitOfMeasurement.METRIC) {
             repository.unitOfMeasurement.value = UnitOfMeasurement.IMPERIAL
+            return UnitOfMeasurement.IMPERIAL
         }
-        else{
-            repository.unitOfMeasurement.value = UnitOfMeasurement.METRIC
-        }
-        Log.d(TAG, "Current unit: ${repository.unitOfMeasurement.value}")
+        repository.unitOfMeasurement.value = UnitOfMeasurement.METRIC
+        return UnitOfMeasurement.METRIC
     }
 
 }
