@@ -17,7 +17,8 @@ private const val CITY_SELECTION_VIEW_TYPE = 20
 class CitySelectionAdapter(
     private val data: List<CityShortcutData>,
     private val itemClickListener: (CityShortcutData) -> Unit,
-    private val citySearchClickListener: (String) -> Unit
+    private val citySearchClickListener: (String) -> Unit,
+    private val unitSelectionClickListener: () -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
 
@@ -71,6 +72,10 @@ class CitySelectionAdapter(
                         Log.d(TAG, "Search city: $cityName")
                     }
 
+                    tvUnitSelection.setOnClickListener {
+                        unitSelectionClickListener()
+                        Log.d(TAG,"Unit change for")
+                    }
                 }
             }
         }

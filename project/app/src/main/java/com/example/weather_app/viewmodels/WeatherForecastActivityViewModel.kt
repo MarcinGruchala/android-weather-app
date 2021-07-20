@@ -4,10 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.weather_app.models.CurrentWeatherData
-import com.example.weather_app.models.DailyForecastData
-import com.example.weather_app.models.HourlyForecastData
-import com.example.weather_app.models.VerticalWeatherData
+import com.example.weather_app.models.*
 import com.example.weather_app.repository.RepositoryImpl
 import com.example.weather_app.utils.ClockUtils
 import com.example.weather_app.webservices.model.current_weather_data.CurrentWeatherDataResponse
@@ -41,12 +38,19 @@ class WeatherForecastActivityViewModel @Inject constructor(
         }
     }
 
+    private val unitOfMeasurementObserver = Observer<UnitOfMeasurement> { _ ->
+        viewModelScope.launch launchWhenCreated@{
+            downloadWeatherData()
+        }
+    }
+
     init {
         viewModelScope.launch launchWhenCreated@{
             downloadWeatherData()
         }
 
         repository.weatherForecastLocation.observeForever(weatherForecastLocationObserver)
+        repository.unitOfMeasurement.observeForever(unitOfMeasurementObserver)
     }
 
     private suspend fun downloadWeatherData(){
@@ -55,7 +59,7 @@ class WeatherForecastActivityViewModel @Inject constructor(
                 repository.getCurrentWeatherDataResponse(
                     apiKey,
                     repository.weatherForecastLocation.value!!,
-                    "metric")
+                    repository.unitOfMeasurement.value!!.value)
             }catch (e: IOException){
                 return@launchWhenCreated
 
@@ -71,7 +75,7 @@ class WeatherForecastActivityViewModel @Inject constructor(
                         currentWeatherData.value?.coord!!.lon,
                         "current,minutely,alerts",
                         apiKey,
-                        "metric"
+                        repository.unitOfMeasurement.value!!.value
                     )
                 }catch (e: IOException){
                     return@launchWhenCreated
