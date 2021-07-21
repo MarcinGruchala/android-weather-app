@@ -14,7 +14,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
-import java.sql.Timestamp
 import java.util.*
 import javax.inject.Inject
 
@@ -33,13 +32,13 @@ class WeatherForecastActivityViewModel @Inject constructor(
         MutableLiveData<WeatherForecastDataResponse>()
     }
 
-    private val weatherForecastLocationObserver = Observer<String> { _ ->
+    private val weatherForecastLocationObserver = Observer<String> {
         viewModelScope.launch launchWhenCreated@{
             downloadWeatherData()
         }
     }
 
-    private val unitOfMeasurementObserver = Observer<UnitOfMeasurement> { _ ->
+    private val unitOfMeasurementObserver = Observer<UnitOfMeasurement> {
         viewModelScope.launch launchWhenCreated@{
             downloadWeatherData()
         }
@@ -155,14 +154,18 @@ class WeatherForecastActivityViewModel @Inject constructor(
 
     private fun getWeatherIcon(iconTag: String): Int{
         return when(iconTag){
-            "01d", "01n" -> R.drawable.ic_clear_sky_dark
-            "02d", "02n" -> R.drawable.ic_few_clouds_dark
-            "03d", "03n" -> R.drawable.ic_scattered_clouds_dark
-            "04d", "04n" -> R.drawable.ic_broken_clouds_dark
-            "10d", "10n" -> R.drawable.ic_rain_dark
-            "11d", "11n" -> R.drawable.ic_thunderstorm_dark
-            "13d", "13n" -> R.drawable.ic_snow_dark
-            "50d", "50n" -> R.drawable.ic_mist_dark
+            "01d" -> R.drawable.clear_sky_day
+            "01n" -> R.drawable.clear_sky_night
+            "02d" -> R.drawable.few_clouds_day
+            "02n" -> R.drawable.few_clouds_night
+            "03d", "03n" -> R.drawable.scattered_clouds
+            "04d", "04n" -> R.drawable.broken_clouds
+            "09d", "09n" -> R.drawable.shower_rain
+            "10d" -> R.drawable.rain_day
+            "10n" -> R.drawable.rain_night
+            "11d", "11n" -> R.drawable.thunderstorm
+            "13d", "13n" -> R.drawable.snow
+            "50d", "50n" -> R.drawable.mist
             else -> R.drawable.ic_few_clouds_dark
         }
     }
