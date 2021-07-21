@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.weather_app.R
 import com.example.weather_app.models.*
 import com.example.weather_app.repository.RepositoryImpl
 import com.example.weather_app.utils.ClockUtils
@@ -93,7 +94,13 @@ class WeatherForecastActivityViewModel @Inject constructor(
     fun getHourlyForecastList(): List<HourlyForecastData>{
         val list: MutableList<HourlyForecastData> = mutableListOf()
 
-        list.add(HourlyForecastData("Now", currentWeatherData.value?.main?.temp!!.toInt()))
+        list.add(
+            HourlyForecastData(
+            "Now",
+            currentWeatherData.value?.main?.temp!!.toInt(),
+            getWeatherIcon(currentWeatherData.value!!.weather[0].icon)
+            )
+        )
         for (i in 1..24){
             list.add(
                 HourlyForecastData(
@@ -102,7 +109,8 @@ class WeatherForecastActivityViewModel @Inject constructor(
                         false,
                         true
                     ),
-                    weatherForecastData.value!!.hourly[i].temp.toInt()
+                    weatherForecastData.value!!.hourly[i].temp.toInt(),
+                    getWeatherIcon(weatherForecastData.value!!.hourly[i].weather[0].icon)
                 )
             )
         }
@@ -142,6 +150,20 @@ class WeatherForecastActivityViewModel @Inject constructor(
             CurrentWeatherData("WIND DEG","${currentWeatherData.value!!.wind.deg} deg",
                 "VISIBILITY","${currentWeatherData.value!!.visibility} m"),
         )
+    }
+
+    private fun getWeatherIcon(iconTag: String): Int{
+        return when(iconTag){
+            "01d", "01n" -> R.drawable.ic_clear_sky_dark
+            "02d", "02n" -> R.drawable.ic_few_clouds_dark
+            "03d", "03n" -> R.drawable.ic_scattered_clouds_dark
+            "04d", "04n" -> R.drawable.ic_broken_clouds_dark
+            "10d", "10n" -> R.drawable.ic_rain_dark
+            "11d", "11n" -> R.drawable.ic_thunderstorm_dark
+            "13d", "13n" -> R.drawable.ic_snow_dark
+            "50d", "50n" -> R.drawable.ic_mist_dark
+            else -> R.drawable.ic_few_clouds_dark
+        }
     }
 
 }
