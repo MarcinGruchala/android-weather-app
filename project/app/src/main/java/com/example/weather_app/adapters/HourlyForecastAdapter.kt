@@ -28,6 +28,7 @@ class HourlyForecastAdapter(
                 R.string.secondary_temp,
                 forecasts[position].temp
             )
+            ivHourlyIcon.setImageResource(forecasts[position].icon)
         }
     }
 

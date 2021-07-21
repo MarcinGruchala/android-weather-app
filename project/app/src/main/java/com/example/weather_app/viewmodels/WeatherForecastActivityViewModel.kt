@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.weather_app.R
 import com.example.weather_app.models.*
 import com.example.weather_app.repository.RepositoryImpl
 import com.example.weather_app.utils.ClockUtils
@@ -13,7 +14,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
-import java.sql.Timestamp
 import java.util.*
 import javax.inject.Inject
 
@@ -32,13 +32,13 @@ class WeatherForecastActivityViewModel @Inject constructor(
         MutableLiveData<WeatherForecastDataResponse>()
     }
 
-    private val weatherForecastLocationObserver = Observer<String> { _ ->
+    private val weatherForecastLocationObserver = Observer<String> {
         viewModelScope.launch launchWhenCreated@{
             downloadWeatherData()
         }
     }
 
-    private val unitOfMeasurementObserver = Observer<UnitOfMeasurement> { _ ->
+    private val unitOfMeasurementObserver = Observer<UnitOfMeasurement> {
         viewModelScope.launch launchWhenCreated@{
             downloadWeatherData()
         }
@@ -93,7 +93,13 @@ class WeatherForecastActivityViewModel @Inject constructor(
     fun getHourlyForecastList(): List<HourlyForecastData>{
         val list: MutableList<HourlyForecastData> = mutableListOf()
 
-        list.add(HourlyForecastData("Now", currentWeatherData.value?.main?.temp!!.toInt()))
+        list.add(
+            HourlyForecastData(
+            "Now",
+            currentWeatherData.value?.main?.temp!!.toInt(),
+            getWeatherIcon(currentWeatherData.value!!.weather[0].icon)
+            )
+        )
         for (i in 1..24){
             list.add(
                 HourlyForecastData(
@@ -102,7 +108,8 @@ class WeatherForecastActivityViewModel @Inject constructor(
                         false,
                         true
                     ),
-                    weatherForecastData.value!!.hourly[i].temp.toInt()
+                    weatherForecastData.value!!.hourly[i].temp.toInt(),
+                    getWeatherIcon(weatherForecastData.value!!.hourly[i].weather[0].icon)
                 )
             )
         }
@@ -124,7 +131,8 @@ class WeatherForecastActivityViewModel @Inject constructor(
                 DailyForecastData(
                     ClockUtils.getDayFromUnixTimestamp(weatherForecastData.value!!.daily[i].dt),
                     weatherForecastData.value!!.daily[i].temp.max.toInt(),
-                    weatherForecastData.value!!.daily[i].temp.min.toInt()
+                    weatherForecastData.value!!.daily[i].temp.min.toInt(),
+                    getWeatherIcon(weatherForecastData.value!!.daily[i].weather[0].icon)
                 )
             )
         }
@@ -142,6 +150,24 @@ class WeatherForecastActivityViewModel @Inject constructor(
             CurrentWeatherData("WIND DEG","${currentWeatherData.value!!.wind.deg} deg",
                 "VISIBILITY","${currentWeatherData.value!!.visibility} m"),
         )
+    }
+
+    private fun getWeatherIcon(iconTag: String): Int{
+        return when(iconTag){
+            "01d" -> R.drawable.clear_sky_day
+            "01n" -> R.drawable.clear_sky_night
+            "02d" -> R.drawable.few_clouds_day
+            "02n" -> R.drawable.few_clouds_night
+            "03d", "03n" -> R.drawable.scattered_clouds
+            "04d", "04n" -> R.drawable.broken_clouds
+            "09d", "09n" -> R.drawable.shower_rain
+            "10d" -> R.drawable.rain_day
+            "10n" -> R.drawable.rain_night
+            "11d", "11n" -> R.drawable.thunderstorm
+            "13d", "13n" -> R.drawable.snow
+            "50d", "50n" -> R.drawable.mist
+            else -> R.drawable.ic_few_clouds_dark
+        }
     }
 
 }

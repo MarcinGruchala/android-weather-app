@@ -64,6 +64,7 @@ class VerticalWeatherDataAdapter(
                         R.string.secondary_temp,
                         data.dailyForecastList[position].tempL
                     )
+                    ivDailyWeatherIcon.setImageResource(data.dailyForecastList[position].icon)
                 }
             }
             CURRENT_WEATHER_DATA_VIEW_TYPE -> {
