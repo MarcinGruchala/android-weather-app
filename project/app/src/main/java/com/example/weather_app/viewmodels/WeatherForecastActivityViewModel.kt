@@ -104,7 +104,7 @@ class WeatherForecastActivityViewModel @Inject constructor(
             list.add(
                 HourlyForecastData(
                     ClockUtils.getTimeFromUnixTimestamp(
-                        weatherForecastData.value!!.hourly[i].dt,
+                        weatherForecastData.value!!.hourly[i].dt.toLong(),
                         false,
                         true
                     ),
@@ -141,8 +141,8 @@ class WeatherForecastActivityViewModel @Inject constructor(
 
     private fun getCurrentWeatherDataList(): List<CurrentWeatherData>{
         return listOf(
-            CurrentWeatherData("SUNRISE", ClockUtils.getTimeFromUnixTimestamp(currentWeatherData.value!!.sys.sunrise, true, true)
-                ,"SUNSET",ClockUtils.getTimeFromUnixTimestamp(currentWeatherData.value!!.sys.sunset, true,true)),
+            CurrentWeatherData("SUNRISE", ClockUtils.getTimeFromUnixTimestamp(currentWeatherData.value!!.sys.sunrise.toLong(), true, true)
+                ,"SUNSET",ClockUtils.getTimeFromUnixTimestamp(currentWeatherData.value!!.sys.sunset.toLong(), true,true)),
             CurrentWeatherData("PRESSURE","${currentWeatherData.value!!.main.pressure} Pa",
                 "HUMIDITY","${currentWeatherData.value!!.main.humidity}%"),
             CurrentWeatherData("Wind","${currentWeatherData.value!!.wind.speed} km/h",

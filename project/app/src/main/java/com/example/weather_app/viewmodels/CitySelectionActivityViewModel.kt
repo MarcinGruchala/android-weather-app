@@ -15,6 +15,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
+import java.util.*
 import javax.inject.Inject
 
 private const val TAG = "CitySelectionViewModel"
@@ -69,11 +70,14 @@ class CitySelectionActivityViewModel @Inject constructor(
                     return@launchWhenCreated
                 }
                 if (currentWeatherDataResponse.isSuccessful && currentWeatherDataResponse.body() != null ){
-                    val utcTime = currentWeatherDataResponse.body()!!.dt-7200
+                    Log.d(TAG, "Current time: ${System.currentTimeMillis()}")
+                    val deviceTimeZone = TimeZone.getDefault()
+                    Log.d(TAG, "Device time zone: $deviceTimeZone")
+                    val utcTime = System.currentTimeMillis()
                     val timeZone = currentWeatherDataResponse.body()!!.timezone
                     val temp = currentWeatherDataResponse.body()!!.main.temp.toInt()
                     val localTime = ClockUtils.getTimeFromUnixTimestamp(
-                        ClockUtils.getLocalTime(utcTime, timeZone),
+                        ClockUtils.getLocalTime(utcTime,timeZone*1000L),
                         true,
                         false
                     )
