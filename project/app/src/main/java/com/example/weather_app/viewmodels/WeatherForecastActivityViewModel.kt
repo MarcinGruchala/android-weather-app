@@ -132,7 +132,8 @@ class WeatherForecastActivityViewModel @Inject constructor(
                 DailyForecastData(
                     ClockUtils.getDayFromUnixTimestamp(weatherForecastData.value!!.daily[i].dt),
                     weatherForecastData.value!!.daily[i].temp.max.toInt(),
-                    weatherForecastData.value!!.daily[i].temp.min.toInt()
+                    weatherForecastData.value!!.daily[i].temp.min.toInt(),
+                    getWeatherIcon(weatherForecastData.value!!.daily[i].weather[0].icon)
                 )
             )
         }
