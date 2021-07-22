@@ -61,6 +61,9 @@ class CitySelectionAdapter(
                         data[position].temp
                     )
                     tvLocalTime.text = data[position].localTime
+                    ivCityShortcutWeatherIcon.setImageResource(
+                        data[position].icon
+                    )
                 }
                 viewHolder.itemView.setOnClickListener { itemClickListener(data[position]) }
             }

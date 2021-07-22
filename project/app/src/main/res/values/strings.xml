@@ -11,4 +11,5 @@
     <string name="celsius">°C</string>
     <string name="unitDivider">/</string>
     <string name="fahrenheit">°F</string>
+    <string name="CityShortcutWeatherIcon">WeatherIcon</string>
 </resources>

@@ -11,6 +11,7 @@ import com.example.weather_app.models.CityShortcutData
 import com.example.weather_app.models.UnitOfMeasurement
 import com.example.weather_app.repository.RepositoryImpl
 import com.example.weather_app.utils.ClockUtils
+import com.example.weather_app.utils.UiUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
@@ -86,7 +87,10 @@ class CitySelectionActivityViewModel @Inject constructor(
                         CityShortcutData(
                             city,
                             localTime,
-                            temp
+                            temp,
+                            UiUtils.getWeatherIcon(
+                                currentWeatherDataResponse.body()!!.weather[0].icon
+                            )
                         )
                     )
                 }

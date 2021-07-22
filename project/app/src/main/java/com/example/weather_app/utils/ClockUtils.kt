@@ -47,8 +47,15 @@ object ClockUtils {
             return "$hour $period"
         }
         if (minutesMode){
-            return "$hour:$minutes"
+            return "${getClockString(hour)}:${getClockString(minutes)}"
         }
         return "$hour"
+    }
+
+    fun getClockString(timeUnit: Int): String{
+        if(timeUnit<10){
+            return "0$timeUnit"
+        }
+        return "$timeUnit"
     }
 }
