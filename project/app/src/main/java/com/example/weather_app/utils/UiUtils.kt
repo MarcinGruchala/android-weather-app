@@ -7,7 +7,7 @@ object UiUtils {
     fun getWeatherIcon(iconTag: String): Int{
         return when(iconTag){
             "01d" -> R.drawable.clear_sky_day
-            "01n" -> R.drawable.clear_sky_night
+            "01n" -> R.drawable.ic_moon_custom_big_foreground
             "02d" -> R.drawable.few_clouds_day
             "02n" -> R.drawable.few_clouds_night
             "03d", "03n" -> R.drawable.scattered_clouds
