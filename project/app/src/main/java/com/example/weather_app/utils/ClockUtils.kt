@@ -1,22 +1,22 @@
 package com.example.weather_app.utils
 
 import android.util.Log
-import java.sql.Date
-import java.sql.Timestamp
 import java.util.*
 
 private const val TAG = "ClockUtils"
 object ClockUtils {
 
-    fun getDayFromUnixTimestamp(unixTimeStamp: Int): String{
-        return when(val day = Timestamp(unixTimeStamp.toLong()*1000L).day){
-            0 -> "Sunday"
-            1 -> "Monday"
-            2 -> "Tuesday"
-            3 -> "Wednesday"
-            4 -> "Thursday"
-            5 -> "Friday"
-            6 -> "Saturday"
+    fun getDayFromUnixTimestamp(unixTimeStamp: Long): String{
+        val calendar = Calendar.getInstance(Locale.ENGLISH)
+        calendar.timeInMillis = (unixTimeStamp - TimeZone.getDefault().rawOffset-3600*1000L)
+        return when(val day = calendar.get(Calendar.DAY_OF_WEEK)){
+            1 -> "Sunday"
+            2 -> "Monday"
+            3 -> "Tuesday"
+            4 -> "Wednesday"
+            5 -> "Thursday"
+            6 -> "Friday"
+            7 -> "Saturday"
             else -> "Day: $day"
         }
     }
@@ -29,12 +29,12 @@ object ClockUtils {
         }
     }
 
-    fun getTimeFromUnixTimestamp(unixTimeStamp: Long, minutesMode: Boolean, clockPeriodMode: Boolean): String{
-        Log.d(TAG,"TimeStamp: $unixTimeStamp")
-        val date = Date(unixTimeStamp)
-        val calendar = Calendar.getInstance()
-        calendar.time = date
+    fun getTimeFromUnixTimestamp(unixTimeStamp: Long, timeZone: Long, minutesMode: Boolean, clockPeriodMode: Boolean): String{
+        Log.d(TAG,"Timezone: ${TimeZone.getDefault().rawOffset}")
+        Log.d(TAG,"UTC timestamp: ${unixTimeStamp - TimeZone.getDefault().rawOffset}")
+        val calendar = Calendar.getInstance(Locale.ENGLISH)
 
+        calendar.timeInMillis = (unixTimeStamp - TimeZone.getDefault().rawOffset-3600*1000L) + timeZone
 
         var hour = calendar.get(Calendar.HOUR_OF_DAY)
         val minutes = calendar.get(Calendar.MINUTE)
@@ -51,7 +51,4 @@ object ClockUtils {
         }
         return "$hour"
     }
-
-    fun getLocalTime(utcTime: Long, timeZone: Long): Long = utcTime + timeZone
-
 }

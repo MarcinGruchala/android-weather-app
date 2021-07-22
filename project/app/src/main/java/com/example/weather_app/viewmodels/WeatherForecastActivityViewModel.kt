@@ -1,6 +1,5 @@
 package com.example.weather_app.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
@@ -107,6 +106,7 @@ class WeatherForecastActivityViewModel @Inject constructor(
                 HourlyForecastData(
                     ClockUtils.getTimeFromUnixTimestamp(
                         weatherForecastData.value!!.hourly[i].dt * 1000L,
+                        weatherForecastData.value!!.timezone_offset * 1000L,
                         false,
                         true
                     ),
@@ -128,10 +128,10 @@ class WeatherForecastActivityViewModel @Inject constructor(
 
     private fun getDailyWeatherForecastList(): List<DailyForecastData>{
         val dailyForecastList: MutableList<DailyForecastData> = mutableListOf()
-        for (i in 0..7){
+        for (i in 1..7){
             dailyForecastList.add(
                 DailyForecastData(
-                    ClockUtils.getDayFromUnixTimestamp(weatherForecastData.value!!.daily[i].dt),
+                    ClockUtils.getDayFromUnixTimestamp(weatherForecastData.value!!.daily[i].dt*1000L),
                     weatherForecastData.value!!.daily[i].temp.max.toInt(),
                     weatherForecastData.value!!.daily[i].temp.min.toInt(),
                     getWeatherIcon(weatherForecastData.value!!.daily[i].weather[0].icon)
@@ -143,8 +143,8 @@ class WeatherForecastActivityViewModel @Inject constructor(
 
     private fun getCurrentWeatherDataList(): List<CurrentWeatherData>{
         return listOf(
-            CurrentWeatherData("SUNRISE", ClockUtils.getTimeFromUnixTimestamp(currentWeatherData.value!!.sys.sunrise.toLong(), true, true)
-                ,"SUNSET",ClockUtils.getTimeFromUnixTimestamp(currentWeatherData.value!!.sys.sunset.toLong(), true,true)),
+            CurrentWeatherData("SUNRISE", ClockUtils.getTimeFromUnixTimestamp(currentWeatherData.value!!.sys.sunrise.toLong(), currentWeatherData.value!!.timezone * 1000L , true, true)
+                ,"SUNSET",ClockUtils.getTimeFromUnixTimestamp(currentWeatherData.value!!.sys.sunset.toLong(),currentWeatherData.value!!.timezone * 1000L , true,true)),
             CurrentWeatherData("PRESSURE","${currentWeatherData.value!!.main.pressure} Pa",
                 "HUMIDITY","${currentWeatherData.value!!.main.humidity}%"),
             CurrentWeatherData("Wind","${currentWeatherData.value!!.wind.speed} km/h",

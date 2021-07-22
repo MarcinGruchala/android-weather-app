@@ -77,7 +77,8 @@ class CitySelectionActivityViewModel @Inject constructor(
                     val timeZone = currentWeatherDataResponse.body()!!.timezone
                     val temp = currentWeatherDataResponse.body()!!.main.temp.toInt()
                     val localTime = ClockUtils.getTimeFromUnixTimestamp(
-                        ClockUtils.getLocalTime(utcTime,timeZone*1000L),
+                        utcTime,
+                        timeZone*1000L,
                         true,
                         false
                     )
