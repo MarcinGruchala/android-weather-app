@@ -1,25 +1,27 @@
 package com.example.weather_app.utils
 
 import android.util.Log
-import java.sql.Timestamp
+import java.util.*
 
 private const val TAG = "ClockUtils"
 object ClockUtils {
 
-    fun getDayFromUnixTimestamp(unixTimeStamp: Int): String{
-        return when(val day = Timestamp(unixTimeStamp.toLong()*1000L).day){
-            0 -> "Sunday"
-            1 -> "Monday"
-            2 -> "Tuesday"
-            3 -> "Wednesday"
-            4 -> "Thursday"
-            5 -> "Friday"
-            6 -> "Saturday"
+    fun getDayFromUnixTimestamp(unixTimeStamp: Long): String{
+        val calendar = Calendar.getInstance(Locale.ENGLISH)
+        calendar.timeInMillis = (unixTimeStamp - TimeZone.getDefault().rawOffset-3600*1000L)
+        return when(val day = calendar.get(Calendar.DAY_OF_WEEK)){
+            1 -> "Sunday"
+            2 -> "Monday"
+            3 -> "Tuesday"
+            4 -> "Wednesday"
+            5 -> "Thursday"
+            6 -> "Friday"
+            7 -> "Saturday"
             else -> "Day: $day"
         }
     }
 
-    fun get12HourClockPeriod(hour: Int): String{
+    private fun get12HourClockPeriod(hour: Int): String{
         return when(hour){
             in 0..11, 24 -> "AM"
             in 12..23 -> "PM"
@@ -27,11 +29,15 @@ object ClockUtils {
         }
     }
 
-    fun getTimeFromUnixTimestamp(unixTimeStamp: Int, minutesMode: Boolean, clockPeriodMode: Boolean): String{
-        Log.d(TAG,"TimeStamp: $unixTimeStamp")
+    fun getTimeFromUnixTimestamp(unixTimeStamp: Long, timeZone: Long, minutesMode: Boolean, clockPeriodMode: Boolean): String{
+        Log.d(TAG,"Timezone: ${TimeZone.getDefault().rawOffset}")
+        Log.d(TAG,"UTC timestamp: ${unixTimeStamp - TimeZone.getDefault().rawOffset}")
+        val calendar = Calendar.getInstance(Locale.ENGLISH)
 
-        var hour = Timestamp((unixTimeStamp)*1000L).hours
-        val minutes = Timestamp((unixTimeStamp)*1000L).minutes
+        calendar.timeInMillis = (unixTimeStamp - TimeZone.getDefault().rawOffset-3600*1000L) + timeZone
+
+        var hour = calendar.get(Calendar.HOUR_OF_DAY)
+        val minutes = calendar.get(Calendar.MINUTE)
         if (clockPeriodMode){
             val period = get12HourClockPeriod(hour)
             if( hour == 0 ) hour = 12
@@ -45,7 +51,4 @@ object ClockUtils {
         }
         return "$hour"
     }
-
-    fun getLocalTime(utcTime: Int, timeZone: Int): Int = utcTime + timeZone
-
 }
