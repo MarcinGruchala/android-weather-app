@@ -1,5 +1,6 @@
 package com.example.weather_app.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
@@ -18,6 +19,7 @@ import java.util.*
 import javax.inject.Inject
 
 
+private const val TAG = "WeatherForecastVM"
 @HiltViewModel
 class WeatherForecastActivityViewModel @Inject constructor(
     private val repository: RepositoryImpl,
@@ -104,7 +106,7 @@ class WeatherForecastActivityViewModel @Inject constructor(
             list.add(
                 HourlyForecastData(
                     ClockUtils.getTimeFromUnixTimestamp(
-                        weatherForecastData.value!!.hourly[i].dt.toLong(),
+                        weatherForecastData.value!!.hourly[i].dt * 1000L,
                         false,
                         true
                     ),
