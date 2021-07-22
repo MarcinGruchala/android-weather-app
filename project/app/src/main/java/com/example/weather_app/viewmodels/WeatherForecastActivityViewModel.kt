@@ -4,10 +4,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.weather_app.R
 import com.example.weather_app.models.*
 import com.example.weather_app.repository.RepositoryImpl
 import com.example.weather_app.utils.ClockUtils
+import com.example.weather_app.utils.UiUtils
 import com.example.weather_app.webservices.model.current_weather_data.CurrentWeatherDataResponse
 import com.example.weather_app.webservices.model.weather_forecast_data.WeatherForecastDataResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -98,7 +98,7 @@ class WeatherForecastActivityViewModel @Inject constructor(
             HourlyForecastData(
             "Now",
             currentWeatherData.value?.main?.temp!!.toInt(),
-            getWeatherIcon(currentWeatherData.value!!.weather[0].icon)
+            UiUtils.getWeatherIcon(currentWeatherData.value!!.weather[0].icon)
             )
         )
         for (i in 1..24){
@@ -111,7 +111,7 @@ class WeatherForecastActivityViewModel @Inject constructor(
                         true
                     ),
                     weatherForecastData.value!!.hourly[i].temp.toInt(),
-                    getWeatherIcon(weatherForecastData.value!!.hourly[i].weather[0].icon)
+                    UiUtils.getWeatherIcon(weatherForecastData.value!!.hourly[i].weather[0].icon)
                 )
             )
         }
@@ -134,7 +134,7 @@ class WeatherForecastActivityViewModel @Inject constructor(
                     ClockUtils.getDayFromUnixTimestamp(weatherForecastData.value!!.daily[i].dt*1000L),
                     weatherForecastData.value!!.daily[i].temp.max.toInt(),
                     weatherForecastData.value!!.daily[i].temp.min.toInt(),
-                    getWeatherIcon(weatherForecastData.value!!.daily[i].weather[0].icon)
+                    UiUtils.getWeatherIcon(weatherForecastData.value!!.daily[i].weather[0].icon)
                 )
             )
         }
@@ -153,23 +153,4 @@ class WeatherForecastActivityViewModel @Inject constructor(
                 "VISIBILITY","${currentWeatherData.value!!.visibility} m"),
         )
     }
-
-    private fun getWeatherIcon(iconTag: String): Int{
-        return when(iconTag){
-            "01d" -> R.drawable.clear_sky_day
-            "01n" -> R.drawable.clear_sky_night
-            "02d" -> R.drawable.few_clouds_day
-            "02n" -> R.drawable.few_clouds_night
-            "03d", "03n" -> R.drawable.scattered_clouds
-            "04d", "04n" -> R.drawable.broken_clouds
-            "09d", "09n" -> R.drawable.shower_rain
-            "10d" -> R.drawable.rain_day
-            "10n" -> R.drawable.rain_night
-            "11d", "11n" -> R.drawable.thunderstorm
-            "13d", "13n" -> R.drawable.snow
-            "50d", "50n" -> R.drawable.mist
-            else -> R.drawable.ic_few_clouds_dark
-        }
-    }
-
 }
