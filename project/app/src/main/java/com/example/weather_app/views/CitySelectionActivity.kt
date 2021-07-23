@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weather_app.adapters.CitySelectionAdapter
 import com.example.weather_app.databinding.ActivityCitySelectionBinding
@@ -46,9 +47,15 @@ class CitySelectionActivity : AppCompatActivity() {
             LinearLayoutManager.VERTICAL,
             false
         )
+
+        binding.rvCitySelection.addItemDecoration(
+            DividerItemDecoration(this,DividerItemDecoration.VERTICAL)
+        )
+
     }
 
     private fun updateRecyclerView(){
+        Log.d(TAG,"Ciy selection List: ${viewModel.citySelectionList.value!!}")
 
         binding.rvCitySelection.adapter = CitySelectionAdapter(viewModel.citySelectionList.value!!,
             viewModel.getUnitMode(),

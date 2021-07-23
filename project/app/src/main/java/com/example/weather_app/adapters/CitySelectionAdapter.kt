@@ -13,6 +13,7 @@ import com.example.weather_app.models.UnitOfMeasurement
 private const val TAG = "CitySelectionAdapter"
 private const val CITY_SHORTCUT_VIEW_TYPE = 10
 private const val CITY_SELECTION_VIEW_TYPE = 20
+private const val CURRENT_LOCATION_VIEW_TYPE = 30
 class CitySelectionAdapter(
     private val data: List<CityShortcutData>,
     private val unitMode: UnitOfMeasurement,
@@ -54,15 +55,16 @@ class CitySelectionAdapter(
         when(holder.itemViewType){
             CITY_SHORTCUT_VIEW_TYPE ->{
                 val viewHolder = holder as CityShortcutViewHolder
+                val reversePosition = data.size - position - 1
                 viewHolder.binding.apply {
-                    tvCityName.text = data[position].cityName
+                    tvCityName.text = data[reversePosition].cityName
                     tvCityTemp.text = viewHolder.itemView.context.getString(
                         R.string.main_temp,
                         data[position].temp
                     )
-                    tvLocalTime.text = data[position].localTime
+                    tvLocalTime.text = data[reversePosition].localTime
                     ivCityShortcutWeatherIcon.setImageResource(
-                        data[position].icon
+                        data[reversePosition].icon
                     )
                 }
                 viewHolder.itemView.setOnClickListener { itemClickListener(data[position]) }
