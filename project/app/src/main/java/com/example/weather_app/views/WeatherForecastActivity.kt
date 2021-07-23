@@ -3,6 +3,7 @@ package com.example.weather_app.views
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,11 +14,14 @@ import com.example.weather_app.databinding.ActivityWeatherForecastBinding
 import com.example.weather_app.viewmodels.WeatherForecastActivityViewModel
 import com.example.weather_app.webservices.model.current_weather_data.CurrentWeatherDataResponse
 import com.example.weather_app.webservices.model.weather_forecast_data.WeatherForecastDataResponse
+import com.vmadalin.easypermissions.EasyPermissions
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
+import java.util.jar.Manifest
 
+private const val PERMISSION_LOCATION_REQUEST_CODE = 10
 @AndroidEntryPoint
-class WeatherForecastActivity : AppCompatActivity() {
+class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
     private lateinit var binding: ActivityWeatherForecastBinding
     private val viewModel: WeatherForecastActivityViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,8 +29,11 @@ class WeatherForecastActivity : AppCompatActivity() {
         binding = ActivityWeatherForecastBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        recyclerViewsSetup()
+        checkPermissions()
+
+        setUpRecyclerViews()
         setUpClickListeners()
+
 
         val currentWeatherDataObserver = Observer<CurrentWeatherDataResponse> { newData ->
             updateTopScreenUI(newData)
@@ -48,7 +55,7 @@ class WeatherForecastActivity : AppCompatActivity() {
         }
     }
 
-    private fun recyclerViewsSetup(){
+    private fun setUpRecyclerViews(){
         binding.rvHourlyForecast.layoutManager = LinearLayoutManager(
             this,
             LinearLayoutManager.HORIZONTAL,
@@ -86,5 +93,51 @@ class WeatherForecastActivity : AppCompatActivity() {
     private fun  updateRecyclerViews(){
         binding.rvHourlyForecast.adapter = HourlyForecastAdapter(viewModel.getHourlyForecastList())
         binding.rvVerticalWeatherData.adapter = VerticalWeatherDataAdapter(viewModel.getVerticalWeatherDataList())
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions,grantResults,this)
+    }
+
+    private fun checkPermissions(){
+        if (!hasLocationPermission()){
+            requestLocationPermission()
+            }
+    }
+
+    private fun hasLocationPermission() = EasyPermissions.hasPermissions(
+        this,
+        android.Manifest.permission.ACCESS_FINE_LOCATION
+    )
+
+    private fun requestLocationPermission(){
+        EasyPermissions.requestPermissions(
+            this,
+            "This application works best with location permission",
+            PERMISSION_LOCATION_REQUEST_CODE,
+            android.Manifest.permission.ACCESS_FINE_LOCATION
+        )
+
+    }
+
+    override fun onPermissionsDenied(requestCode: Int, perms: List<String>) {
+        Toast.makeText(
+            this,
+            "Location permission Denied.",
+            Toast.LENGTH_SHORT
+        ).show()
+    }
+
+    override fun onPermissionsGranted(requestCode: Int, perms: List<String>) {
+        Toast.makeText(
+            this,
+            "Location permission granted.",
+            Toast.LENGTH_SHORT
+        ).show()
     }
 }
