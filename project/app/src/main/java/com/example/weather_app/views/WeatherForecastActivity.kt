@@ -2,8 +2,8 @@ package com.example.weather_app.views
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.location.Geocoder
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -13,10 +13,10 @@ import com.example.weather_app.R
 import com.example.weather_app.adapters.HourlyForecastAdapter
 import com.example.weather_app.adapters.VerticalWeatherDataAdapter
 import com.example.weather_app.databinding.ActivityWeatherForecastBinding
+import com.example.weather_app.models.Location
 import com.example.weather_app.viewmodels.WeatherForecastActivityViewModel
 import com.example.weather_app.webservices.model.current_weather_data.CurrentWeatherDataResponse
 import com.example.weather_app.webservices.model.weather_forecast_data.WeatherForecastDataResponse
-import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.vmadalin.easypermissions.EasyPermissions
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,24 +29,15 @@ class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionC
     private lateinit var binding: ActivityWeatherForecastBinding
     private val viewModel: WeatherForecastActivityViewModel by viewModels()
 
-    @SuppressLint("MissingPermission")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityWeatherForecastBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         checkPermissions()
-        val fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
-        if (hasLocationPermission()){
-            fusedLocationProviderClient.lastLocation.addOnSuccessListener { location ->
-                Log.d(TAG,"Lon: ${location.longitude}, Lat: ${location.latitude}")
-            }
-        }
-
+        getDeviceLocation()
 
         setUpRecyclerViews()
         setUpClickListeners()
-
 
         val currentWeatherDataObserver = Observer<CurrentWeatherDataResponse> { newData ->
             updateTopScreenUI(newData)
@@ -58,6 +49,26 @@ class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionC
         }
         viewModel.weatherForecastData.observe(this,weatherForecastDataObserver)
 
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun getDeviceLocation(){
+        val fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
+        if (hasLocationPermission()){
+            fusedLocationProviderClient.lastLocation.addOnSuccessListener { location ->
+                viewModel.updateDeviceLocation(
+                    Location(
+                        location.latitude,
+                        location.longitude,
+                        Geocoder(this).getFromLocation(
+                            location.latitude,
+                            location.longitude,
+                            1
+                        ).first().locality
+                    )
+                )
+            }
+        }
     }
 
     private fun setUpClickListeners(){
@@ -135,7 +146,6 @@ class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionC
             PERMISSION_LOCATION_REQUEST_CODE,
             android.Manifest.permission.ACCESS_FINE_LOCATION
         )
-
     }
 
     override fun onPermissionsDenied(requestCode: Int, perms: List<String>) {

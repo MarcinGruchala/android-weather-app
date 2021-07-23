@@ -25,8 +25,6 @@ class WeatherForecastActivityViewModel @Inject constructor(
     private val apiKey: String
 ) : ViewModel() {
 
-
-
     val currentWeatherData: MutableLiveData<CurrentWeatherDataResponse> by lazy {
         MutableLiveData<CurrentWeatherDataResponse>()
     }
@@ -35,24 +33,33 @@ class WeatherForecastActivityViewModel @Inject constructor(
         MutableLiveData<WeatherForecastDataResponse>()
     }
 
+    private val deviceLocationObserver = Observer<Location> {
+        viewModelScope.launch launchWhenCreated@{
+            if (repository.mainForecastLocation.value!=null){
+                downloadWeatherData()
+            }
+        }
+    }
+
     private val weatherForecastLocationObserver = Observer<String> {
         viewModelScope.launch launchWhenCreated@{
-            downloadWeatherData()
+            if (repository.mainForecastLocation.value!=null){
+                downloadWeatherData()
+            }
         }
     }
 
     private val unitOfMeasurementObserver = Observer<UnitOfMeasurement> {
         viewModelScope.launch launchWhenCreated@{
-            downloadWeatherData()
+            if (repository.mainForecastLocation.value!=null){
+                downloadWeatherData()
+            }
         }
     }
 
     init {
-        viewModelScope.launch launchWhenCreated@{
-            downloadWeatherData()
-        }
-
-        repository.weatherForecastLocation.observeForever(weatherForecastLocationObserver)
+        repository.deviceLocation.observeForever(deviceLocationObserver)
+        repository.mainForecastLocation.observeForever(weatherForecastLocationObserver)
         repository.unitOfMeasurement.observeForever(unitOfMeasurementObserver)
     }
 
@@ -61,7 +68,7 @@ class WeatherForecastActivityViewModel @Inject constructor(
             val currentWeatherDayResponse = try {
                 repository.getCurrentWeatherDataResponse(
                     apiKey,
-                    repository.weatherForecastLocation.value!!,
+                    repository.mainForecastLocation.value!!,
                     repository.unitOfMeasurement.value!!.value)
             }catch (e: IOException){
                 return@launchWhenCreated
@@ -91,6 +98,11 @@ class WeatherForecastActivityViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun updateDeviceLocation(location: Location){
+        repository.deviceLocation.value = location
+        repository.mainForecastLocation.value = location.locality
     }
 
     fun getHourlyForecastList(): List<HourlyForecastData>{

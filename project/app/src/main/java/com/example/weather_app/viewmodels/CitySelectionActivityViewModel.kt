@@ -49,7 +49,7 @@ class CitySelectionActivityViewModel @Inject constructor(
     }
 
     fun updateMainWeatherForecastLocation(newLocation: String){
-        repository.weatherForecastLocation.value = newLocation
+        repository.mainForecastLocation.value = newLocation
     }
 
     fun getCitySelectionList() {

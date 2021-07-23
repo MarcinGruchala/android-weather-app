@@ -25,7 +25,7 @@ class CitySelectionActivity : AppCompatActivity() {
         viewModel.getCitySelectionList()
         recyclerViewsSetup()
 
-        val citySelectionListObserver = Observer<MutableList<CityShortcutData>> { _ ->
+        val citySelectionListObserver = Observer<MutableList<CityShortcutData>> {
             updateRecyclerView()
         }
         viewModel.citySelectionList.observe(this,citySelectionListObserver)
