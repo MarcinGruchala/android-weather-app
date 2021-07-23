@@ -18,12 +18,14 @@ import java.util.*
 import javax.inject.Inject
 
 
-private const val TAG = "WeatherForecastVM"
+private const val TAG = "WeatherForecastActivity(VM)"
 @HiltViewModel
 class WeatherForecastActivityViewModel @Inject constructor(
     private val repository: RepositoryImpl,
     private val apiKey: String
 ) : ViewModel() {
+
+
 
     val currentWeatherData: MutableLiveData<CurrentWeatherDataResponse> by lazy {
         MutableLiveData<CurrentWeatherDataResponse>()

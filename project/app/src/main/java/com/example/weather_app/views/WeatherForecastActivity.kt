@@ -1,10 +1,12 @@
 package com.example.weather_app.views
 
+import android.annotation.SuppressLint
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weather_app.R
@@ -14,22 +16,33 @@ import com.example.weather_app.databinding.ActivityWeatherForecastBinding
 import com.example.weather_app.viewmodels.WeatherForecastActivityViewModel
 import com.example.weather_app.webservices.model.current_weather_data.CurrentWeatherDataResponse
 import com.example.weather_app.webservices.model.weather_forecast_data.WeatherForecastDataResponse
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.vmadalin.easypermissions.EasyPermissions
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
-import java.util.jar.Manifest
 
+private const val TAG = "WeatherForecastActivity"
 private const val PERMISSION_LOCATION_REQUEST_CODE = 10
 @AndroidEntryPoint
 class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
     private lateinit var binding: ActivityWeatherForecastBinding
     private val viewModel: WeatherForecastActivityViewModel by viewModels()
+
+    @SuppressLint("MissingPermission")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityWeatherForecastBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         checkPermissions()
+        val fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
+        if (hasLocationPermission()){
+            fusedLocationProviderClient.lastLocation.addOnSuccessListener { location ->
+                Log.d(TAG,"Lon: ${location.longitude}, Lat: ${location.latitude}")
+            }
+        }
+
 
         setUpRecyclerViews()
         setUpClickListeners()
@@ -40,7 +53,7 @@ class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionC
         }
         viewModel.currentWeatherData.observe(this,currentWeatherDataObserver)
 
-        val weatherForecastDataObserver = Observer<WeatherForecastDataResponse> { _ ->
+        val weatherForecastDataObserver = Observer<WeatherForecastDataResponse> {
             updateRecyclerViews()
         }
         viewModel.weatherForecastData.observe(this,weatherForecastDataObserver)

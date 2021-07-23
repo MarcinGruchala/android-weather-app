@@ -60,6 +60,8 @@ dependencies {
     implementation 'androidx.activity:activity-ktx:1.2.3'
 
     implementation 'com.vmadalin:easypermissions-ktx:1.0.0'
+    implementation 'com.google.android.gms:play-services-location:18.0.0'
+
 
 //    // Dagger Core
 //    implementation "com.google.dagger:dagger:2.37"
