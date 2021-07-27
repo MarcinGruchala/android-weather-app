@@ -12,4 +12,8 @@
     <string name="unitDivider">/</string>
     <string name="fahrenheit">°F</string>
     <string name="CityShortcutWeatherIcon">WeatherIcon</string>
+    <string name="insert_location_dialog_description">Application couldn\'t find your localization. Please insert your  nearest locality.</string>
+    <string name="etInsertLocalityHint">Locality</string>
+    <string name="btnSubmit">Submit</string>
+    <string name="btnCancel">Cancel</string>
 </resources>

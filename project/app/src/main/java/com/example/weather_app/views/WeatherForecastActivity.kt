@@ -1,6 +1,7 @@
 package com.example.weather_app.views
 
 import android.annotation.SuppressLint
+import android.app.Dialog
 import android.content.Intent
 import android.location.Geocoder
 import android.os.Bundle
@@ -60,6 +61,7 @@ class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionC
                 Log.d(TAG,"Location founded")
                 if (location == null){
                     Log.d(TAG,"Location null")
+                    showInsertLocalityDialog()
                 }
                 else{
                     val lat = location.latitude
@@ -72,6 +74,7 @@ class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionC
                     Log.d(TAG,"Locality: $locality")
                     if (locality == null){
                         Log.d(TAG, "Didn't found the locality")
+                        showInsertLocalityDialog()
                     }
                     else{
                         viewModel.updateDeviceLocation(Location(lat, lon, locality))
@@ -79,6 +82,12 @@ class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionC
                 }
             }
         }
+    }
+
+    private fun showInsertLocalityDialog(){
+        val dialog = InsertLocationDialog()
+        dialog.show(supportFragmentManager,"insertLocationDialog")
+
     }
 
     private fun setUpClickListeners(){
