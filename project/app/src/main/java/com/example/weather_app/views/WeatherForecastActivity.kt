@@ -74,17 +74,7 @@ class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionC
                         Log.d(TAG, "Didn't found the locality")
                     }
                     else{
-                        viewModel.updateDeviceLocation(
-                            Location(
-                                location.latitude,
-                                location.longitude,
-                                Geocoder(this).getFromLocation(
-                                    location.latitude,
-                                    location.longitude,
-                                    1
-                                ).first().locality
-                            )
-                        )
+                        viewModel.updateDeviceLocation(Location(lat, lon, locality))
                     }
                 }
             }
