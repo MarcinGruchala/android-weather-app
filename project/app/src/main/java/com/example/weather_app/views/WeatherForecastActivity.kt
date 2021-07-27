@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.location.Geocoder
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -56,17 +57,36 @@ class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionC
         val fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
         if (hasLocationPermission()){
             fusedLocationProviderClient.lastLocation.addOnSuccessListener { location ->
-                viewModel.updateDeviceLocation(
-                    Location(
-                        location.latitude,
-                        location.longitude,
-                        Geocoder(this).getFromLocation(
-                            location.latitude,
-                            location.longitude,
-                            1
-                        ).first().locality
-                    )
-                )
+                Log.d(TAG,"Location founded")
+                if (location == null){
+                    Log.d(TAG,"Location null")
+                }
+                else{
+                    val lat = location.latitude
+                    val lon = location.longitude
+                    val locality = Geocoder(this).getFromLocation(
+                        lat,
+                        lon,
+                        1
+                    ).first().locality
+                    Log.d(TAG,"Locality: $locality")
+                    if (locality == null){
+                        Log.d(TAG, "Didn't found the locality")
+                    }
+                    else{
+                        viewModel.updateDeviceLocation(
+                            Location(
+                                location.latitude,
+                                location.longitude,
+                                Geocoder(this).getFromLocation(
+                                    location.latitude,
+                                    location.longitude,
+                                    1
+                                ).first().locality
+                            )
+                        )
+                    }
+                }
             }
         }
     }
