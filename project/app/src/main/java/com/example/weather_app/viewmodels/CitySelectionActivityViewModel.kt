@@ -49,7 +49,7 @@ class CitySelectionActivityViewModel @Inject constructor(
     }
 
     fun updateMainWeatherForecastLocation(newLocation: String){
-        repository.weatherForecastLocation.value = newLocation
+        repository.mainForecastLocation.value = newLocation
     }
 
     fun getCitySelectionList() {
@@ -95,7 +95,28 @@ class CitySelectionActivityViewModel @Inject constructor(
                     )
                 }
             }
-            citySelectionList.value = cityShortcutDataList
+            val currentWeatherDayResponse = try {
+                repository.getCurrentWeatherDataResponse(
+                    apiKey,
+                    repository.mainForecastLocation.value!!,
+                    repository.unitOfMeasurement.value!!.value)
+            }catch (e: IOException){
+                return@launchWhenCreated
+
+            } catch (e: HttpException){
+                return@launchWhenCreated
+            }
+            if (currentWeatherDayResponse.isSuccessful && currentWeatherDayResponse.body() != null ) {
+                cityShortcutDataList.add(
+                    CityShortcutData(
+                        repository.deviceLocation.value!!,
+                        "",
+                        currentWeatherDayResponse.body()!!.main.temp.toInt(),
+                        UiUtils.getWeatherIcon(currentWeatherDayResponse.body()!!.weather[0].icon)
+                    )
+                )
+                citySelectionList.value = cityShortcutDataList
+            }
         }
     }
 
@@ -106,18 +127,18 @@ class CitySelectionActivityViewModel @Inject constructor(
 
     private fun loadCitySelectionListFromSharedPref(): List<String>{
         val citiesList = cityListSharedPreferences.getStringSet(
-            "citySelectionList", setOf("Bydgoszcz")
+            "citySelectionList", null
         )
         if (citiesList != null) {
             return citiesList.toList()
         }
-        return mutableListOf("Bydgoszcz")
+        return mutableListOf()
     }
 
     private fun addNewLocationToCitySelectionListSharedPref(cityName: String){
         val citiesSet = cityListSharedPreferences.getStringSet(
             "citySelectionList",
-            setOf("Bydgoszcz")
+            null
         )
         Log.d(TAG, "Before add: $citiesSet")
         val newCitiesSet: MutableSet<String> = citiesSet!!.toMutableSet()

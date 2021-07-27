@@ -1,6 +1,7 @@
 package com.example.weather_app.adapters
 
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -13,6 +14,7 @@ import com.example.weather_app.models.UnitOfMeasurement
 private const val TAG = "CitySelectionAdapter"
 private const val CITY_SHORTCUT_VIEW_TYPE = 10
 private const val CITY_SELECTION_VIEW_TYPE = 20
+private const val CURRENT_LOCATION_VIEW_TYPE = 30
 class CitySelectionAdapter(
     private val data: List<CityShortcutData>,
     private val unitMode: UnitOfMeasurement,
@@ -51,21 +53,40 @@ class CitySelectionAdapter(
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        Log.d(TAG, "Position: $position, view type: ${holder.itemViewType}")
         when(holder.itemViewType){
             CITY_SHORTCUT_VIEW_TYPE ->{
                 val viewHolder = holder as CityShortcutViewHolder
-                viewHolder.binding.apply {
-                    tvCityName.text = data[position].cityName
-                    tvCityTemp.text = viewHolder.itemView.context.getString(
-                        R.string.main_temp,
-                        data[position].temp
-                    )
-                    tvLocalTime.text = data[position].localTime
-                    ivCityShortcutWeatherIcon.setImageResource(
-                        data[position].icon
-                    )
+                val reversePosition = data.size - position - 1
+                if (reversePosition == itemCount-2){
+                    Log.d(TAG, "MY LOCATION")
+                    viewHolder.binding.apply {
+                        tvLocalTime.text = data[reversePosition].cityName
+                        tvCityName.text = "My Location"
+                        tvCityTemp.text =  viewHolder.itemView.context.getString(
+                            R.string.main_temp,
+                            data[reversePosition].temp
+                        )
+                        ivCityShortcutWeatherIcon.setImageResource(
+                            data[reversePosition].icon
+                        )
+                    }
                 }
-                viewHolder.itemView.setOnClickListener { itemClickListener(data[position]) }
+                else{
+                    viewHolder.binding.apply {
+                        tvCityName.text = data[reversePosition].cityName
+                        tvCityTemp.text = viewHolder.itemView.context.getString(
+                            R.string.main_temp,
+                            data[reversePosition].temp
+                        )
+                        tvLocalTime.text = data[reversePosition].localTime
+                        ivCityShortcutWeatherIcon.setImageResource(
+                            data[reversePosition].icon
+                        )
+                    }
+
+                }
+                viewHolder.itemView.setOnClickListener { itemClickListener(data[reversePosition]) }
             }
 
             CITY_SELECTION_VIEW_TYPE ->{
@@ -91,7 +112,6 @@ class CitySelectionAdapter(
                         else{
                             tvCelsius.setTextColor(Color.GRAY)
                         }
-
                     }
                 }
             }
