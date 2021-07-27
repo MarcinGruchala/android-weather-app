@@ -1,7 +1,6 @@
 package com.example.weather_app.repository
 
 import androidx.lifecycle.MutableLiveData
-import com.example.weather_app.models.Location
 import com.example.weather_app.models.UnitOfMeasurement
 import com.example.weather_app.webservices.OpenWeatherAPIService
 import com.example.weather_app.webservices.model.current_weather_data.CurrentWeatherDataResponse
@@ -13,8 +12,8 @@ class RepositoryImpl(
     private val webservice: OpenWeatherAPIService
 ) : Repository {
 
-    val deviceLocation: MutableLiveData<Location> by lazy {
-        MutableLiveData<Location>()
+    val deviceLocation: MutableLiveData<String> by lazy {
+        MutableLiveData<String>()
     }
 
     val unitOfMeasurement: MutableLiveData<UnitOfMeasurement> by lazy {

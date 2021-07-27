@@ -1,22 +1,35 @@
 package com.example.weather_app.views
 
-import android.app.AlertDialog
-import android.app.Dialog
-import android.content.DialogInterface
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
-import com.example.weather_app.R
+import com.example.weather_app.databinding.DialogInsertLocationBinding
 
-class InsertLocationDialog: DialogFragment() {
+private const val TAG = "WeatherForecastActivity"
+class InsertLocationDialog(
+    private val btnSubmitClickListener: (String) -> Unit
+): DialogFragment() {
+    lateinit var binding: DialogInsertLocationBinding
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val rootView: View = inflater.inflate(R.layout.dialog_insert_location, container, false)
-        return rootView
+    ): View {
+        binding = DialogInsertLocationBinding.inflate(inflater, container, false)
+        binding.apply {
+            btnSubmitLocality.setOnClickListener {
+                val locality = etInsertLocality.text.toString()
+                btnSubmitClickListener(locality)
+                dismiss()
+            }
+            btnCalncelLocationInsert.setOnClickListener {
+                dismiss()
+            }
+        }
+        return binding.root
     }
 }

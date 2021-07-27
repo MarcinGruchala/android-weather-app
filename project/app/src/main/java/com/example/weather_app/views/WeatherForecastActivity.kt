@@ -1,7 +1,6 @@
 package com.example.weather_app.views
 
 import android.annotation.SuppressLint
-import android.app.Dialog
 import android.content.Intent
 import android.location.Geocoder
 import android.os.Bundle
@@ -15,7 +14,6 @@ import com.example.weather_app.R
 import com.example.weather_app.adapters.HourlyForecastAdapter
 import com.example.weather_app.adapters.VerticalWeatherDataAdapter
 import com.example.weather_app.databinding.ActivityWeatherForecastBinding
-import com.example.weather_app.models.Location
 import com.example.weather_app.viewmodels.WeatherForecastActivityViewModel
 import com.example.weather_app.webservices.model.current_weather_data.CurrentWeatherDataResponse
 import com.example.weather_app.webservices.model.weather_forecast_data.WeatherForecastDataResponse
@@ -77,7 +75,7 @@ class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionC
                         showInsertLocalityDialog()
                     }
                     else{
-                        viewModel.updateDeviceLocation(Location(lat, lon, locality))
+                        viewModel.updateDeviceLocation(locality)
                     }
                 }
             }
@@ -85,9 +83,12 @@ class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionC
     }
 
     private fun showInsertLocalityDialog(){
-        val dialog = InsertLocationDialog()
+        val dialog = InsertLocationDialog(
+            btnSubmitClickListener = { locality ->
+                viewModel.updateDeviceLocation(locality)
+            }
+        )
         dialog.show(supportFragmentManager,"insertLocationDialog")
-
     }
 
     private fun setUpClickListeners(){

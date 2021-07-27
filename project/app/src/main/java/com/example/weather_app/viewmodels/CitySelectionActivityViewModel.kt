@@ -109,7 +109,7 @@ class CitySelectionActivityViewModel @Inject constructor(
             if (currentWeatherDayResponse.isSuccessful && currentWeatherDayResponse.body() != null ) {
                 cityShortcutDataList.add(
                     CityShortcutData(
-                        repository.deviceLocation.value!!.locality,
+                        repository.deviceLocation.value!!,
                         "",
                         currentWeatherDayResponse.body()!!.main.temp.toInt(),
                         UiUtils.getWeatherIcon(currentWeatherDayResponse.body()!!.weather[0].icon)

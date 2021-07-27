@@ -33,7 +33,7 @@ class WeatherForecastActivityViewModel @Inject constructor(
         MutableLiveData<WeatherForecastDataResponse>()
     }
 
-    private val deviceLocationObserver = Observer<Location> {
+    private val deviceLocationObserver = Observer<String> {
         viewModelScope.launch launchWhenCreated@{
             if (repository.mainForecastLocation.value!=null){
                 downloadWeatherData()
@@ -100,9 +100,9 @@ class WeatherForecastActivityViewModel @Inject constructor(
         }
     }
 
-    fun updateDeviceLocation(location: Location){
+    fun updateDeviceLocation(location: String){
         repository.deviceLocation.value = location
-        repository.mainForecastLocation.value = location.locality
+        repository.mainForecastLocation.value = location
     }
 
     fun getHourlyForecastList(): List<HourlyForecastData>{
