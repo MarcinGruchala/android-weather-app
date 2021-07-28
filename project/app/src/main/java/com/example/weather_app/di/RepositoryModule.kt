@@ -1,5 +1,6 @@
 package com.example.weather_app.di
 
+import com.example.weather_app.models.dao.CityShortcutDao
 import com.example.weather_app.repository.RepositoryImpl
 import com.example.weather_app.webservices.OpenWeatherAPIService
 import dagger.Module
@@ -15,7 +16,8 @@ object RepositoryModule {
     @Singleton
     @Provides
     fun provideRepository(
-        webservice: OpenWeatherAPIService
-    ): RepositoryImpl = RepositoryImpl(webservice)
+        webservice: OpenWeatherAPIService,
+        cityShortcutDao: CityShortcutDao
+    ): RepositoryImpl = RepositoryImpl(webservice, cityShortcutDao)
 
 }
