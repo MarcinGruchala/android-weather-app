@@ -31,14 +31,6 @@ class CitySelectionActivity : AppCompatActivity() {
         }
         viewModel.citySelectionList.observe(this,citySelectionListObserver)
 
-
-        val isCitiesListUpdatedObserver = Observer<Boolean> { newValue ->
-            if (newValue){
-                updateRecyclerView()
-                viewModel.isCitiesListUpdated.value = false
-            }
-        }
-        viewModel.isCitiesListUpdated.observe(this,isCitiesListUpdatedObserver)
     }
 
     private fun recyclerViewsSetup(){
@@ -55,8 +47,6 @@ class CitySelectionActivity : AppCompatActivity() {
     }
 
     private fun updateRecyclerView(){
-        Log.d(TAG,"Ciy selection List: ${viewModel.citySelectionList.value!!}")
-
         binding.rvCitySelection.adapter = CitySelectionAdapter(viewModel.citySelectionList.value!!,
             viewModel.getUnitMode(),
             itemClickListener = { item ->

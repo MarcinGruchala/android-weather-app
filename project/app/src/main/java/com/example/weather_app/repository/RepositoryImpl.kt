@@ -1,5 +1,6 @@
 package com.example.weather_app.repository
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.weather_app.models.UnitOfMeasurement
 import com.example.weather_app.models.dao.CityShortcutDao
@@ -25,6 +26,10 @@ class RepositoryImpl(
 
     val mainForecastLocation: MutableLiveData<String> by lazy {
         MutableLiveData<String>()
+    }
+
+    val allCityShortcutList: LiveData<List<CityShortcut>> by lazy {
+        cityShortcutDao.getAllCityShortcuts()
     }
 
 

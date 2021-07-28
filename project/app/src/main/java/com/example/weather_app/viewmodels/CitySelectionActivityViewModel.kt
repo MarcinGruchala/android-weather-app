@@ -37,18 +37,19 @@ class CitySelectionActivityViewModel @Inject constructor(
         MutableLiveData<MutableList<CityShortcutData>>()
     }
 
-    val isCitiesListUpdated: MutableLiveData<Boolean> by lazy {
-        MutableLiveData<Boolean>(false)
-    }
-
     private val unitOfMeasurementObserver = Observer<UnitOfMeasurement> { _ ->
         viewModelScope.launch launchWhenCreated@{
             getCitySelectionList()
         }
     }
 
+    private val allCityShortcutListObserver = Observer<List<CityShortcut>> {
+        Log.d(TAG,"City shortcut list: ${repository.allCityShortcutList.value}")
+    }
+
     init {
         repository.unitOfMeasurement.observeForever(unitOfMeasurementObserver)
+        repository.allCityShortcutList.observeForever(allCityShortcutListObserver)
     }
 
     fun updateMainWeatherForecastLocation(newLocation: String){
@@ -57,7 +58,6 @@ class CitySelectionActivityViewModel @Inject constructor(
 
     fun getCitySelectionList() {
         val citiesNameList = loadCitySelectionListFromSharedPref()
-        Log.d(TAG, "Updated List: $citiesNameList")
         val cityShortcutDataList = mutableListOf<CityShortcutData>()
         viewModelScope.launch launchWhenCreated@{
             for (city in citiesNameList){
@@ -74,9 +74,6 @@ class CitySelectionActivityViewModel @Inject constructor(
                     return@launchWhenCreated
                 }
                 if (currentWeatherDataResponse.isSuccessful && currentWeatherDataResponse.body() != null ){
-                    Log.d(TAG, "Current time: ${System.currentTimeMillis()}")
-                    val deviceTimeZone = TimeZone.getDefault()
-                    Log.d(TAG, "Device time zone: $deviceTimeZone")
                     val utcTime = System.currentTimeMillis()
                     val timeZone = currentWeatherDataResponse.body()!!.timezone
                     val temp = currentWeatherDataResponse.body()!!.main.temp.toInt()
@@ -197,10 +194,8 @@ class CitySelectionActivityViewModel @Inject constructor(
             "citySelectionList",
             setOf()
         )
-        Log.d(TAG, "Before add: $citiesSet")
         val newCitiesSet: MutableSet<String> = citiesSet!!.toMutableSet()
         newCitiesSet.add(cityName)
-        Log.d(TAG, "After add: $newCitiesSet")
         cityListSharedPreferencesEditor.apply {
             putStringSet("citySelectionList", newCitiesSet)
             apply()
