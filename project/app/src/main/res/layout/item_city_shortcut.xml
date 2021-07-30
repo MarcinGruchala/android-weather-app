@@ -25,7 +25,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.7931873" />
+        app:layout_constraintGuide_percent="0.8" />
 
     <ImageView
         android:id="@+id/ivCityShortcutWeatherIcon"
@@ -42,6 +42,7 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:background="@color/orange"
+        android:lines="1"
         android:text="@string/btnDelete"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         app:backgroundTint="@color/orange"
