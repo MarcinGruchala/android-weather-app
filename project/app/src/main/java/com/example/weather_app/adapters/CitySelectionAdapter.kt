@@ -53,13 +53,13 @@ class CitySelectionAdapter(
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        Log.d(TAG, "Position: $position, view type: ${holder.itemViewType}")
+        //Log.d(TAG, "Position: $position, view type: ${holder.itemViewType}")
         when(holder.itemViewType){
             CITY_SHORTCUT_VIEW_TYPE ->{
                 val viewHolder = holder as CityShortcutViewHolder
                 val reversePosition = data.size - position - 1
                 if (reversePosition == itemCount-2){
-                    Log.d(TAG, "MY LOCATION")
+                    //Log.d(TAG, "MY LOCATION")
                     viewHolder.binding.apply {
                         tvLocalTime.text = data[reversePosition].cityName
                         tvCityName.text = "My Location"

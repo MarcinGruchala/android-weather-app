@@ -23,7 +23,7 @@ class CitySelectionActivity : AppCompatActivity() {
         binding = ActivityCitySelectionBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModel.getCitySelectionList()
+        //viewModel.getCitySelectionList()
         recyclerViewsSetup()
 
         val citySelectionListObserver = Observer<MutableList<CityShortcutData>> {
@@ -55,7 +55,7 @@ class CitySelectionActivity : AppCompatActivity() {
                 finish()
                                 },
             citySearchClickListener = { cityName ->
-                viewModel.addNewLocationToCitySelectionList(cityName)
+                viewModel.addNewCityShortCut(cityName)
                                       },
             unitSelectionClickListener = {
                 viewModel.changeUnit()
