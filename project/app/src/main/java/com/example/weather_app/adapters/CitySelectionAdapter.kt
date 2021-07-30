@@ -1,7 +1,6 @@
 package com.example.weather_app.adapters
 
 import android.graphics.Color
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -59,6 +58,7 @@ class CitySelectionAdapter(
                 val reversePosition = data.size - position - 1
                 if (reversePosition == itemCount-2){
                     viewHolder.binding.apply {
+                        root.getTransition(R.id.transitionCityShortcut).setEnable(false)
                         tvLocalTime.text = data[reversePosition].cityName
                         tvCityName.text =  viewHolder.itemView.context.getString(
                             R.string.my_location_header
@@ -70,6 +70,9 @@ class CitySelectionAdapter(
                         ivCityShortcutWeatherIcon.setImageResource(
                             data[reversePosition].icon
                         )
+                        clCityShortcutHandle.setOnClickListener {
+                            itemClickListener(data[reversePosition])
+                        }
                     }
                 }
                 else{
@@ -84,11 +87,9 @@ class CitySelectionAdapter(
                             data[reversePosition].icon
                         )
                         clCityShortcutHandle.setOnClickListener {
-                            Log.d(TAG, "${tvCityName.text} clicked")
                             itemClickListener(data[reversePosition])
                         }
                         btnDelete.setOnClickListener {
-                            Log.d(TAG, "Deleted city shortcut")
                             deleteButtonClickListener(data[reversePosition])
                         }
                     }
