@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MotionScene 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:motion="http://schemas.android.com/apk/res-auto">
+
+    <Transition
+        motion:constraintSetEnd="@+id/end"
+        motion:constraintSetStart="@id/start"
+        motion:duration="1000">
+       <KeyFrameSet>
+       </KeyFrameSet>
+        <OnSwipe
+            motion:touchAnchorId="@+id/tvCityTemp"
+            motion:dragDirection="dragLeft"
+            motion:touchAnchorSide="left"
+            />
+    </Transition>
+
+    <ConstraintSet android:id="@+id/start">
+        <Constraint
+            motion:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintTop_toTopOf="parent"
+            android:id="@+id/btnDelete" />
+        <Constraint
+            motion:layout_constraintEnd_toStartOf="@+id/ivCityShortcutWeatherIcon"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintTop_toTopOf="parent"
+            motion:layout_constraintStart_toStartOf="parent"
+            android:id="@+id/clCityShortcutHandle" />
+    </ConstraintSet>
+
+    <ConstraintSet android:id="@+id/end">
+        <Constraint
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            motion:layout_constraintTop_toTopOf="parent"
+            android:layout_width="wrap_content"
+            android:id="@+id/tvCityTemp"
+            motion:layout_constraintEnd_toStartOf="@+id/btnDelete"
+            android:layout_marginRight="32dp"
+            android:layout_marginEnd="32dp" />
+        <Constraint
+            android:layout_height="wrap_content"
+            motion:layout_constraintGuide_percent="0.56"
+            android:layout_width="wrap_content"
+            android:id="@+id/guideline5" />
+        <Constraint
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvCityName"
+            motion:layout_constraintTop_toBottomOf="@+id/tvLocalTime"
+            android:layout_marginTop="8dp"
+            motion:layout_constraintStart_toStartOf="parent"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            motion:layout_constraintEnd_toStartOf="@+id/ivCityShortcutWeatherIcon" />
+        <Constraint
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvLocalTime"
+            motion:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="8dp"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_editor_absoluteX="8dp" />
+        <Constraint
+            motion:layout_constraintEnd_toStartOf="@+id/guideline5"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintTop_toTopOf="parent"
+            android:id="@+id/ivCityShortcutWeatherIcon" />
+        <Constraint
+            motion:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="88dp"
+            android:layout_height="0dp"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintTop_toTopOf="parent"
+            android:id="@+id/btnDelete" />
+<!--        <Constraint-->
+<!--            android:layout_height="wrap_content"-->
+<!--            motion:layout_constraintTop_toTopOf="parent"-->
+<!--            motion:layout_constraintBottom_toBottomOf="parent"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:id="@+id/clCityShortcutHandle"-->
+<!--            motion:layout_constraintStart_toStartOf="parent" />-->
+<!--        <Constraint-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            motion:layout_constraintBottom_toBottomOf="parent"-->
+<!--            motion:layout_constraintTop_toTopOf="parent"-->
+<!--            android:id="@+id/clCityShortcutHandle"-->
+<!--            motion:layout_constraintStart_toStartOf="parent" />-->
+        <Constraint
+            motion:layout_constraintEnd_toStartOf="@+id/ivCityShortcutWeatherIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintTop_toTopOf="parent"
+            motion:layout_constraintStart_toStartOf="parent"
+            android:id="@+id/clCityShortcutHandle"
+            android:layout_marginRight="100dp"
+            android:layout_marginEnd="100dp" />
+    </ConstraintSet>
+</MotionScene>

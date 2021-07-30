@@ -1,6 +1,7 @@
 package com.example.weather_app.adapters
 
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -81,10 +82,16 @@ class CitySelectionAdapter(
                         ivCityShortcutWeatherIcon.setImageResource(
                             data[reversePosition].icon
                         )
+                        clCityShortcutHandle.setOnClickListener {
+                            Log.d(TAG, "${tvCityName.text} clicked")
+                            itemClickListener(data[reversePosition])
+                        }
+                        btnDelete.setOnClickListener {
+                            Log.d(TAG, "Deleted city shortcut")
+                        }
                     }
 
                 }
-                viewHolder.itemView.setOnClickListener { itemClickListener(data[reversePosition]) }
             }
 
             CITY_SELECTION_VIEW_TYPE ->{
