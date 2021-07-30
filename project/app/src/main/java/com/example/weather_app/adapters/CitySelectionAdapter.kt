@@ -1,7 +1,6 @@
 package com.example.weather_app.adapters
 
 import android.graphics.Color
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -14,7 +13,6 @@ import com.example.weather_app.models.UnitOfMeasurement
 private const val TAG = "CitySelectionAdapter"
 private const val CITY_SHORTCUT_VIEW_TYPE = 10
 private const val CITY_SELECTION_VIEW_TYPE = 20
-private const val CURRENT_LOCATION_VIEW_TYPE = 30
 class CitySelectionAdapter(
     private val data: List<CityShortcutData>,
     private val unitMode: UnitOfMeasurement,
@@ -53,16 +51,16 @@ class CitySelectionAdapter(
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        //Log.d(TAG, "Position: $position, view type: ${holder.itemViewType}")
         when(holder.itemViewType){
             CITY_SHORTCUT_VIEW_TYPE ->{
                 val viewHolder = holder as CityShortcutViewHolder
                 val reversePosition = data.size - position - 1
                 if (reversePosition == itemCount-2){
-                    //Log.d(TAG, "MY LOCATION")
                     viewHolder.binding.apply {
                         tvLocalTime.text = data[reversePosition].cityName
-                        tvCityName.text = "My Location"
+                        tvCityName.text =  viewHolder.itemView.context.getString(
+                            R.string.my_location_header
+                        )
                         tvCityTemp.text =  viewHolder.itemView.context.getString(
                             R.string.main_temp,
                             data[reversePosition].temp

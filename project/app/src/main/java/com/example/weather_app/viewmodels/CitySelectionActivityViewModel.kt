@@ -1,12 +1,10 @@
 package com.example.weather_app.viewmodels
 
-import android.content.Context
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.weather_app.di.WeatherApplication
 import com.example.weather_app.models.CityShortcutData
 import com.example.weather_app.models.UnitOfMeasurement
 import com.example.weather_app.models.entities.CityShortcut
@@ -103,7 +101,7 @@ class CitySelectionActivityViewModel @Inject constructor(
             val currentWeatherDayResponse = try {
                 repository.getCurrentWeatherDataResponse(
                     apiKey,
-                    repository.mainForecastLocation.value!!,
+                    repository.deviceLocation.value!!,
                     repository.unitOfMeasurement.value!!.value)
             }catch (e: IOException){
                 return@launchWhenCreated
