@@ -8,16 +8,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.weather_app.R
 import com.example.weather_app.databinding.ItemCitySelectionBinding
 import com.example.weather_app.databinding.ItemCityShortcutBinding
-import com.example.weather_app.models.CityShortcutData
 import com.example.weather_app.models.UnitOfMeasurement
+import com.example.weather_app.models.entities.CityShortcut
 
 private const val TAG = "CitySelectionAdapter"
 private const val CITY_SHORTCUT_VIEW_TYPE = 10
 private const val CITY_SELECTION_VIEW_TYPE = 20
 class CitySelectionAdapter(
-    private val data: List<CityShortcutData>,
+    private val data: List<CityShortcut>,
     private val unitMode: UnitOfMeasurement,
-    private val itemClickListener: (CityShortcutData) -> Unit,
+    private val itemClickListener: (CityShortcut) -> Unit,
+    private val deleteButtonClickListener: (CityShortcut) -> Unit,
     private val citySearchClickListener: (String) -> Unit,
     private val unitSelectionClickListener: () -> UnitOfMeasurement
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -88,6 +89,7 @@ class CitySelectionAdapter(
                         }
                         btnDelete.setOnClickListener {
                             Log.d(TAG, "Deleted city shortcut")
+                            deleteButtonClickListener(data[reversePosition])
                         }
                     }
 

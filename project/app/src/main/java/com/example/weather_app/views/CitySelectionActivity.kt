@@ -1,15 +1,15 @@
 package com.example.weather_app.views
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weather_app.adapters.CitySelectionAdapter
 import com.example.weather_app.databinding.ActivityCitySelectionBinding
-import com.example.weather_app.models.CityShortcutData
+import com.example.weather_app.models.entities.CityShortcut
 import com.example.weather_app.viewmodels.CitySelectionActivityViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -25,7 +25,7 @@ class CitySelectionActivity : AppCompatActivity() {
 
         recyclerViewsSetup()
 
-        val citySelectionListObserver = Observer<MutableList<CityShortcutData>> {
+        val citySelectionListObserver = Observer<MutableList<CityShortcut>> {
             updateRecyclerView()
         }
         viewModel.citySelectionList.observe(this,citySelectionListObserver)
@@ -53,6 +53,9 @@ class CitySelectionActivity : AppCompatActivity() {
                 viewModel.updateMainWeatherForecastLocation(item.cityName)
                 finish()
                                 },
+            deleteButtonClickListener = { cityShortcut ->
+                viewModel.deleteCityShortCut(cityShortcut)
+            },
             citySearchClickListener = { cityName ->
                 viewModel.addNewCityShortCut(cityName)
                                       },
