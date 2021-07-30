@@ -23,7 +23,6 @@ class CitySelectionActivity : AppCompatActivity() {
         binding = ActivityCitySelectionBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        //viewModel.getCitySelectionList()
         recyclerViewsSetup()
 
         val citySelectionListObserver = Observer<MutableList<CityShortcutData>> {

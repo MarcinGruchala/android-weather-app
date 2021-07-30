@@ -28,28 +28,30 @@ class CitySelectionActivityViewModel @Inject constructor(
     private val apiKey: String,
 ) : ViewModel() {
 
+    var isCityListLoaded = false
+
     val citySelectionList: MutableLiveData<MutableList<CityShortcutData>> by lazy {
         MutableLiveData<MutableList<CityShortcutData>>()
     }
 
     private val unitOfMeasurementObserver = Observer<UnitOfMeasurement> { _ ->
-        Log.d(TAG, "Units of measurement observer")
         viewModelScope.launch launchWhenCreated@{
-            getCitySelectionList()
+            if (isCityListLoaded){
+                getCitySelectionList()
+            }
         }
     }
 
     private val allCityShortcutListObserver = Observer<List<CityShortcut>> {
-        Log.d(TAG,"City shortcut list observer: ${repository.allCityShortcutList.value}")
         viewModelScope.launch launchWhenCreated@{
             getCitySelectionList()
+            isCityListLoaded = true
         }
     }
 
     init {
-        //Log.d(TAG,"City shortcut list on activity lunch: ${repository.allCityShortcutList.value}")
-        //repository.unitOfMeasurement.observeForever(unitOfMeasurementObserver)
         repository.allCityShortcutList.observeForever(allCityShortcutListObserver)
+        repository.unitOfMeasurement.observeForever(unitOfMeasurementObserver)
     }
 
     fun updateMainWeatherForecastLocation(newLocation: String){
