@@ -16,4 +16,5 @@
     <string name="etInsertLocalityHint">Locality</string>
     <string name="btnSubmit">Submit</string>
     <string name="btnCancel">Cancel</string>
+    <string name="my_location_header">My Location</string>
 </resources>

@@ -23,7 +23,6 @@ class CitySelectionActivity : AppCompatActivity() {
         binding = ActivityCitySelectionBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModel.getCitySelectionList()
         recyclerViewsSetup()
 
         val citySelectionListObserver = Observer<MutableList<CityShortcutData>> {
@@ -31,14 +30,6 @@ class CitySelectionActivity : AppCompatActivity() {
         }
         viewModel.citySelectionList.observe(this,citySelectionListObserver)
 
-
-        val isCitiesListUpdatedObserver = Observer<Boolean> { newValue ->
-            if (newValue){
-                updateRecyclerView()
-                viewModel.isCitiesListUpdated.value = false
-            }
-        }
-        viewModel.isCitiesListUpdated.observe(this,isCitiesListUpdatedObserver)
     }
 
     private fun recyclerViewsSetup(){
@@ -55,8 +46,6 @@ class CitySelectionActivity : AppCompatActivity() {
     }
 
     private fun updateRecyclerView(){
-        Log.d(TAG,"Ciy selection List: ${viewModel.citySelectionList.value!!}")
-
         binding.rvCitySelection.adapter = CitySelectionAdapter(viewModel.citySelectionList.value!!,
             viewModel.getUnitMode(),
             itemClickListener = { item ->
@@ -65,7 +54,7 @@ class CitySelectionActivity : AppCompatActivity() {
                 finish()
                                 },
             citySearchClickListener = { cityName ->
-                viewModel.addNewLocationToCitySelectionList(cityName)
+                viewModel.addNewCityShortCut(cityName)
                                       },
             unitSelectionClickListener = {
                 viewModel.changeUnit()
