@@ -28,8 +28,8 @@ class CitySelectionActivityViewModel @Inject constructor(
 
     var isCityListLoaded = false
 
-    val citySelectionList: MutableLiveData<MutableList<CityShortcutData>> by lazy {
-        MutableLiveData<MutableList<CityShortcutData>>()
+    val citySelectionList: MutableLiveData<MutableList<CityShortcut>> by lazy {
+        MutableLiveData<MutableList<CityShortcut>>()
     }
 
     private val unitOfMeasurementObserver = Observer<UnitOfMeasurement> { _ ->
@@ -59,7 +59,7 @@ class CitySelectionActivityViewModel @Inject constructor(
     fun getCitySelectionList() {
         Log.d(TAG,"Get city selection list: ${repository.allCityShortcutList.value}")
         val citiesList = repository.allCityShortcutList.value
-        val cityShortcutDataList = mutableListOf<CityShortcutData>()
+        val cityShortcutList = mutableListOf<CityShortcut>()
         viewModelScope.launch launchWhenCreated@{
             if (citiesList != null) {
                 for (city in citiesList){
@@ -85,8 +85,9 @@ class CitySelectionActivityViewModel @Inject constructor(
                             true,
                             false
                         )
-                        cityShortcutDataList.add(
-                            CityShortcutData(
+                        cityShortcutList.add (
+                            CityShortcut(
+                                city.id,
                                 city.cityName,
                                 localTime,
                                 temp,
@@ -110,15 +111,16 @@ class CitySelectionActivityViewModel @Inject constructor(
                 return@launchWhenCreated
             }
             if (currentWeatherDayResponse.isSuccessful && currentWeatherDayResponse.body() != null ) {
-                cityShortcutDataList.add(
-                    CityShortcutData(
+                cityShortcutList.add(
+                    CityShortcut(
+                        1000,
                         repository.deviceLocation.value!!,
                         "",
                         currentWeatherDayResponse.body()!!.main.temp.toInt(),
                         UiUtils.getWeatherIcon(currentWeatherDayResponse.body()!!.weather[0].icon)
                     )
                 )
-                citySelectionList.value = cityShortcutDataList
+                citySelectionList.value = cityShortcutList
             }
         }
     }
@@ -138,6 +140,12 @@ class CitySelectionActivityViewModel @Inject constructor(
                 )
                 Log.d(TAG, "Inserted Data to database")
             }
+        }
+    }
+
+    fun deleteCityShortCut(cityShortcut: CityShortcut){
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteCityShortcutFromDatabase(cityShortcut)
         }
     }
 

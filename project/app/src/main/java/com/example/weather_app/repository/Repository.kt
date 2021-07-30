@@ -23,4 +23,6 @@ interface Repository {
 
     suspend fun addCityShortcutToDatabase(cityShortcut: CityShortcut)
 
+    suspend fun deleteCityShortcutFromDatabase(cityShortcut: CityShortcut)
+
 }

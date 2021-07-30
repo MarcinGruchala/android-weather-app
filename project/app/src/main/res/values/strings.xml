@@ -17,4 +17,5 @@
     <string name="btnSubmit">Submit</string>
     <string name="btnCancel">Cancel</string>
     <string name="my_location_header">My Location</string>
+    <string name="btnDelete">Delete</string>
 </resources>
