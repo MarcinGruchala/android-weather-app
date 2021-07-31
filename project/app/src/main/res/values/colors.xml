@@ -11,4 +11,7 @@
     <color name="weather_data_header">#C4E6FA</color>
     <color name="gray">#808080</color>
     <color name="orange">#FD440A</color>
+    <color name="good_weather_status_bar">#36D1DC</color>
+    <color name="bad_weather_status_bar">#bdc3c7</color>
+    <color name="night_status_bar">#2980b9</color>
 </resources>

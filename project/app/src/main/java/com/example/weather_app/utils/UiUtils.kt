@@ -42,4 +42,13 @@ object UiUtils {
             else -> R.drawable.gradient_background_clear_sky_day
         }
     }
+
+    fun getStatusBarColor(iconTag: String): Int {
+        return when(iconTag){
+            in NIGHT_TAGS -> R.color.night_status_bar
+            in GOOD_WEATHER_TAGS -> R.color.good_weather_status_bar
+            in BAD_WEATHER_TAGS -> R.color.bad_weather_status_bar
+            else -> R.color.good_weather_status_bar
+        }
+    }
 }
