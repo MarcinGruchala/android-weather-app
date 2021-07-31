@@ -14,6 +14,7 @@ import com.example.weather_app.R
 import com.example.weather_app.adapters.HourlyForecastAdapter
 import com.example.weather_app.adapters.VerticalWeatherDataAdapter
 import com.example.weather_app.databinding.ActivityWeatherForecastBinding
+import com.example.weather_app.utils.UiUtils
 import com.example.weather_app.viewmodels.WeatherForecastActivityViewModel
 import com.example.weather_app.webservices.model.current_weather_data.CurrentWeatherDataResponse
 import com.example.weather_app.webservices.model.weather_forecast_data.WeatherForecastDataResponse
@@ -40,6 +41,7 @@ class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionC
         setUpClickListeners()
 
         val currentWeatherDataObserver = Observer<CurrentWeatherDataResponse> { newData ->
+            updateBackground()
             updateTopScreenUI(newData)
         }
         viewModel.currentWeatherData.observe(this,currentWeatherDataObserver)
@@ -110,6 +112,14 @@ class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionC
             this,
             LinearLayoutManager.VERTICAL,
             false
+        )
+    }
+
+    private fun updateBackground(){
+        binding.root.setBackgroundResource(
+            UiUtils.getWeatherBackground(
+                viewModel.currentWeatherData.value!!.weather[0].icon
+            )
         )
     }
 
