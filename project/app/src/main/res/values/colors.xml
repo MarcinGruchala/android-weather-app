@@ -13,6 +13,6 @@
     <color name="orange">#FD440A</color>
     <color name="good_weather_status_bar">#36D1DC</color>
     <color name="bad_weather_status_bar">#bdc3c7</color>
-    <color name="night_status_bar">#2980b9</color>
+    <color name="night_status_bar">#734b6d</color>
     <color name="transparent">#00FFFFFF</color>
 </resources>
