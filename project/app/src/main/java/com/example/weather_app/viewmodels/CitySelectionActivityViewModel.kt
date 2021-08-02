@@ -1,16 +1,14 @@
 package com.example.weather_app.viewmodels
 
+import android.content.SharedPreferences
 import android.util.Log
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.*
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.weather_app.models.CityShortcutData
 import com.example.weather_app.models.UnitOfMeasurement
 import com.example.weather_app.models.entities.CityShortcut
 import com.example.weather_app.repository.RepositoryImpl
 import com.example.weather_app.utils.ClockUtils
-import com.example.weather_app.utils.UiUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -24,15 +22,16 @@ private const val TAG = "CitySelectionViewModel"
 class CitySelectionActivityViewModel @Inject constructor(
     private val repository: RepositoryImpl,
     private val apiKey: String,
+    private val unitOfMeasurementSPEditor: SharedPreferences.Editor
 ) : ViewModel() {
 
-    var isCityListLoaded = false
+    private var isCityListLoaded = false
 
     val citySelectionList: MutableLiveData<MutableList<CityShortcut>> by lazy {
         MutableLiveData<MutableList<CityShortcut>>()
     }
 
-    private val unitOfMeasurementObserver = Observer<UnitOfMeasurement> { _ ->
+    private val unitOfMeasurementObserver = Observer<String> { _ ->
         viewModelScope.launch launchWhenCreated@{
             if (isCityListLoaded){
                 getCitySelectionList()
@@ -67,7 +66,7 @@ class CitySelectionActivityViewModel @Inject constructor(
                         repository.getCurrentWeatherDataResponse(
                             apiKey,
                             city.cityName,
-                            repository.unitOfMeasurement.value!!.value
+                            repository.unitOfMeasurement.value!!
                         )
                     }catch (e: IOException){
                         return@launchWhenCreated
@@ -102,7 +101,7 @@ class CitySelectionActivityViewModel @Inject constructor(
                 repository.getCurrentWeatherDataResponse(
                     apiKey,
                     repository.deviceLocation.value!!,
-                    repository.unitOfMeasurement.value!!.value)
+                    repository.unitOfMeasurement.value!!)
             }catch (e: IOException){
                 return@launchWhenCreated
 
@@ -158,7 +157,7 @@ class CitySelectionActivityViewModel @Inject constructor(
          val currentWeatherDataResponse = repository.getCurrentWeatherDataResponse(
              apiKey,
              cityName,
-             repository.unitOfMeasurement.value!!.value
+             repository.unitOfMeasurement.value!!
          )
          if ( currentWeatherDataResponse.isSuccessful && currentWeatherDataResponse.body() != null ) {
              val utcTime = System.currentTimeMillis()
@@ -182,13 +181,18 @@ class CitySelectionActivityViewModel @Inject constructor(
 
     fun getUnitMode() = repository.unitOfMeasurement.value!!
 
-    fun changeUnit(): UnitOfMeasurement{
-        if (repository.unitOfMeasurement.value == UnitOfMeasurement.METRIC) {
-            repository.unitOfMeasurement.value = UnitOfMeasurement.IMPERIAL
-            return UnitOfMeasurement.IMPERIAL
+    fun changeUnit(): String{
+        if (repository.unitOfMeasurement.value == UnitOfMeasurement.METRIC.value) {
+            repository.unitOfMeasurement.value = UnitOfMeasurement.IMPERIAL.value
         }
-        repository.unitOfMeasurement.value = UnitOfMeasurement.METRIC
-        return UnitOfMeasurement.METRIC
+        else{
+            repository.unitOfMeasurement.value = UnitOfMeasurement.METRIC.value
+        }
+        unitOfMeasurementSPEditor.apply {
+            putString("unitOfMeasurement", repository.unitOfMeasurement.value)
+            apply()
+        }
+        return repository.unitOfMeasurement.value!!
     }
 
 }

@@ -49,7 +49,7 @@ class WeatherForecastActivityViewModel @Inject constructor(
         }
     }
 
-    private val unitOfMeasurementObserver = Observer<UnitOfMeasurement> {
+    private val unitOfMeasurementObserver = Observer<String> {
         viewModelScope.launch launchWhenCreated@{
             if (repository.mainForecastLocation.value!=null){
                 downloadWeatherData()
@@ -69,7 +69,7 @@ class WeatherForecastActivityViewModel @Inject constructor(
                 repository.getCurrentWeatherDataResponse(
                     apiKey,
                     repository.mainForecastLocation.value!!,
-                    repository.unitOfMeasurement.value!!.value)
+                    repository.unitOfMeasurement.value!!)
             }catch (e: IOException){
                 return@launchWhenCreated
 
@@ -89,7 +89,7 @@ class WeatherForecastActivityViewModel @Inject constructor(
                         currentWeatherData.value?.coord!!.lon,
                         "current,minutely,alerts",
                         apiKey,
-                        repository.unitOfMeasurement.value!!.value
+                        repository.unitOfMeasurement.value!!
                     )
                 }catch (e: IOException){
                     return@launchWhenCreated
@@ -168,7 +168,7 @@ class WeatherForecastActivityViewModel @Inject constructor(
         return dailyForecastList
     }
 
-    private fun getCurrentWeatherDataList(unitOfMeasurement: UnitOfMeasurement)
+    private fun getCurrentWeatherDataList(unitOfMeasurement: String)
     : List<CurrentWeatherData>{
         val weatherDataList = mutableListOf(
             CurrentWeatherData(
@@ -208,7 +208,7 @@ class WeatherForecastActivityViewModel @Inject constructor(
                 "${currentWeatherData.value!!.main.humidity}%"
             )
         )
-        if (unitOfMeasurement == UnitOfMeasurement.METRIC){
+        if (unitOfMeasurement == UnitOfMeasurement.METRIC.value){
             weatherDataList.add(
                 CurrentWeatherData(
                     "Wind",
