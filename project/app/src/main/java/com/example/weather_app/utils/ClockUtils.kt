@@ -30,8 +30,8 @@ object ClockUtils {
     }
 
     fun getTimeFromUnixTimestamp(unixTimeStamp: Long, timeZone: Long, minutesMode: Boolean, clockPeriodMode: Boolean): String{
-        Log.d(TAG,"Timezone: ${TimeZone.getDefault().rawOffset}")
-        Log.d(TAG,"UTC timestamp: ${unixTimeStamp - TimeZone.getDefault().rawOffset}")
+//        Log.d(TAG,"Timezone: ${TimeZone.getDefault().rawOffset}")
+//        Log.d(TAG,"UTC timestamp: ${unixTimeStamp - TimeZone.getDefault().rawOffset}")
         val calendar = Calendar.getInstance(Locale.ENGLISH)
 
         calendar.timeInMillis = (unixTimeStamp - TimeZone.getDefault().rawOffset-3600*1000L) + timeZone
@@ -42,7 +42,7 @@ object ClockUtils {
             val period = get12HourClockPeriod(hour)
             if( hour == 0 ) hour = 12
             if (minutesMode){
-                return "$hour:$minutes $period"
+                return "${getClockString(hour)}:${getClockString(minutes)} $period"
             }
             return "$hour $period"
         }
@@ -52,7 +52,8 @@ object ClockUtils {
         return "$hour"
     }
 
-    fun getClockString(timeUnit: Int): String{
+    private fun getClockString(timeUnit: Int): String{
+        Log.d(TAG,"time unit: $timeUnit")
         if(timeUnit<10){
             return "0$timeUnit"
         }

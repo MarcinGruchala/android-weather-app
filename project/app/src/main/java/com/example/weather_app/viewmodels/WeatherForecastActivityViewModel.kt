@@ -122,7 +122,7 @@ class WeatherForecastActivityViewModel @Inject constructor(
                         weatherForecastData.value!!.hourly[i].dt * 1000L,
                         weatherForecastData.value!!.timezone_offset * 1000L,
                         false,
-                        true
+                        clockPeriodMode = false
                     ),
                     weatherForecastData.value!!.hourly[i].temp.toInt(),
                     UiUtils.getWeatherIcon(weatherForecastData.value!!.hourly[i].weather[0].icon)
@@ -157,14 +157,40 @@ class WeatherForecastActivityViewModel @Inject constructor(
 
     private fun getCurrentWeatherDataList(): List<CurrentWeatherData>{
         return listOf(
-            CurrentWeatherData("SUNRISE", ClockUtils.getTimeFromUnixTimestamp(currentWeatherData.value!!.sys.sunrise.toLong(), currentWeatherData.value!!.timezone * 1000L , true, true)
-                ,"SUNSET",ClockUtils.getTimeFromUnixTimestamp(currentWeatherData.value!!.sys.sunset.toLong(),currentWeatherData.value!!.timezone * 1000L , true,true)),
-            CurrentWeatherData("PRESSURE","${currentWeatherData.value!!.main.pressure} Pa",
-                "HUMIDITY","${currentWeatherData.value!!.main.humidity}%"),
-            CurrentWeatherData("Wind","${currentWeatherData.value!!.wind.speed} km/h",
-                "FEELS LIKE","${currentWeatherData.value!!.main.feels_like.toInt()}°"),
-            CurrentWeatherData("WIND DEG","${currentWeatherData.value!!.wind.deg} deg",
-                "VISIBILITY","${currentWeatherData.value!!.visibility} m"),
+            CurrentWeatherData(
+                "SUNRISE",
+                ClockUtils.getTimeFromUnixTimestamp(
+                    currentWeatherData.value!!.sys.sunrise * 1000L,
+                    currentWeatherData.value!!.timezone * 1000L,
+                    true,
+                    clockPeriodMode = false
+                ),
+                "SUNSET",
+                ClockUtils.getTimeFromUnixTimestamp(
+                    currentWeatherData.value!!.sys.sunset * 1000L,
+                    currentWeatherData.value!!.timezone * 1000L ,
+                    true,
+                    clockPeriodMode = false
+                )
+            ),
+            CurrentWeatherData(
+                "PRESSURE",
+                "${currentWeatherData.value!!.main.pressure} Pa",
+                "HUMIDITY",
+                "${currentWeatherData.value!!.main.humidity}%"
+            ),
+            CurrentWeatherData(
+                "Wind",
+                "${currentWeatherData.value!!.wind.speed} km/h",
+                "FEELS LIKE",
+                "${currentWeatherData.value!!.main.feels_like.toInt()}°"
+            ),
+            CurrentWeatherData(
+                "WIND DEG",
+                "${currentWeatherData.value!!.wind.deg} deg",
+                "VISIBILITY",
+                "${currentWeatherData.value!!.visibility} m"
+            )
         )
     }
 }
