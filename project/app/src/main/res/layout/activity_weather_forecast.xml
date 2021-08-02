@@ -102,5 +102,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rvHourlyForecast" />
 
+    <TextView
+        android:id="@+id/tvApiCallTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:textColor="@color/weather_data_header"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rvVerticalWeatherData" />
+
 
 </androidx.constraintlayout.motion.widget.MotionLayout>

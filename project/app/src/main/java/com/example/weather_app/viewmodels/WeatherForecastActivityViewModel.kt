@@ -109,6 +109,16 @@ class WeatherForecastActivityViewModel @Inject constructor(
         repository.mainForecastLocation.value = location
     }
 
+    fun getApiCallTime(): String {
+        return "Last update: " + ClockUtils.getTimeFromUnixTimestamp(
+            currentWeatherData.value!!.dt * 1000L,
+            repository.deviceTimezone * 1000L,
+            repository.deviceTimezone * 1000L,
+            true,
+            clockPeriodMode = false
+        )
+    }
+
     fun getHourlyForecastList(): List<HourlyForecastData>{
         val list: MutableList<HourlyForecastData> = mutableListOf()
 

@@ -15,6 +15,7 @@ import com.example.weather_app.R
 import com.example.weather_app.adapters.HourlyForecastAdapter
 import com.example.weather_app.adapters.VerticalWeatherDataAdapter
 import com.example.weather_app.databinding.ActivityWeatherForecastBinding
+import com.example.weather_app.utils.ClockUtils
 import com.example.weather_app.utils.UiUtils
 import com.example.weather_app.viewmodels.WeatherForecastActivityViewModel
 import com.example.weather_app.webservices.model.current_weather_data.CurrentWeatherDataResponse
@@ -43,7 +44,7 @@ class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionC
 
         val currentWeatherDataObserver = Observer<CurrentWeatherDataResponse> { newData ->
             updateBackground()
-            updateTopScreenUI(newData)
+            updateTextViews(newData)
         }
         viewModel.currentWeatherData.observe(this,currentWeatherDataObserver)
 
@@ -139,25 +140,47 @@ class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionC
         )
     }
 
-    private fun updateTopScreenUI(data: CurrentWeatherDataResponse){
-        binding.tvCity.text = data.name
-        binding.tvWeatherDescription.text = data.weather[0].description.replaceFirstChar {
-            if (it.isLowerCase()) it.titlecase(
-                Locale.getDefault()
-            ) else it.toString()
+    private fun updateTextViews(data: CurrentWeatherDataResponse){
+        binding.apply {
+            tvCity.text = data.name
+            tvWeatherDescription.text = data.weather[0].description.replaceFirstChar {
+                if (it.isLowerCase()) it.titlecase(
+                    Locale.getDefault()
+                ) else it.toString()
+            }
+            tvTemp.text = getString(
+                R.string.main_temp,
+                data.main.temp.toInt()
+            )
+            tvH.text = getString(
+                R.string.main_H_temp,
+                data.main.temp_max.toInt()
+            )
+            tvL.text = getString(
+                R.string.main_L_temp,
+                data.main.temp_min.toInt()
+            )
+            tvApiCallTime.text = viewModel.getApiCallTime()
         }
-        binding.tvTemp.text = getString(
-            R.string.main_temp,
-            data.main.temp.toInt()
-        )
-        binding.tvH.text = getString(
-            R.string.main_H_temp,
-            data.main.temp_max.toInt()
-        )
-        binding.tvL.text = getString(
-            R.string.main_L_temp,
-            data.main.temp_min.toInt()
-        )
+//        binding.tvCity.text = data.name
+//        binding.tvWeatherDescription.text = data.weather[0].description.replaceFirstChar {
+//            if (it.isLowerCase()) it.titlecase(
+//                Locale.getDefault()
+//            ) else it.toString()
+//        }
+//        binding.tvTemp.text = getString(
+//            R.string.main_temp,
+//            data.main.temp.toInt()
+//        )
+//        binding.tvH.text = getString(
+//            R.string.main_H_temp,
+//            data.main.temp_max.toInt()
+//        )
+//        binding.tvL.text = getString(
+//            R.string.main_L_temp,
+//            data.main.temp_min.toInt()
+//        )
+
     }
 
     private fun  updateRecyclerViews(){
