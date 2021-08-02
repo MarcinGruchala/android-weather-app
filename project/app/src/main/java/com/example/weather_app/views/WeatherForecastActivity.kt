@@ -208,5 +208,6 @@ class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionC
             "Location permission granted.",
             Toast.LENGTH_SHORT
         ).show()
+        getDeviceLocation()
     }
 }
