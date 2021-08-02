@@ -140,7 +140,9 @@ class WeatherForecastActivityViewModel @Inject constructor(
 
     fun getVerticalWeatherDataList(): VerticalWeatherData{
         val dailyForecastList: List<DailyForecastData> = getDailyWeatherForecastList()
-        val currentWeatherDataList: List<CurrentWeatherData> = getCurrentWeatherDataList()
+        val currentWeatherDataList: List<CurrentWeatherData> = getCurrentWeatherDataList(
+            repository.unitOfMeasurement.value!!
+        )
 
         return VerticalWeatherData(dailyForecastList,currentWeatherDataList)
     }
@@ -166,8 +168,9 @@ class WeatherForecastActivityViewModel @Inject constructor(
         return dailyForecastList
     }
 
-    private fun getCurrentWeatherDataList(): List<CurrentWeatherData>{
-        return listOf(
+    private fun getCurrentWeatherDataList(unitOfMeasurement: UnitOfMeasurement)
+    : List<CurrentWeatherData>{
+        val weatherDataList = mutableListOf(
             CurrentWeatherData(
                 "SUNRISE",
                 ClockUtils.getTimeFromUnixTimestamp(
@@ -203,13 +206,27 @@ class WeatherForecastActivityViewModel @Inject constructor(
                 "${currentWeatherData.value!!.main.pressure} Pa",
                 "HUMIDITY",
                 "${currentWeatherData.value!!.main.humidity}%"
-            ),
+            )
+        )
+        if (unitOfMeasurement == UnitOfMeasurement.METRIC){
+            weatherDataList.add(
+                CurrentWeatherData(
+                    "Wind",
+                    "${currentWeatherData.value!!.wind.speed} km/h",
+                    "VISIBILITY",
+                    "${currentWeatherData.value!!.visibility} m"
+                )
+            )
+            return weatherDataList
+        }
+        weatherDataList.add(
             CurrentWeatherData(
                 "Wind",
-                "${currentWeatherData.value!!.wind.speed} km/h",
+                "${currentWeatherData.value!!.wind.speed} mph",
                 "VISIBILITY",
                 "${currentWeatherData.value!!.visibility} m"
             )
         )
+        return weatherDataList
     }
 }
