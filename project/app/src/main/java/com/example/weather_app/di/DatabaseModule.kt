@@ -24,7 +24,9 @@ object DatabaseModule {
     : CityShortcutDatabase = Room.databaseBuilder(
         applicationContext,
         CityShortcutDatabase::class.java,
-        "cities_shortcuts"
-    ).build()
+        "cities_shortcuts",
+    )
+        .fallbackToDestructiveMigration()
+        .build()
 
 }

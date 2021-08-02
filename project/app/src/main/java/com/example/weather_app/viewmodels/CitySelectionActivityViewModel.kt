@@ -91,9 +91,7 @@ class CitySelectionActivityViewModel @Inject constructor(
                                 city.cityName,
                                 localTime,
                                 temp,
-                                UiUtils.getWeatherIcon(
-                                    currentWeatherDataResponse.body()!!.weather[0].icon
-                                )
+                                currentWeatherDataResponse.body()!!.weather[0].icon
                             )
                         )
                     }
@@ -117,7 +115,7 @@ class CitySelectionActivityViewModel @Inject constructor(
                         repository.deviceLocation.value!!,
                         "",
                         currentWeatherDayResponse.body()!!.main.temp.toInt(),
-                        UiUtils.getWeatherIcon(currentWeatherDayResponse.body()!!.weather[0].icon)
+                        currentWeatherDayResponse.body()!!.weather[0].icon
                     )
                 )
                 citySelectionList.value = cityShortcutList
@@ -174,9 +172,7 @@ class CitySelectionActivityViewModel @Inject constructor(
                  cityName,
                  localTime,
                  currentWeatherDataResponse.body()!!.main.temp.toInt(),
-                 UiUtils.getWeatherIcon(
-                     currentWeatherDataResponse.body()!!.weather[0].icon
-                 )
+                 currentWeatherDataResponse.body()!!.weather[0].icon
              )
          }
          return  null

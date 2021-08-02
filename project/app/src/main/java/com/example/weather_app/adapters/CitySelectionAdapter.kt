@@ -9,6 +9,7 @@ import com.example.weather_app.databinding.ItemCitySelectionBinding
 import com.example.weather_app.databinding.ItemCityShortcutBinding
 import com.example.weather_app.models.UnitOfMeasurement
 import com.example.weather_app.models.entities.CityShortcut
+import com.example.weather_app.utils.UiUtils
 
 private const val TAG = "CitySelectionAdapter"
 private const val CITY_SHORTCUT_VIEW_TYPE = 10
@@ -68,7 +69,7 @@ class CitySelectionAdapter(
                             data[reversePosition].temp
                         )
                         ivCityShortcutWeatherIcon.setImageResource(
-                            data[reversePosition].icon
+                            UiUtils.getWeatherIcon(data[reversePosition].icon)
                         )
                         clCityShortcutHandle.setOnClickListener {
                             itemClickListener(data[reversePosition])
@@ -84,7 +85,7 @@ class CitySelectionAdapter(
                         )
                         tvLocalTime.text = data[reversePosition].localTime
                         ivCityShortcutWeatherIcon.setImageResource(
-                            data[reversePosition].icon
+                            UiUtils.getWeatherIcon(data[reversePosition].icon)
                         )
                         clCityShortcutHandle.setOnClickListener {
                             itemClickListener(data[reversePosition])
@@ -93,8 +94,12 @@ class CitySelectionAdapter(
                             deleteButtonClickListener(data[reversePosition])
                         }
                     }
-
                 }
+                viewHolder.binding.root.setBackgroundResource(
+                    UiUtils.getCityShortcutBackground(
+                        data[reversePosition].icon
+                    )
+                )
             }
 
             CITY_SELECTION_VIEW_TYPE ->{
