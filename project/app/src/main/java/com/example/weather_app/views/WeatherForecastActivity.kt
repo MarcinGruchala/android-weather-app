@@ -142,6 +142,7 @@ class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionC
 
     private fun updateTextViews(data: CurrentWeatherDataResponse){
         binding.apply {
+            tvCity.textSize = 40f
             tvCity.text = data.name
             tvWeatherDescription.text = data.weather[0].description.replaceFirstChar {
                 if (it.isLowerCase()) it.titlecase(
