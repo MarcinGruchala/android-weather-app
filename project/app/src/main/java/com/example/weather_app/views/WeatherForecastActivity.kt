@@ -62,7 +62,11 @@ class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionC
                 Log.d(TAG,"Location founded")
                 if (location == null){
                     Log.d(TAG,"Location null")
-                    showInsertLocalityDialog()
+                    showInsertLocalityDialog(
+                        applicationContext.getString(
+                            R.string.insert_location_dialog_description
+                        )
+                    )
                 }
                 else{
                     val lat = location.latitude
@@ -75,7 +79,11 @@ class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionC
                     Log.d(TAG,"Locality: $locality")
                     if (locality == null){
                         Log.d(TAG, "Didn't found the locality")
-                        showInsertLocalityDialog()
+                        showInsertLocalityDialog(
+                            applicationContext.getString(
+                                R.string.insert_location_dialog_description
+                            )
+                        )
                     }
                     else{
                         viewModel.updateDeviceLocation(locality)
@@ -85,8 +93,9 @@ class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionC
         }
     }
 
-    private fun showInsertLocalityDialog(){
+    private fun showInsertLocalityDialog(dialogMessage: String){
         val dialog = InsertLocationDialog(
+            dialogMessage,
             btnSubmitClickListener = { locality ->
                 viewModel.updateDeviceLocation(locality)
             }
@@ -186,11 +195,11 @@ class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionC
     }
 
     override fun onPermissionsDenied(requestCode: Int, perms: List<String>) {
-        Toast.makeText(
-            this,
-            "Location permission Denied.",
-            Toast.LENGTH_SHORT
-        ).show()
+        showInsertLocalityDialog(
+            applicationContext.getString(
+                R.string.no_permission_dialog_message
+            )
+        )
     }
 
     override fun onPermissionsGranted(requestCode: Int, perms: List<String>) {
