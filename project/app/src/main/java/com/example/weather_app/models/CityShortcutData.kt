@@ -4,5 +4,5 @@ data class CityShortcutData(
     val cityName: String,
     var localTime: String,
     var temp: Int,
-    var icon: Int
+    var icon: String
 )
