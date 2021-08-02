@@ -82,6 +82,7 @@ class CitySelectionActivityViewModel @Inject constructor(
                         val localTime = ClockUtils.getTimeFromUnixTimestamp(
                             utcTime,
                             timeZone*1000L,
+                            repository.deviceTimezone * 1000L,
                             true,
                             false
                         )
@@ -165,6 +166,7 @@ class CitySelectionActivityViewModel @Inject constructor(
              val localTime = ClockUtils.getTimeFromUnixTimestamp(
                  utcTime,
                  timeZone*1000L,
+                 repository.deviceTimezone * 1000L,
                  true,
                  false
              )

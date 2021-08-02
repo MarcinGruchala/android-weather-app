@@ -78,6 +78,10 @@ class WeatherForecastActivityViewModel @Inject constructor(
             }
             if (currentWeatherDayResponse.isSuccessful && currentWeatherDayResponse.body() != null ) {
                 currentWeatherData.value = currentWeatherDayResponse.body()
+                if (!repository.isTimezoneSet){
+                    repository.deviceTimezone = currentWeatherData.value!!.timezone
+                    repository.isTimezoneSet = true
+                }
 
                 val weatherForecastDataResponse = try {
                     repository.getWeatherForecastDataResponse(
@@ -121,6 +125,7 @@ class WeatherForecastActivityViewModel @Inject constructor(
                     ClockUtils.getTimeFromUnixTimestamp(
                         weatherForecastData.value!!.hourly[i].dt * 1000L,
                         weatherForecastData.value!!.timezone_offset * 1000L,
+                        repository.deviceTimezone * 1000L,
                         false,
                         clockPeriodMode = false
                     ),
@@ -145,10 +150,16 @@ class WeatherForecastActivityViewModel @Inject constructor(
         for (i in 1..7){
             dailyForecastList.add(
                 DailyForecastData(
-                    ClockUtils.getDayFromUnixTimestamp(weatherForecastData.value!!.daily[i].dt*1000L),
+                    ClockUtils.getDayFromUnixTimestamp(
+                        weatherForecastData.value!!.daily[i].dt*1000L,
+                        currentWeatherData.value!!.timezone * 1000L,
+                        repository.deviceTimezone * 1000L,
+                    ),
                     weatherForecastData.value!!.daily[i].temp.max.toInt(),
                     weatherForecastData.value!!.daily[i].temp.min.toInt(),
-                    UiUtils.getWeatherIcon(weatherForecastData.value!!.daily[i].weather[0].icon)
+                    UiUtils.getWeatherIcon(
+                        weatherForecastData.value!!.daily[i].weather[0].icon
+                    )
                 )
             )
         }
@@ -162,6 +173,7 @@ class WeatherForecastActivityViewModel @Inject constructor(
                 ClockUtils.getTimeFromUnixTimestamp(
                     currentWeatherData.value!!.sys.sunrise * 1000L,
                     currentWeatherData.value!!.timezone * 1000L,
+                    repository.deviceTimezone * 1000L,
                     true,
                     clockPeriodMode = false
                 ),
@@ -169,9 +181,22 @@ class WeatherForecastActivityViewModel @Inject constructor(
                 ClockUtils.getTimeFromUnixTimestamp(
                     currentWeatherData.value!!.sys.sunset * 1000L,
                     currentWeatherData.value!!.timezone * 1000L ,
+                    repository.deviceTimezone * 1000L,
                     true,
                     clockPeriodMode = false
                 )
+            ),
+            CurrentWeatherData(
+                "LOCAL TIME",
+                ClockUtils.getTimeFromUnixTimestamp(
+                    System.currentTimeMillis(),
+                    currentWeatherData.value!!.timezone * 1000L,
+                    repository.deviceTimezone * 1000L,
+                    true,
+                    clockPeriodMode = false
+                ),
+                "FEELS LIKE",
+                "${currentWeatherData.value!!.main.feels_like.toInt()}°"
             ),
             CurrentWeatherData(
                 "PRESSURE",
@@ -182,12 +207,6 @@ class WeatherForecastActivityViewModel @Inject constructor(
             CurrentWeatherData(
                 "Wind",
                 "${currentWeatherData.value!!.wind.speed} km/h",
-                "FEELS LIKE",
-                "${currentWeatherData.value!!.main.feels_like.toInt()}°"
-            ),
-            CurrentWeatherData(
-                "WIND DEG",
-                "${currentWeatherData.value!!.wind.deg} deg",
                 "VISIBILITY",
                 "${currentWeatherData.value!!.visibility} m"
             )
