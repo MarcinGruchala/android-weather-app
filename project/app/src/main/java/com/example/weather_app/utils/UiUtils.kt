@@ -34,12 +34,21 @@ object UiUtils {
         }
     }
 
-    fun getWeatherBackground(iconTag: String): Int{
+    fun getWeatherForecastBackground(iconTag: String): Int{
         return when(iconTag){
             in NIGHT_TAGS -> R.drawable.gradient_background_clear_sky_night
             in GOOD_WEATHER_TAGS -> R.drawable.gradient_background_clear_sky_day
             in BAD_WEATHER_TAGS -> R.drawable.gradient_background_clouds_day
             else -> R.drawable.gradient_background_clear_sky_day
+        }
+    }
+
+    fun getCityShortcutBackground(iconTag: String): Int {
+        return when(iconTag){
+            in NIGHT_TAGS -> R.drawable.gradient_city_shortcut_night
+            in GOOD_WEATHER_TAGS -> R.drawable.gradient_city_shortcut_good_weather
+            in BAD_WEATHER_TAGS -> R.drawable.gradient_city_shortcut_bad_weather
+            else -> R.drawable.gradient_city_shortcut_good_weather
         }
     }
 

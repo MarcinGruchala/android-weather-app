@@ -3,12 +3,10 @@ package com.example.weather_app.views
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.location.Geocoder
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
@@ -122,7 +120,7 @@ class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionC
     private fun updateBackground(){
         val weatherTag = viewModel.currentWeatherData.value!!.weather[0].icon
         binding.root.setBackgroundResource(
-            UiUtils.getWeatherBackground(
+            UiUtils.getWeatherForecastBackground(
                 weatherTag
             )
         )

@@ -96,7 +96,7 @@ class CitySelectionAdapter(
                     }
                 }
                 viewHolder.binding.root.setBackgroundResource(
-                    UiUtils.getWeatherBackground(
+                    UiUtils.getCityShortcutBackground(
                         data[reversePosition].icon
                     )
                 )
