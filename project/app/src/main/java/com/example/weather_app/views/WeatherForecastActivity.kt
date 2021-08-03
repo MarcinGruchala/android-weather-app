@@ -55,53 +55,30 @@ class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionC
 
     }
 
-    @SuppressLint("MissingPermission")
-    private fun getDeviceLocation(){
-        val fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
-        if (hasLocationPermission()){
-            fusedLocationProviderClient.lastLocation.addOnSuccessListener { location ->
-                Log.d(TAG,"Location founded")
-                if (location == null){
-                    Log.d(TAG,"Location null")
-                    showInsertLocalityDialog(
-                        applicationContext.getString(
-                            R.string.insert_location_dialog_description
-                        )
-                    )
-                }
-                else{
-                    val lat = location.latitude
-                    val lon = location.longitude
-                    val locality = Geocoder(this).getFromLocation(
-                        lat,
-                        lon,
-                        1
-                    ).first().locality
-                    Log.d(TAG,"Locality: $locality")
-                    if (locality == null){
-                        Log.d(TAG, "Didn't found the locality")
-                        showInsertLocalityDialog(
-                            applicationContext.getString(
-                                R.string.insert_location_dialog_description
-                            )
-                        )
-                    }
-                    else{
-                        viewModel.updateDeviceLocation(locality)
-                    }
-                }
-            }
-        }
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions,grantResults,this)
     }
 
-    private fun showInsertLocalityDialog(dialogMessage: String){
-        val dialog = InsertLocationDialog(
-            dialogMessage,
-            btnSubmitClickListener = { locality ->
-                viewModel.updateDeviceLocation(locality)
-            }
+    override fun onPermissionsDenied(requestCode: Int, perms: List<String>) {
+        showInsertLocalityDialog(
+            applicationContext.getString(
+                R.string.no_permission_dialog_message
+            )
         )
-        dialog.show(supportFragmentManager,"insertLocationDialog")
+    }
+
+    override fun onPermissionsGranted(requestCode: Int, perms: List<String>) {
+        Toast.makeText(
+            this,
+            "Location permission granted.",
+            Toast.LENGTH_SHORT
+        ).show()
+        getDeviceLocation()
     }
 
     private fun setUpClickListeners(){
@@ -125,7 +102,6 @@ class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionC
             false
         )
     }
-
 
     private fun updateBackground(){
         val weatherTag = viewModel.currentWeatherData.value!!.weather[0].icon
@@ -182,25 +158,11 @@ class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionC
         )
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        EasyPermissions.onRequestPermissionsResult(requestCode, permissions,grantResults,this)
-    }
-
     private fun checkPermissions(){
         if (!hasLocationPermission()){
             requestLocationPermission()
-            }
+        }
     }
-
-    private fun hasLocationPermission() = EasyPermissions.hasPermissions(
-        this,
-        android.Manifest.permission.ACCESS_FINE_LOCATION
-    )
 
     private fun requestLocationPermission(){
         EasyPermissions.requestPermissions(
@@ -211,20 +173,58 @@ class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionC
         )
     }
 
-    override fun onPermissionsDenied(requestCode: Int, perms: List<String>) {
-        showInsertLocalityDialog(
-            applicationContext.getString(
-                R.string.no_permission_dialog_message
-            )
-        )
+    @SuppressLint("MissingPermission")
+    private fun getDeviceLocation(){
+        val fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
+        if (hasLocationPermission()){
+            fusedLocationProviderClient.lastLocation.addOnSuccessListener { location ->
+                Log.d(TAG,"Location founded")
+                if (location == null){
+                    Log.d(TAG,"Location null")
+                    showInsertLocalityDialog(
+                        applicationContext.getString(
+                            R.string.insert_location_dialog_description
+                        )
+                    )
+                }
+                else{
+                    val lat = location.latitude
+                    val lon = location.longitude
+                    val locality = Geocoder(this).getFromLocation(
+                        lat,
+                        lon,
+                        1
+                    ).first().locality
+                    Log.d(TAG,"Locality: $locality")
+                    if (locality == null){
+                        Log.d(TAG, "Didn't found the locality")
+                        showInsertLocalityDialog(
+                            applicationContext.getString(
+                                R.string.insert_location_dialog_description
+                            )
+                        )
+                    }
+                    else{
+                        viewModel.updateDeviceLocation(locality)
+                    }
+                }
+            }
+        }
     }
 
-    override fun onPermissionsGranted(requestCode: Int, perms: List<String>) {
-        Toast.makeText(
-            this,
-            "Location permission granted.",
-            Toast.LENGTH_SHORT
-        ).show()
-        getDeviceLocation()
+    private fun hasLocationPermission() = EasyPermissions.hasPermissions(
+        this,
+        android.Manifest.permission.ACCESS_FINE_LOCATION
+    )
+
+    private fun showInsertLocalityDialog(dialogMessage: String){
+        val dialog = InsertLocationDialog(
+            dialogMessage,
+            btnSubmitClickListener = { locality ->
+                viewModel.updateDeviceLocation(locality)
+            }
+        )
+        dialog.show(supportFragmentManager,"insertLocationDialog")
     }
+
 }
