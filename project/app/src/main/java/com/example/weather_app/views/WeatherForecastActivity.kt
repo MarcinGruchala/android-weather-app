@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
@@ -15,7 +16,6 @@ import com.example.weather_app.R
 import com.example.weather_app.adapters.HourlyForecastAdapter
 import com.example.weather_app.adapters.VerticalWeatherDataAdapter
 import com.example.weather_app.databinding.ActivityWeatherForecastBinding
-import com.example.weather_app.utils.ClockUtils
 import com.example.weather_app.utils.UiUtils
 import com.example.weather_app.viewmodels.WeatherForecastActivityViewModel
 import com.example.weather_app.webservices.model.current_weather_data.CurrentWeatherDataResponse
@@ -52,6 +52,18 @@ class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionC
             updateRecyclerViews()
         }
         viewModel.weatherForecastData.observe(this,weatherForecastDataObserver)
+
+        val errorStatusObserver = Observer<Boolean> { status ->
+            if (status){
+                viewModel.errorStatus.value = false
+                showInsertLocalityDialog(
+                    applicationContext.getString(
+                        R.string.didnt_found_city
+                    )
+                )
+            }
+        }
+        viewModel.errorStatus.observe(this,errorStatusObserver)
 
     }
 
@@ -225,6 +237,19 @@ class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionC
             }
         )
         dialog.show(supportFragmentManager,"insertLocationDialog")
+    }
+
+    private fun showErrorDialogWindow() {
+        AlertDialog.Builder(this)
+            .setTitle("Error message")
+            .setMessage(
+                applicationContext.getString(
+                    R.string.didnt_found_city
+                )
+            )
+            .setPositiveButton("OK") { _, _ -> }
+            .create()
+            .show()
     }
 
 }

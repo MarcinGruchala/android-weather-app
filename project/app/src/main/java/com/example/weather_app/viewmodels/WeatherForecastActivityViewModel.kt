@@ -11,6 +11,7 @@ import com.example.weather_app.utils.UiUtils
 import com.example.weather_app.webservices.model.current_weather_data.CurrentWeatherDataResponse
 import com.example.weather_app.webservices.model.weather_forecast_data.WeatherForecastDataResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
@@ -24,6 +25,10 @@ class WeatherForecastActivityViewModel @Inject constructor(
     private val repository: RepositoryImpl,
     private val apiKey: String
 ) : ViewModel() {
+
+    val errorStatus: MutableLiveData<Boolean> by lazy {
+        MutableLiveData<Boolean>(false)
+    }
 
     val currentWeatherData: MutableLiveData<CurrentWeatherDataResponse> by lazy {
         MutableLiveData<CurrentWeatherDataResponse>()
@@ -105,8 +110,21 @@ class WeatherForecastActivityViewModel @Inject constructor(
     }
 
     fun updateDeviceLocation(location: String){
-        repository.deviceLocation.value = location
-        repository.mainForecastLocation.value = location
+        viewModelScope.launch {
+            val currentWeatherDataResponse = repository.getCurrentWeatherDataResponse(
+                apiKey,
+                location,
+                repository.unitOfMeasurement.value!!
+            )
+            if ( currentWeatherDataResponse.isSuccessful && currentWeatherDataResponse.body() != null ) {
+                repository.deviceLocation.value = location
+                repository.mainForecastLocation.value = location
+            }
+            else{
+                errorStatus.value = true
+            }
+        }
+
     }
 
     fun getApiCallTime(): String {

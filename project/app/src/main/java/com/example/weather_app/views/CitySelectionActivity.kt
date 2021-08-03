@@ -66,13 +66,13 @@ class CitySelectionActivity : AppCompatActivity() {
                 finish()
             },
             deleteButtonClickListener = { cityShortcut ->
-                viewModel.deleteCityShortCut(cityShortcut)
+                viewModel.deleteCityShortCutClickListener(cityShortcut)
             },
             citySearchClickListener = { cityName ->
-                viewModel.addNewCityShortCut(cityName)
+                viewModel.addNewCityShortCutClickListener(cityName)
             },
             unitSelectionClickListener = {
-                viewModel.changeUnit()
+                viewModel.changeUnitClickListener()
             }
         )
     }
@@ -102,13 +102,13 @@ class CitySelectionActivity : AppCompatActivity() {
                 finish()
                                 },
             deleteButtonClickListener = { cityShortcut ->
-                viewModel.deleteCityShortCut(cityShortcut)
+                viewModel.deleteCityShortCutClickListener(cityShortcut)
             },
             citySearchClickListener = { cityName ->
-                viewModel.addNewCityShortCut(cityName)
+                viewModel.addNewCityShortCutClickListener(cityName)
                                       },
             unitSelectionClickListener = {
-                viewModel.changeUnit()
+                viewModel.changeUnitClickListener()
             }
         )
     }

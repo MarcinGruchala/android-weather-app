@@ -138,7 +138,7 @@ class CitySelectionActivityViewModel @Inject constructor(
     }
 
 
-    fun addNewCityShortCut(cityName: String){
+    fun addNewCityShortCutClickListener(cityName: String){
         viewModelScope.launch(Dispatchers.Main) {
             val cityShortcutData = getCityShortcutData(cityName)
             if (cityShortcutData!=null){
@@ -189,7 +189,7 @@ class CitySelectionActivityViewModel @Inject constructor(
         return  null
     }
 
-    fun deleteCityShortCut(cityShortcut: CityShortcut){
+    fun deleteCityShortCutClickListener(cityShortcut: CityShortcut){
         viewModelScope.launch(Dispatchers.IO) {
             repository.deleteCityShortcutFromDatabase(cityShortcut)
         }
@@ -203,7 +203,7 @@ class CitySelectionActivityViewModel @Inject constructor(
 
     fun getUnitMode() = repository.unitOfMeasurement.value!!
 
-    fun changeUnit(): String{
+    fun changeUnitClickListener(): String{
         if (repository.unitOfMeasurement.value == UnitOfMeasurement.METRIC.value) {
             repository.unitOfMeasurement.value = UnitOfMeasurement.IMPERIAL.value
         }
