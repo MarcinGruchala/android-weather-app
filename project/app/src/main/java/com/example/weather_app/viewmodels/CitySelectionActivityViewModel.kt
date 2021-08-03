@@ -32,21 +32,33 @@ class CitySelectionActivityViewModel @Inject constructor(
     }
 
     private val unitOfMeasurementObserver = Observer<String> { _ ->
-        viewModelScope.launch launchWhenCreated@{
+        viewModelScope.launch {
             if (isCityListLoaded){
                 getCitySelectionList()
             }
         }
     }
 
+    private val deviceLocationObserver = Observer<String> {
+        viewModelScope.launch {
+            if (repository.deviceLocation.value != null){
+                getCitySelectionList()
+                isCityListLoaded = true
+            }
+        }
+    }
+
     private val allCityShortcutListObserver = Observer<List<CityShortcut>> {
-        viewModelScope.launch launchWhenCreated@{
-            getCitySelectionList()
-            isCityListLoaded = true
+        viewModelScope.launch {
+            if (repository.deviceLocation.value != null){
+                getCitySelectionList()
+                isCityListLoaded = true
+            }
         }
     }
 
     init {
+        repository.deviceLocation.observeForever(deviceLocationObserver)
         repository.allCityShortcutList.observeForever(allCityShortcutListObserver)
         repository.unitOfMeasurement.observeForever(unitOfMeasurementObserver)
     }
@@ -124,19 +136,25 @@ class CitySelectionActivityViewModel @Inject constructor(
     }
 
     fun addNewCityShortCut(cityName: String){
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.Main) {
             val cityShortcutData = getCityShortcutData(cityName)
             if (cityShortcutData!=null){
-                insertCityShortcut(
-                    CityShortcut(
-                        0,
-                        cityShortcutData.cityName,
-                        cityShortcutData.localTime,
-                        cityShortcutData.temp,
-                        cityShortcutData.icon
+                if (repository.deviceLocation.value == null){
+                    repository.deviceLocation.value = cityShortcutData.cityName
+                    repository.mainForecastLocation.value = cityShortcutData.cityName
+                }
+                else{
+                    insertCityShortcut(
+                        CityShortcut(
+                            0,
+                            cityShortcutData.cityName,
+                            cityShortcutData.localTime,
+                            cityShortcutData.temp,
+                            cityShortcutData.icon
+                        )
                     )
-                )
-                Log.d(TAG, "Inserted Data to database")
+                    Log.d(TAG, "Inserted Data to database")
+                }
             }
         }
     }

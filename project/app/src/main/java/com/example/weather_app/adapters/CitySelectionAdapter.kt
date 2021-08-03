@@ -23,7 +23,6 @@ class CitySelectionAdapter(
     private val unitSelectionClickListener: () -> String
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-
     class CityShortcutViewHolder(val binding: ItemCityShortcutBinding)
         : RecyclerView.ViewHolder(binding.root)
 

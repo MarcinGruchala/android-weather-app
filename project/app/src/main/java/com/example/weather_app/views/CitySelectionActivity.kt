@@ -64,6 +64,25 @@ class CitySelectionActivity : AppCompatActivity() {
             DividerItemDecoration(this,DividerItemDecoration.VERTICAL)
         )
 
+        binding.rvCitySelection.adapter = CitySelectionAdapter(
+            listOf(),
+            viewModel.getUnitMode(),
+            itemClickListener = { item ->
+                Log.d(TAG,"new location: ${item.cityName}")
+                viewModel.updateMainWeatherForecastLocation(item.cityName)
+                finish()
+            },
+            deleteButtonClickListener = { cityShortcut ->
+                viewModel.deleteCityShortCut(cityShortcut)
+            },
+            citySearchClickListener = { cityName ->
+                viewModel.addNewCityShortCut(cityName)
+            },
+            unitSelectionClickListener = {
+                viewModel.changeUnit()
+            }
+        )
+
     }
 
     private fun updateRecyclerView(){
