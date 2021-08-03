@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.WindowManager
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
@@ -35,22 +36,14 @@ class CitySelectionActivity : AppCompatActivity() {
         }
         viewModel.citySelectionList.observe(this,citySelectionListObserver)
 
-    }
+        val errorStatusObserver = Observer<Boolean> { status ->
+            if (status){
+                showErrorDialogWindow()
+                viewModel.errorStatus.value = false
+            }
+        }
+        viewModel.errorStatus.observe(this,errorStatusObserver)
 
-    private fun updateStatusBarColor(){
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-
-        window.statusBarColor =  ContextCompat.getColor(
-            this,
-            R.color.transparent
-        )
-
-        window.setBackgroundDrawable(
-            ContextCompat.getDrawable(
-                this,
-                UiUtils.getCityShortcutBackground(viewModel.citySelectionList.value!!.last().icon)
-            )
-        )
     }
 
     private fun recyclerViewsSetup(){
@@ -82,7 +75,22 @@ class CitySelectionActivity : AppCompatActivity() {
                 viewModel.changeUnit()
             }
         )
+    }
 
+    private fun updateStatusBarColor(){
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+
+        window.statusBarColor =  ContextCompat.getColor(
+            this,
+            R.color.transparent
+        )
+
+        window.setBackgroundDrawable(
+            ContextCompat.getDrawable(
+                this,
+                UiUtils.getCityShortcutBackground(viewModel.citySelectionList.value!!.last().icon)
+            )
+        )
     }
 
     private fun updateRecyclerView(){
@@ -103,6 +111,19 @@ class CitySelectionActivity : AppCompatActivity() {
                 viewModel.changeUnit()
             }
         )
+    }
+
+    private fun showErrorDialogWindow() {
+        AlertDialog.Builder(this)
+            .setTitle("Error message")
+            .setMessage(
+                applicationContext.getString(
+                    R.string.didnt_found_city
+                )
+            )
+            .setPositiveButton("OK") { _, _ -> }
+            .create()
+            .show()
     }
 
 }
