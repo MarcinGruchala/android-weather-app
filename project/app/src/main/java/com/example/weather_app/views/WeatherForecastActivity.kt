@@ -161,32 +161,25 @@ class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionC
                 R.string.main_L_temp,
                 data.main.temp_min.toInt()
             )
+            tvApiCallTime.setTextColor(
+                ContextCompat.getColor(
+                    applicationContext,
+                    UiUtils.getHeaderColor(viewModel.currentWeatherData.value!!.weather[0].icon
+                    )
+                )
+            )
             tvApiCallTime.text = viewModel.getApiCallTime()
         }
-//        binding.tvCity.text = data.name
-//        binding.tvWeatherDescription.text = data.weather[0].description.replaceFirstChar {
-//            if (it.isLowerCase()) it.titlecase(
-//                Locale.getDefault()
-//            ) else it.toString()
-//        }
-//        binding.tvTemp.text = getString(
-//            R.string.main_temp,
-//            data.main.temp.toInt()
-//        )
-//        binding.tvH.text = getString(
-//            R.string.main_H_temp,
-//            data.main.temp_max.toInt()
-//        )
-//        binding.tvL.text = getString(
-//            R.string.main_L_temp,
-//            data.main.temp_min.toInt()
-//        )
+
 
     }
 
     private fun  updateRecyclerViews(){
         binding.rvHourlyForecast.adapter = HourlyForecastAdapter(viewModel.getHourlyForecastList())
-        binding.rvVerticalWeatherData.adapter = VerticalWeatherDataAdapter(viewModel.getVerticalWeatherDataList())
+        binding.rvVerticalWeatherData.adapter = VerticalWeatherDataAdapter(
+            viewModel.currentWeatherData.value!!.weather[0].icon,
+            viewModel.getVerticalWeatherDataList()
+        )
     }
 
     override fun onRequestPermissionsResult(

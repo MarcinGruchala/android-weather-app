@@ -60,4 +60,13 @@ object UiUtils {
             else -> R.color.good_weather_status_bar
         }
     }
+
+    fun getHeaderColor(iconTag: String): Int {
+        return when(iconTag) {
+            in NIGHT_TAGS -> R.color.night_weather_header
+            in GOOD_WEATHER_TAGS -> R.color.good_weather_header
+            in BAD_WEATHER_TAGS -> R.color.bad_weather_header
+            else -> R.color.good_weather_header
+        }
+    }
 }

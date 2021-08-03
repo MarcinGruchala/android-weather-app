@@ -12,7 +12,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
         android:text=""
-        android:textColor="@color/weather_data_header"
+        android:textColor="@color/good_weather_header"
         android:textSize="17sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -32,7 +32,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
         android:text=""
-        android:textColor="@color/weather_data_header"
+        android:textColor="@color/good_weather_header"
         android:textSize="17sp"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toTopOf="parent" />

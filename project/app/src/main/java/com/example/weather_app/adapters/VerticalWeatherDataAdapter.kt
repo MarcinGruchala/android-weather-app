@@ -2,15 +2,19 @@ package com.example.weather_app.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weather_app.R
 import com.example.weather_app.databinding.ItemCurrentWeatherDataBinding
 import com.example.weather_app.databinding.ItemDailyForecastBinding
 import com.example.weather_app.models.VerticalWeatherData
+import com.example.weather_app.utils.UiUtils
 
 private const val DAILY_FORECAST_VIEW_TYPE = 10
 private const val CURRENT_WEATHER_DATA_VIEW_TYPE = 20
 class VerticalWeatherDataAdapter(
+
+    private val weatherType: String,
     private val data: VerticalWeatherData
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
@@ -70,10 +74,30 @@ class VerticalWeatherDataAdapter(
             CURRENT_WEATHER_DATA_VIEW_TYPE -> {
                 val viewHolder = holder as VerticalWeatherDataCurrentWeatherDataViewHolder
                 viewHolder.binding.apply {
-                    tvDataHeaderLeft.text = data.currentWeatherDataList[position-data.dailyForecastList.size].headerLeft
-                    tvDataHeaderRight.text = data.currentWeatherDataList[position-data.dailyForecastList.size].headerRight
-                    tvDataValueLeft.text = data.currentWeatherDataList[position-data.dailyForecastList.size].valueLeft
-                    tvDataValueRight.text = data.currentWeatherDataList[position-data.dailyForecastList.size].valueRight
+                    tvDataHeaderRight.setTextColor(
+                        ContextCompat.getColor(
+                            viewHolder.itemView.context,
+                            UiUtils.getHeaderColor(
+                                weatherType
+                            )
+                        )
+                    )
+                    tvDataHeaderLeft.setTextColor(
+                        ContextCompat.getColor(
+                            viewHolder.itemView.context,
+                            UiUtils.getHeaderColor(
+                                weatherType
+                            )
+                        )
+                    )
+                    tvDataHeaderLeft.text =
+                        data.currentWeatherDataList[position-data.dailyForecastList.size].headerLeft
+                    tvDataHeaderRight.text =
+                        data.currentWeatherDataList[position-data.dailyForecastList.size].headerRight
+                    tvDataValueLeft.text =
+                        data.currentWeatherDataList[position-data.dailyForecastList.size].valueLeft
+                    tvDataValueRight.text =
+                        data.currentWeatherDataList[position-data.dailyForecastList.size].valueRight
                 }
             }
         }
