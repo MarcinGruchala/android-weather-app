@@ -46,19 +46,28 @@
         android:id="@+id/tvH"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="5"
         android:textColor="@color/white"
         android:textSize="20sp"
-        tools:layout_editor_absoluteX="150dp"
-        tools:layout_editor_absoluteY="285dp" />
+        app:layout_constraintEnd_toStartOf="@+id/tvL"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvTemp" />
 
     <TextView
         android:id="@+id/tvL"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="5"
         android:textColor="@color/white"
         android:textSize="20sp"
-        tools:layout_editor_absoluteX="224dp"
-        tools:layout_editor_absoluteY="291dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/tvH"
+        app:layout_constraintTop_toBottomOf="@+id/tvTemp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvHourlyForecast"
@@ -108,6 +117,25 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rvVerticalWeatherData" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginBottom="8dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintBottom_toTopOf="@+id/rvHourlyForecast"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvL" />
+
+    <View
+        android:id="@+id/divider2"
+        android:layout_width="409dp"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="532dp" />
 
 
 </androidx.constraintlayout.motion.widget.MotionLayout>
