@@ -137,11 +137,10 @@ class CitySelectionActivityViewModel @Inject constructor(
         repository.mainForecastLocation.value = newLocation
     }
 
-
     fun addNewCityShortCutClickListener(cityName: String){
         viewModelScope.launch(Dispatchers.Main) {
             val cityShortcutData = getCityShortcutData(cityName)
-            if (cityShortcutData!=null){
+            if (cityShortcutData!=null && !isInCitySelectionList(cityShortcutData.cityName)){
                 if (repository.deviceLocation.value == null){
                     repository.deviceLocation.value = cityShortcutData.cityName
                     repository.mainForecastLocation.value = cityShortcutData.cityName
@@ -160,6 +159,15 @@ class CitySelectionActivityViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun isInCitySelectionList(cityName: String): Boolean {
+        for(city in citySelectionList.value!!){
+            if (city.cityName == cityName){
+                return true
+            }
+        }
+        return false
     }
 
     private suspend fun getCityShortcutData(cityName: String): CityShortcutData? {
