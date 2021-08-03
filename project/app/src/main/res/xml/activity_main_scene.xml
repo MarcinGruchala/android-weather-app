@@ -88,7 +88,7 @@
             motion:layout_constraintStart_toStartOf="parent"
             android:id="@+id/rvVerticalWeatherData"
             motion:layout_constraintEnd_toEndOf="parent"
-            motion:layout_constraintTop_toBottomOf="@id/divider2"
+            motion:layout_constraintTop_toBottomOf="@id/dividerBottomHourlyForecast"
             motion:layout_constraintBottom_toTopOf="@+id/btnCitySelection"
             android:layout_marginTop="0dp" />
         <Constraint
@@ -103,7 +103,7 @@
             android:layout_height="1dp"
             android:layout_width="409dp"
             motion:layout_constraintStart_toStartOf="parent"
-            android:id="@+id/divider2"
+            android:id="@+id/dividerBottomHourlyForecast"
             motion:layout_constraintEnd_toEndOf="parent"
             motion:layout_constraintTop_toBottomOf="@+id/rvHourlyForecast"
             motion:layout_constraintBottom_toTopOf="@+id/rvVerticalWeatherData"
@@ -156,14 +156,14 @@
             motion:layout_constraintEnd_toEndOf="parent"
             android:layout_width="0dp"
             android:id="@+id/rvVerticalWeatherData"
-            motion:layout_constraintTop_toBottomOf="@id/divider2"
+            motion:layout_constraintTop_toBottomOf="@id/dividerBottomHourlyForecast"
             motion:layout_constraintBottom_toTopOf="@+id/btnCitySelection"
             android:layout_marginTop="0dp" />
         <Constraint
             android:layout_width="0dp"
             android:layout_height="1dp"
             motion:layout_editor_absoluteY="532dp"
-            android:id="@+id/divider2"
+            android:id="@+id/dividerBottomHourlyForecast"
             motion:layout_constraintStart_toStartOf="parent"
             motion:layout_constraintEnd_toEndOf="parent"
             motion:layout_constraintTop_toBottomOf="@+id/rvHourlyForecast"

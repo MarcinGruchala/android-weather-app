@@ -119,7 +119,7 @@
         app:layout_constraintTop_toBottomOf="@+id/rvVerticalWeatherData" />
 
     <View
-        android:id="@+id/divider"
+        android:id="@+id/dividerTopHourlyForecast"
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_marginBottom="8dp"
@@ -130,7 +130,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tvL" />
 
     <View
-        android:id="@+id/divider2"
+        android:id="@+id/dividerBottomHourlyForecast"
         android:layout_width="409dp"
         android:layout_height="1dp"
         android:background="?android:attr/listDivider"
