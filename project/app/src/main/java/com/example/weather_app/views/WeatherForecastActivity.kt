@@ -126,6 +126,13 @@ class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionC
             this,
             UiUtils.getStatusBarColor(weatherTag)
         )
+
+        binding.dividerTopHourlyForecast.setBackgroundResource(
+            UiUtils.getHeaderColor(weatherTag)
+        )
+        binding.dividerBottomHourlyForecast.setBackgroundResource(
+            UiUtils.getHeaderColor(weatherTag)
+        )
     }
 
     private fun updateTextViews(data: CurrentWeatherDataResponse){

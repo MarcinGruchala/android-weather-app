@@ -48,14 +48,24 @@
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:id="@+id/tvH"
-            motion:layout_constraintStart_toStartOf="@+id/tvTemp"
-            motion:layout_constraintTop_toBottomOf="@+id/tvTemp" />
+            motion:layout_constraintEnd_toStartOf="@+id/tvL"
+            motion:layout_constraintHorizontal_bias="0.5"
+            motion:layout_constraintHorizontal_chainStyle="packed"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintTop_toBottomOf="@+id/tvTemp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="8dp" />
         <Constraint
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:id="@+id/tvL"
-            motion:layout_constraintEnd_toEndOf="@+id/tvTemp"
-            motion:layout_constraintTop_toBottomOf="@+id/tvTemp" />
+            motion:layout_constraintTop_toBottomOf="@+id/tvTemp"
+            motion:layout_editor_absoluteX="261dp"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintHorizontal_bias="0.5"
+            motion:layout_constraintStart_toEndOf="@+id/tvH"
+            android:layout_marginTop="4dp"
+            android:layout_marginStart="8dp" />
         <Constraint
             android:layout_height="wrap_content"
             motion:layout_constraintStart_toStartOf="parent"
@@ -78,9 +88,9 @@
             motion:layout_constraintStart_toStartOf="parent"
             android:id="@+id/rvVerticalWeatherData"
             motion:layout_constraintEnd_toEndOf="parent"
-            motion:layout_constraintTop_toBottomOf="@+id/rvHourlyForecast"
+            motion:layout_constraintTop_toBottomOf="@id/dividerBottomHourlyForecast"
             motion:layout_constraintBottom_toTopOf="@+id/btnCitySelection"
-            android:layout_marginTop="8dp" />
+            android:layout_marginTop="0dp" />
         <Constraint
             motion:layout_constraintEnd_toEndOf="parent"
             android:layout_width="wrap_content"
@@ -89,6 +99,16 @@
             motion:layout_constraintStart_toStartOf="parent"
             android:layout_marginTop="0dp"
             android:id="@+id/tvTemp" />
+        <Constraint
+            android:layout_height="1dp"
+            android:layout_width="409dp"
+            motion:layout_constraintStart_toStartOf="parent"
+            android:id="@+id/dividerBottomHourlyForecast"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintTop_toBottomOf="@+id/rvHourlyForecast"
+            motion:layout_constraintBottom_toTopOf="@+id/rvVerticalWeatherData"
+            android:layout_marginBottom="0dp"
+            android:layout_marginTop="8dp" />
     </ConstraintSet>
 
     <ConstraintSet android:id="@+id/end">
@@ -105,15 +125,21 @@
             android:layout_width="wrap_content"
             android:layout_height="1dp"
             motion:layout_editor_absoluteX="150dp"
-            motion:layout_constraintTop_toBottomOf="@+id/tvTemp"
-            android:layout_marginTop="0dp" />
+            motion:layout_constraintEnd_toStartOf="@+id/tvL"
+            motion:layout_constraintHorizontal_bias="0.5"
+            motion:layout_constraintHorizontal_chainStyle="packed"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintTop_toBottomOf="@+id/tvTemp"/>
         <Constraint
             android:id="@+id/tvL"
             android:layout_width="wrap_content"
             android:layout_height="1dp"
-            motion:layout_editor_absoluteX="224dp"
+            android:layout_marginStart="8dp"
             motion:layout_constraintTop_toBottomOf="@+id/tvTemp"
-            android:layout_marginTop="0dp" />
+            motion:layout_editor_absoluteX="261dp"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintHorizontal_bias="0.5"
+            motion:layout_constraintStart_toEndOf="@+id/tvH"/>
         <Constraint
             android:layout_height="wrap_content"
             motion:layout_constraintStart_toStartOf="parent"
@@ -130,8 +156,17 @@
             motion:layout_constraintEnd_toEndOf="parent"
             android:layout_width="0dp"
             android:id="@+id/rvVerticalWeatherData"
-            motion:layout_constraintTop_toBottomOf="@+id/rvHourlyForecast"
+            motion:layout_constraintTop_toBottomOf="@id/dividerBottomHourlyForecast"
             motion:layout_constraintBottom_toTopOf="@+id/btnCitySelection"
+            android:layout_marginTop="0dp" />
+        <Constraint
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            motion:layout_editor_absoluteY="532dp"
+            android:id="@+id/dividerBottomHourlyForecast"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintTop_toBottomOf="@+id/rvHourlyForecast"
             android:layout_marginTop="8dp" />
     </ConstraintSet>
 </MotionScene>

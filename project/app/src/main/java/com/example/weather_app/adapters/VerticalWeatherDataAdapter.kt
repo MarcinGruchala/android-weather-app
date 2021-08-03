@@ -74,6 +74,11 @@ class VerticalWeatherDataAdapter(
             CURRENT_WEATHER_DATA_VIEW_TYPE -> {
                 val viewHolder = holder as VerticalWeatherDataCurrentWeatherDataViewHolder
                 viewHolder.binding.apply {
+                    divider3.setBackgroundResource(
+                        UiUtils.getHeaderColor(
+                            weatherType
+                        )
+                    )
                     tvDataHeaderRight.setTextColor(
                         ContextCompat.getColor(
                             viewHolder.itemView.context,
