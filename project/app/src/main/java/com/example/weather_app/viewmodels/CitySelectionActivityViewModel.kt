@@ -179,7 +179,7 @@ class CitySelectionActivityViewModel @Inject constructor(
                 false
             )
             return CityShortcutData(
-                cityName,
+                currentWeatherDataResponse.body()!!.name,
                 localTime,
                 currentWeatherDataResponse.body()!!.main.temp.toInt(),
                 currentWeatherDataResponse.body()!!.weather[0].icon
