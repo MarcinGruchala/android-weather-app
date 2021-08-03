@@ -16,13 +16,12 @@ private const val CITY_SHORTCUT_VIEW_TYPE = 10
 private const val CITY_SELECTION_VIEW_TYPE = 20
 class CitySelectionAdapter(
     private val data: List<CityShortcut>,
-    private val unitMode: UnitOfMeasurement,
+    private val unitMode: String,
     private val itemClickListener: (CityShortcut) -> Unit,
     private val deleteButtonClickListener: (CityShortcut) -> Unit,
     private val citySearchClickListener: (String) -> Unit,
-    private val unitSelectionClickListener: () -> UnitOfMeasurement
+    private val unitSelectionClickListener: () -> String
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
 
     class CityShortcutViewHolder(val binding: ItemCityShortcutBinding)
         : RecyclerView.ViewHolder(binding.root)
@@ -106,7 +105,7 @@ class CitySelectionAdapter(
                 val viewHolder= holder as CitySelectionViewHolder
                 viewHolder.binding.apply {
 
-                    if (unitMode == UnitOfMeasurement.METRIC){
+                    if (unitMode == UnitOfMeasurement.METRIC.value){
                         tvFahrenheit.setTextColor(Color.GRAY)
                     }
                     else{
@@ -119,7 +118,7 @@ class CitySelectionAdapter(
                     }
 
                     clUnitSelection.setOnClickListener {
-                        if(unitSelectionClickListener() == UnitOfMeasurement.METRIC){
+                        if(unitSelectionClickListener() == UnitOfMeasurement.METRIC.value){
                             tvFahrenheit.setTextColor(Color.GRAY)
                         }
                         else{

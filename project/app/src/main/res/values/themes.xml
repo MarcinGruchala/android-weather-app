@@ -6,8 +6,8 @@
         <item name="colorPrimaryVariant">@color/light_blue</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/weather_data_header</item>
-        <item name="colorSecondaryVariant">@color/weather_data_header</item>
+        <item name="colorSecondary">@color/good_weather_header</item>
+        <item name="colorSecondaryVariant">@color/good_weather_header</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>

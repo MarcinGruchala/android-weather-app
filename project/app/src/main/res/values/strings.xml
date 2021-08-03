@@ -18,4 +18,6 @@
     <string name="btnCancel">Cancel</string>
     <string name="my_location_header">My Location</string>
     <string name="btnDelete">Delete</string>
+    <string name="no_permission_dialog_message">You didn\'t allow application to automatically localize your phone. Please insert location that will be your device location.</string>
+    <string name="didnt_found_city">Application didn\'t found city. Please insert city name again.</string>
 </resources>

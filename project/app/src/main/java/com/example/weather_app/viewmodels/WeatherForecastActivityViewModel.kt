@@ -11,6 +11,7 @@ import com.example.weather_app.utils.UiUtils
 import com.example.weather_app.webservices.model.current_weather_data.CurrentWeatherDataResponse
 import com.example.weather_app.webservices.model.weather_forecast_data.WeatherForecastDataResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
@@ -24,6 +25,10 @@ class WeatherForecastActivityViewModel @Inject constructor(
     private val repository: RepositoryImpl,
     private val apiKey: String
 ) : ViewModel() {
+
+    val errorStatus: MutableLiveData<Boolean> by lazy {
+        MutableLiveData<Boolean>(false)
+    }
 
     val currentWeatherData: MutableLiveData<CurrentWeatherDataResponse> by lazy {
         MutableLiveData<CurrentWeatherDataResponse>()
@@ -49,7 +54,7 @@ class WeatherForecastActivityViewModel @Inject constructor(
         }
     }
 
-    private val unitOfMeasurementObserver = Observer<UnitOfMeasurement> {
+    private val unitOfMeasurementObserver = Observer<String> {
         viewModelScope.launch launchWhenCreated@{
             if (repository.mainForecastLocation.value!=null){
                 downloadWeatherData()
@@ -69,7 +74,7 @@ class WeatherForecastActivityViewModel @Inject constructor(
                 repository.getCurrentWeatherDataResponse(
                     apiKey,
                     repository.mainForecastLocation.value!!,
-                    repository.unitOfMeasurement.value!!.value)
+                    repository.unitOfMeasurement.value!!)
             }catch (e: IOException){
                 return@launchWhenCreated
 
@@ -78,6 +83,10 @@ class WeatherForecastActivityViewModel @Inject constructor(
             }
             if (currentWeatherDayResponse.isSuccessful && currentWeatherDayResponse.body() != null ) {
                 currentWeatherData.value = currentWeatherDayResponse.body()
+                if (!repository.isTimezoneSet){
+                    repository.deviceTimezone = currentWeatherData.value!!.timezone
+                    repository.isTimezoneSet = true
+                }
 
                 val weatherForecastDataResponse = try {
                     repository.getWeatherForecastDataResponse(
@@ -85,7 +94,7 @@ class WeatherForecastActivityViewModel @Inject constructor(
                         currentWeatherData.value?.coord!!.lon,
                         "current,minutely,alerts",
                         apiKey,
-                        repository.unitOfMeasurement.value!!.value
+                        repository.unitOfMeasurement.value!!
                     )
                 }catch (e: IOException){
                     return@launchWhenCreated
@@ -101,8 +110,31 @@ class WeatherForecastActivityViewModel @Inject constructor(
     }
 
     fun updateDeviceLocation(location: String){
-        repository.deviceLocation.value = location
-        repository.mainForecastLocation.value = location
+        viewModelScope.launch {
+            val currentWeatherDataResponse = repository.getCurrentWeatherDataResponse(
+                apiKey,
+                location,
+                repository.unitOfMeasurement.value!!
+            )
+            if ( currentWeatherDataResponse.isSuccessful && currentWeatherDataResponse.body() != null ) {
+                repository.deviceLocation.value = location
+                repository.mainForecastLocation.value = location
+            }
+            else{
+                errorStatus.value = true
+            }
+        }
+
+    }
+
+    fun getApiCallTime(): String {
+        return "Last update: " + ClockUtils.getTimeFromUnixTimestamp(
+            currentWeatherData.value!!.dt * 1000L,
+            repository.deviceTimezone * 1000L,
+            repository.deviceTimezone * 1000L,
+            true,
+            clockPeriodMode = false
+        )
     }
 
     fun getHourlyForecastList(): List<HourlyForecastData>{
@@ -121,8 +153,9 @@ class WeatherForecastActivityViewModel @Inject constructor(
                     ClockUtils.getTimeFromUnixTimestamp(
                         weatherForecastData.value!!.hourly[i].dt * 1000L,
                         weatherForecastData.value!!.timezone_offset * 1000L,
+                        repository.deviceTimezone * 1000L,
                         false,
-                        true
+                        clockPeriodMode = false
                     ),
                     weatherForecastData.value!!.hourly[i].temp.toInt(),
                     UiUtils.getWeatherIcon(weatherForecastData.value!!.hourly[i].weather[0].icon)
@@ -135,7 +168,9 @@ class WeatherForecastActivityViewModel @Inject constructor(
 
     fun getVerticalWeatherDataList(): VerticalWeatherData{
         val dailyForecastList: List<DailyForecastData> = getDailyWeatherForecastList()
-        val currentWeatherDataList: List<CurrentWeatherData> = getCurrentWeatherDataList()
+        val currentWeatherDataList: List<CurrentWeatherData> = getCurrentWeatherDataList(
+            repository.unitOfMeasurement.value!!
+        )
 
         return VerticalWeatherData(dailyForecastList,currentWeatherDataList)
     }
@@ -145,26 +180,81 @@ class WeatherForecastActivityViewModel @Inject constructor(
         for (i in 1..7){
             dailyForecastList.add(
                 DailyForecastData(
-                    ClockUtils.getDayFromUnixTimestamp(weatherForecastData.value!!.daily[i].dt*1000L),
+                    ClockUtils.getDayFromUnixTimestamp(
+                        weatherForecastData.value!!.daily[i].dt*1000L,
+                        currentWeatherData.value!!.timezone * 1000L,
+                        repository.deviceTimezone * 1000L,
+                    ),
                     weatherForecastData.value!!.daily[i].temp.max.toInt(),
                     weatherForecastData.value!!.daily[i].temp.min.toInt(),
-                    UiUtils.getWeatherIcon(weatherForecastData.value!!.daily[i].weather[0].icon)
+                    UiUtils.getWeatherIcon(
+                        weatherForecastData.value!!.daily[i].weather[0].icon
+                    )
                 )
             )
         }
         return dailyForecastList
     }
 
-    private fun getCurrentWeatherDataList(): List<CurrentWeatherData>{
-        return listOf(
-            CurrentWeatherData("SUNRISE", ClockUtils.getTimeFromUnixTimestamp(currentWeatherData.value!!.sys.sunrise.toLong(), currentWeatherData.value!!.timezone * 1000L , true, true)
-                ,"SUNSET",ClockUtils.getTimeFromUnixTimestamp(currentWeatherData.value!!.sys.sunset.toLong(),currentWeatherData.value!!.timezone * 1000L , true,true)),
-            CurrentWeatherData("PRESSURE","${currentWeatherData.value!!.main.pressure} Pa",
-                "HUMIDITY","${currentWeatherData.value!!.main.humidity}%"),
-            CurrentWeatherData("Wind","${currentWeatherData.value!!.wind.speed} km/h",
-                "FEELS LIKE","${currentWeatherData.value!!.main.feels_like.toInt()}°"),
-            CurrentWeatherData("WIND DEG","${currentWeatherData.value!!.wind.deg} deg",
-                "VISIBILITY","${currentWeatherData.value!!.visibility} m"),
+    private fun getCurrentWeatherDataList(unitOfMeasurement: String)
+    : List<CurrentWeatherData>{
+        val weatherDataList = mutableListOf(
+            CurrentWeatherData(
+                "SUNRISE",
+                ClockUtils.getTimeFromUnixTimestamp(
+                    currentWeatherData.value!!.sys.sunrise * 1000L,
+                    currentWeatherData.value!!.timezone * 1000L,
+                    repository.deviceTimezone * 1000L,
+                    true,
+                    clockPeriodMode = false
+                ),
+                "SUNSET",
+                ClockUtils.getTimeFromUnixTimestamp(
+                    currentWeatherData.value!!.sys.sunset * 1000L,
+                    currentWeatherData.value!!.timezone * 1000L ,
+                    repository.deviceTimezone * 1000L,
+                    true,
+                    clockPeriodMode = false
+                )
+            ),
+            CurrentWeatherData(
+                "LOCAL TIME",
+                ClockUtils.getTimeFromUnixTimestamp(
+                    System.currentTimeMillis(),
+                    currentWeatherData.value!!.timezone * 1000L,
+                    repository.deviceTimezone * 1000L,
+                    true,
+                    clockPeriodMode = false
+                ),
+                "FEELS LIKE",
+                "${currentWeatherData.value!!.main.feels_like.toInt()}°"
+            ),
+            CurrentWeatherData(
+                "PRESSURE",
+                "${currentWeatherData.value!!.main.pressure} Pa",
+                "HUMIDITY",
+                "${currentWeatherData.value!!.main.humidity}%"
+            )
         )
+        if (unitOfMeasurement == UnitOfMeasurement.METRIC.value){
+            weatherDataList.add(
+                CurrentWeatherData(
+                    "Wind",
+                    "${currentWeatherData.value!!.wind.speed} km/h",
+                    "VISIBILITY",
+                    "${currentWeatherData.value!!.visibility} m"
+                )
+            )
+            return weatherDataList
+        }
+        weatherDataList.add(
+            CurrentWeatherData(
+                "Wind",
+                "${currentWeatherData.value!!.wind.speed} mph",
+                "VISIBILITY",
+                "${currentWeatherData.value!!.visibility} m"
+            )
+        )
+        return weatherDataList
     }
 }

@@ -1,5 +1,7 @@
 package com.example.weather_app.repository
 
+import android.content.SharedPreferences
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.weather_app.models.UnitOfMeasurement
@@ -9,19 +11,24 @@ import com.example.weather_app.webservices.OpenWeatherAPIService
 import com.example.weather_app.webservices.model.current_weather_data.CurrentWeatherDataResponse
 import com.example.weather_app.webservices.model.weather_forecast_data.WeatherForecastDataResponse
 import retrofit2.Response
+import java.util.*
 
 
 class RepositoryImpl(
     private val webservice: OpenWeatherAPIService,
-    private val cityShortcutDao: CityShortcutDao
+    private val cityShortcutDao: CityShortcutDao,
+    unitOfMeasurementSP: SharedPreferences
 ) : Repository {
+
+    var deviceTimezone = TimeZone.getDefault().rawOffset
+    var isTimezoneSet = false
 
     val deviceLocation: MutableLiveData<String> by lazy {
         MutableLiveData<String>()
     }
 
-    val unitOfMeasurement: MutableLiveData<UnitOfMeasurement> by lazy {
-        MutableLiveData<UnitOfMeasurement>(UnitOfMeasurement.METRIC)
+    val unitOfMeasurement: MutableLiveData<String> by lazy {
+        MutableLiveData<String>(UnitOfMeasurement.METRIC.value)
     }
 
     val mainForecastLocation: MutableLiveData<String> by lazy {
@@ -32,6 +39,12 @@ class RepositoryImpl(
         cityShortcutDao.getAllCityShortcuts()
     }
 
+    init {
+        unitOfMeasurement.value = unitOfMeasurementSP.getString(
+            "unitOfMeasurement",
+            UnitOfMeasurement.METRIC.value
+        )
+    }
 
     override suspend fun getCurrentWeatherDataResponse(
         apiKey: String,

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.WindowManager
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
@@ -35,6 +36,45 @@ class CitySelectionActivity : AppCompatActivity() {
         }
         viewModel.citySelectionList.observe(this,citySelectionListObserver)
 
+        val errorStatusObserver = Observer<Boolean> { status ->
+            if (status){
+                showErrorDialogWindow()
+                viewModel.errorStatus.value = false
+            }
+        }
+        viewModel.errorStatus.observe(this,errorStatusObserver)
+
+    }
+
+    private fun recyclerViewsSetup(){
+        binding.rvCitySelection.layoutManager = LinearLayoutManager(
+            this,
+            LinearLayoutManager.VERTICAL,
+            false
+        )
+
+        binding.rvCitySelection.addItemDecoration(
+            DividerItemDecoration(this,DividerItemDecoration.VERTICAL)
+        )
+
+        binding.rvCitySelection.adapter = CitySelectionAdapter(
+            listOf(),
+            viewModel.getUnitMode(),
+            itemClickListener = { item ->
+                Log.d(TAG,"new location: ${item.cityName}")
+                viewModel.updateMainWeatherForecastLocation(item.cityName)
+                finish()
+            },
+            deleteButtonClickListener = { cityShortcut ->
+                viewModel.deleteCityShortCutClickListener(cityShortcut)
+            },
+            citySearchClickListener = { cityName ->
+                viewModel.addNewCityShortCutClickListener(cityName)
+            },
+            unitSelectionClickListener = {
+                viewModel.changeUnitClickListener()
+            }
+        )
     }
 
     private fun updateStatusBarColor(){
@@ -53,19 +93,6 @@ class CitySelectionActivity : AppCompatActivity() {
         )
     }
 
-    private fun recyclerViewsSetup(){
-        binding.rvCitySelection.layoutManager = LinearLayoutManager(
-            this,
-            LinearLayoutManager.VERTICAL,
-            false
-        )
-
-        binding.rvCitySelection.addItemDecoration(
-            DividerItemDecoration(this,DividerItemDecoration.VERTICAL)
-        )
-
-    }
-
     private fun updateRecyclerView(){
         binding.rvCitySelection.adapter = CitySelectionAdapter(viewModel.citySelectionList.value!!,
             viewModel.getUnitMode(),
@@ -75,15 +102,28 @@ class CitySelectionActivity : AppCompatActivity() {
                 finish()
                                 },
             deleteButtonClickListener = { cityShortcut ->
-                viewModel.deleteCityShortCut(cityShortcut)
+                viewModel.deleteCityShortCutClickListener(cityShortcut)
             },
             citySearchClickListener = { cityName ->
-                viewModel.addNewCityShortCut(cityName)
+                viewModel.addNewCityShortCutClickListener(cityName)
                                       },
             unitSelectionClickListener = {
-                viewModel.changeUnit()
+                viewModel.changeUnitClickListener()
             }
         )
+    }
+
+    private fun showErrorDialogWindow() {
+        AlertDialog.Builder(this)
+            .setTitle("Error message")
+            .setMessage(
+                applicationContext.getString(
+                    R.string.didnt_found_city
+                )
+            )
+            .setPositiveButton("OK") { _, _ -> }
+            .create()
+            .show()
     }
 
 }

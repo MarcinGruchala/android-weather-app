@@ -15,7 +15,7 @@
         android:layout_marginTop="32dp"
         android:text="@string/no_data"
         android:textColor="#FFFFFF"
-        android:textSize="40sp"
+        android:textSize="80sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -25,7 +25,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="@string/no_data"
         android:textColor="@color/white"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -37,7 +36,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="@string/no_data"
         android:textColor="@color/white"
         android:textSize="85sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -48,7 +46,6 @@
         android:id="@+id/tvH"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/no_data"
         android:textColor="@color/white"
         android:textSize="20sp"
         tools:layout_editor_absoluteX="150dp"
@@ -58,7 +55,6 @@
         android:id="@+id/tvL"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/no_data"
         android:textColor="@color/white"
         android:textSize="20sp"
         tools:layout_editor_absoluteX="224dp"
@@ -68,6 +64,7 @@
         android:id="@+id/rvHourlyForecast"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/rvVerticalWeatherData"
         app:layout_constraintEnd_toEndOf="parent"
@@ -94,11 +91,23 @@
         android:id="@+id/rvVerticalWeatherData"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintBottom_toTopOf="@+id/btnCitySelection"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rvHourlyForecast" />
+
+    <TextView
+        android:id="@+id/tvApiCallTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:textColor="@color/good_weather_header"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rvVerticalWeatherData" />
 
 
 </androidx.constraintlayout.motion.widget.MotionLayout>

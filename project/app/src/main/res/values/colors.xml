@@ -8,7 +8,9 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="light_blue">#00A2E8</color>
-    <color name="weather_data_header">#C4E6FA</color>
+    <color name="good_weather_header">#C4E6FA</color>
+    <color name="bad_weather_header">#B8B8B8</color>
+    <color name="night_weather_header">#93678C</color>
     <color name="gray">#808080</color>
     <color name="orange">#FD440A</color>
     <color name="good_weather_status_bar">#36D1DC</color>
