@@ -11,14 +11,17 @@ class HourlyForecastAdapter(
     private var forecasts: List<HourlyForecastData>
 ) : RecyclerView.Adapter<HourlyForecastAdapter.HourlyForecastViewHolder>() {
 
-    class HourlyForecastViewHolder(val binding: ItemHourlyForecastBinding) : RecyclerView.ViewHolder(binding.root)
+    class HourlyForecastViewHolder(val binding: ItemHourlyForecastBinding)
+        : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HourlyForecastViewHolder {
-        return HourlyForecastViewHolder(ItemHourlyForecastBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent,
-            false
-        ))
+        return HourlyForecastViewHolder(
+            ItemHourlyForecastBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
     }
 
     override fun onBindViewHolder(holder: HourlyForecastViewHolder, position: Int) {
