@@ -4,10 +4,8 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.location.Geocoder
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
@@ -27,7 +25,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.util.*
 
-private const val TAG = "WeatherForecastActivity"
 private const val PERMISSION_LOCATION_REQUEST_CODE = 10
 @AndroidEntryPoint
 class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
@@ -130,9 +127,7 @@ class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionC
         val fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
         if (hasLocationPermission()) {
             fusedLocationProviderClient.lastLocation.addOnSuccessListener { location ->
-                Log.d(TAG,"Location founded")
                 if (location == null){
-                    Log.d(TAG,"Location null")
                     showInsertLocalityDialog(
                         applicationContext.getString(
                             R.string.insert_location_dialog_description
@@ -146,9 +141,7 @@ class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionC
                         lon,
                         1
                     ).first().locality
-                    Log.d(TAG,"Locality: $locality")
                     if (locality == null) {
-                        Log.d(TAG, "Didn't found the locality")
                         showInsertLocalityDialog(
                             applicationContext.getString(
                                 R.string.insert_location_dialog_description
