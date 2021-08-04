@@ -133,6 +133,10 @@ class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionC
         binding.dividerBottomHourlyForecast.setBackgroundResource(
             UiUtils.getHeaderColor(weatherTag)
         )
+
+        binding.divider.setBackgroundResource(
+            UiUtils.getHeaderColor(weatherTag)
+        )
     }
 
     private fun updateTextViews(data: CurrentWeatherDataResponse){
