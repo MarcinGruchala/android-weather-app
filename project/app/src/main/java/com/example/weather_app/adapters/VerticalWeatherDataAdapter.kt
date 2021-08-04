@@ -84,11 +84,11 @@ class VerticalWeatherDataAdapter(
         viewHolder.binding.apply {
             tvDay.text = data.dailyForecastList[position].day
             tvDailyH.text = viewHolder.itemView.context.getString(
-                R.string.secondary_temp,
+                R.string.temp,
                 data.dailyForecastList[position].tempH
             )
             tvDailyL.text = viewHolder.itemView.context.getString(
-                R.string.secondary_temp,
+                R.string.temp,
                 data.dailyForecastList[position].tempL
             )
             ivDailyWeatherIcon.setImageResource(data.dailyForecastList[position].icon)

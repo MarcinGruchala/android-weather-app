@@ -4,6 +4,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.weather_app.R
+import com.example.weather_app.di.WeatherApplication
 import com.example.weather_app.models.*
 import com.example.weather_app.repository.RepositoryImpl
 import com.example.weather_app.utils.ClockUtils
@@ -20,7 +22,8 @@ import javax.inject.Inject
 @HiltViewModel
 class WeatherForecastActivityViewModel @Inject constructor(
     private val repository: RepositoryImpl,
-    private val apiKey: String
+    private val apiKey: String,
+    private val application: WeatherApplication
 ) : ViewModel() {
 
     val errorStatus: MutableLiveData<Boolean> by lazy {
@@ -121,29 +124,30 @@ class WeatherForecastActivityViewModel @Inject constructor(
                 currentWeatherDataResponse.body() != null ) {
                 repository.deviceLocation.value = location
                 repository.mainForecastLocation.value = location
-            }
-            else {
+            } else {
                 errorStatus.value = true
             }
         }
     }
 
     fun getApiCallTime(): String {
-        return "Last update: " + ClockUtils.getTimeFromUnixTimestamp(
-            currentWeatherData.value!!.dt * 1000L,
-            repository.deviceTimezone * 1000L,
-            repository.deviceTimezone * 1000L,
-            true,
-            clockPeriodMode = false
-        )
+        return application.getString(R.string.lastUpdateHeader) +
+                ClockUtils.getTimeFromUnixTimestamp(
+                    currentWeatherData.value!!.dt * 1000L,
+                    repository.deviceTimezone * 1000L,
+                    repository.deviceTimezone * 1000L,
+                    true,
+                    clockPeriodMode = false
+                )
     }
 
     fun getHourlyForecastList(): List<HourlyForecastData> {
         val list: MutableList<HourlyForecastData> = mutableListOf()
-
         list.add(
             HourlyForecastData(
-            "Now",
+            application.getString(
+                R.string.hourlyForecastNow
+            ),
             currentWeatherData.value?.main?.temp!!.toInt(),
             UiUtils.getWeatherIcon(currentWeatherData.value!!.weather[0].icon)
             )
@@ -200,7 +204,9 @@ class WeatherForecastActivityViewModel @Inject constructor(
     ): List<CurrentWeatherData> {
         val weatherDataList = mutableListOf(
             CurrentWeatherData(
-                "SUNRISE",
+                application.getString(
+                    R.string.sunriseHeader
+                ),
                 ClockUtils.getTimeFromUnixTimestamp(
                     currentWeatherData.value!!.sys.sunrise * 1000L,
                     currentWeatherData.value!!.timezone * 1000L,
@@ -208,7 +214,9 @@ class WeatherForecastActivityViewModel @Inject constructor(
                     true,
                     clockPeriodMode = false
                 ),
-                "SUNSET",
+                application.getString(
+                    R.string.sunsetHeader
+                ),
                 ClockUtils.getTimeFromUnixTimestamp(
                     currentWeatherData.value!!.sys.sunset * 1000L,
                     currentWeatherData.value!!.timezone * 1000L ,
@@ -218,7 +226,9 @@ class WeatherForecastActivityViewModel @Inject constructor(
                 )
             ),
             CurrentWeatherData(
-                "LOCAL TIME",
+                application.getString(
+                    R.string.localTimeHeader
+                ),
                 ClockUtils.getTimeFromUnixTimestamp(
                     System.currentTimeMillis(),
                     currentWeatherData.value!!.timezone * 1000L,
@@ -226,33 +236,65 @@ class WeatherForecastActivityViewModel @Inject constructor(
                     true,
                     clockPeriodMode = false
                 ),
-                "FEELS LIKE",
-                "${currentWeatherData.value!!.main.feels_like.toInt()}°"
+                application.getString(
+                    R.string.feelsLikeHeader
+                ),
+                application.getString(
+                    R.string.temp,
+                    currentWeatherData.value!!.main.feels_like.toInt()
+                )
             ),
             CurrentWeatherData(
-                "PRESSURE",
-                "${currentWeatherData.value!!.main.pressure} Pa",
-                "HUMIDITY",
+                application.getString(
+                    R.string.pressureHeader
+                ),
+                application.getString(
+                    R.string.pascals,
+                    currentWeatherData.value!!.main.pressure
+                ),
+                application.getString(
+                    R.string.humidityHeader
+                ),
                 "${currentWeatherData.value!!.main.humidity}%"
             )
         )
         if (unitOfMeasurement == UnitOfMeasurement.METRIC.value) {
             weatherDataList.add(
                 CurrentWeatherData(
-                    "Wind",
-                    "${currentWeatherData.value!!.wind.speed} km/h",
-                    "VISIBILITY",
-                    "${currentWeatherData.value!!.visibility} m"
+                    application.getString(
+                        R.string.windHeader
+                    ),
+                    application.getString(
+                        R.string.kph,
+                        currentWeatherData.value!!.wind.speed.toInt()
+                    ),
+                    application.getString(
+                        R.string.visibilityHeader
+                    ),
+                    application.getString(
+                        R.string.meters,
+                        currentWeatherData.value!!.visibility
+                    )
                 )
             )
             return weatherDataList
         }
         weatherDataList.add(
             CurrentWeatherData(
-                "Wind",
-                "${currentWeatherData.value!!.wind.speed} mph",
-                "VISIBILITY",
-                "${currentWeatherData.value!!.visibility} m"
+                application.getString(
+                    R.string.windHeader
+                ),
+                application.getString(
+                    R.string.miph,
+                    currentWeatherData.value!!.wind.speed
+                ),
+                application.getString(
+                    R.string.visibilityHeader
+                ),
+                application.getString(
+                    R.string.meters,
+                    currentWeatherData.value!!.visibility
+                )
             )
         )
         return weatherDataList

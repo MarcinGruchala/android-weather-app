@@ -35,7 +35,7 @@ class HourlyForecastAdapter(
         holder.binding.apply {
             tvHour.text = forecasts[position].hour
             tvHourlyTemp.text = holder.itemView.context.getString(
-                R.string.secondary_temp,
+                R.string.temp,
                 forecasts[position].temp
             )
             ivHourlyIcon.setImageResource(forecasts[position].icon)

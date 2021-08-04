@@ -157,7 +157,7 @@ class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionC
                 ) else it.toString()
             }
             tvTemp.text = getString(
-                R.string.main_temp,
+                R.string.temp,
                 data.main.temp.toInt()
             )
             tvH.text = getString(

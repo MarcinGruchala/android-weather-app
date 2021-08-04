@@ -92,7 +92,7 @@ class CitySelectionAdapter(
                     R.string.my_location_header
                 )
                 tvCityTemp.text =  viewHolder.itemView.context.getString(
-                    R.string.main_temp,
+                    R.string.temp,
                     data[reversePosition].temp
                 )
                 ivCityShortcutWeatherIcon.setImageResource(
@@ -106,7 +106,7 @@ class CitySelectionAdapter(
             viewHolder.binding.apply {
                 tvCityName.text = data[reversePosition].cityName
                 tvCityTemp.text = viewHolder.itemView.context.getString(
-                    R.string.main_temp,
+                    R.string.temp,
                     data[reversePosition].temp
                 )
                 tvLocalTime.text = data[reversePosition].localTime
