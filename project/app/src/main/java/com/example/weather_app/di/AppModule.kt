@@ -14,7 +14,9 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideApplicationContext(@ApplicationContext app: Context): WeatherApplication{
+    fun provideApplicationContext(
+        @ApplicationContext app: Context
+    ): WeatherApplication {
         return app as WeatherApplication
     }
 }

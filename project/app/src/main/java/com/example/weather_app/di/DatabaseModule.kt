@@ -15,18 +15,19 @@ object DatabaseModule {
 
     @Singleton
     @Provides
-    fun provideCityShortcutDao(cityShortcutDatabase: CityShortcutDatabase)
-    : CityShortcutDao = cityShortcutDatabase.cityShortcutDao()
+    fun provideCityShortcutDao(
+        cityShortcutDatabase: CityShortcutDatabase
+    ): CityShortcutDao = cityShortcutDatabase.cityShortcutDao()
 
     @Singleton
     @Provides
-    fun provideCityShortcutDatabase(applicationContext: WeatherApplication)
-    : CityShortcutDatabase = Room.databaseBuilder(
+    fun provideCityShortcutDatabase(
+        applicationContext: WeatherApplication
+    ): CityShortcutDatabase = Room.databaseBuilder(
         applicationContext,
         CityShortcutDatabase::class.java,
         "cities_shortcuts",
     )
         .fallbackToDestructiveMigration()
         .build()
-
 }
