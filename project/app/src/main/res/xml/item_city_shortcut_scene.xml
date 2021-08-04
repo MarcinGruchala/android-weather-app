@@ -6,7 +6,7 @@
     <Transition
         android:id="@+id/transitionCityShortcut"
         motion:constraintSetEnd="@+id/swipeDataEnd"
-        motion:constraintSetStart="@id/swipeDataStart"
+        motion:constraintSetStart="@id/start"
         motion:duration="1000">
        <KeyFrameSet>
        </KeyFrameSet>
@@ -18,7 +18,7 @@
             />
     </Transition>
 
-    <ConstraintSet android:id="@+id/swipeDataStart">
+    <ConstraintSet android:id="@+id/start">
         <Constraint
             motion:layout_constraintEnd_toEndOf="parent"
             android:layout_width="0dp"

@@ -17,4 +17,5 @@
     <color name="bad_weather_status_bar">#bdc3c7</color>
     <color name="night_status_bar">#734b6d</color>
     <color name="transparent">#00FFFFFF</color>
+    <color name="green">#07D800</color>
 </resources>
