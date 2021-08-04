@@ -22,20 +22,27 @@ class CitySelectionAdapter(
     private val unitSelectionClickListener: () -> String
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    class CityShortcutViewHolder(val binding: ItemCityShortcutBinding)
-        : RecyclerView.ViewHolder(binding.root)
+    class CityShortcutViewHolder(
+        val binding: ItemCityShortcutBinding
+        ) : RecyclerView.ViewHolder(binding.root)
 
-    class CitySelectionViewHolder(val binding: ItemCitySelectionBinding)
-        : RecyclerView.ViewHolder(binding.root)
+    class CitySelectionViewHolder(
+        val binding: ItemCitySelectionBinding
+        ) : RecyclerView.ViewHolder(binding.root)
 
-    override fun getItemViewType(position: Int): Int {
+    override fun getItemViewType(
+        position: Int
+    ): Int {
         if (position == itemCount - 1){
             return CITY_SELECTION_VIEW_TYPE
         }
         return CITY_SHORTCUT_VIEW_TYPE
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): RecyclerView.ViewHolder {
         if (viewType == CITY_SHORTCUT_VIEW_TYPE){
             return CityShortcutViewHolder(
                 ItemCityShortcutBinding.inflate(
@@ -54,16 +61,22 @@ class CitySelectionAdapter(
         )
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        when(holder.itemViewType){
+    override fun onBindViewHolder(
+        holder: RecyclerView.ViewHolder,
+        position: Int
+    ) {
+        when(holder.itemViewType) {
             CITY_SHORTCUT_VIEW_TYPE -> bindCityShortcutViewType(holder, position)
-            CITY_SELECTION_VIEW_TYPE -> bindCitySelectionViewType(holder, position)
+            CITY_SELECTION_VIEW_TYPE -> bindCitySelectionViewType(holder)
         }
     }
 
     override fun getItemCount(): Int = data.size+1
 
-    private fun bindCityShortcutViewType(holder: RecyclerView.ViewHolder, position: Int) {
+    private fun bindCityShortcutViewType(
+        holder: RecyclerView.ViewHolder,
+        position: Int
+    ) {
         val viewHolder = holder as CityShortcutViewHolder
         val reversePosition = data.size - position - 1
         viewHolder.binding.root.setBackgroundResource(
@@ -110,7 +123,9 @@ class CitySelectionAdapter(
         }
     }
 
-    private fun bindCitySelectionViewType(holder: RecyclerView.ViewHolder, position: Int) {
+    private fun bindCitySelectionViewType(
+        holder: RecyclerView.ViewHolder,
+    ) {
         val viewHolder= holder as CitySelectionViewHolder
         viewHolder.binding.apply {
             if (unitMode == UnitOfMeasurement.METRIC.value){
