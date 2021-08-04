@@ -11,15 +11,12 @@ import com.example.weather_app.utils.UiUtils
 import com.example.weather_app.webservices.model.current_weather_data.CurrentWeatherDataResponse
 import com.example.weather_app.webservices.model.weather_forecast_data.WeatherForecastDataResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
 import java.util.*
 import javax.inject.Inject
 
-
-private const val TAG = "WeatherForecastActivity(VM)"
 @HiltViewModel
 class WeatherForecastActivityViewModel @Inject constructor(
     private val repository: RepositoryImpl,
@@ -40,7 +37,7 @@ class WeatherForecastActivityViewModel @Inject constructor(
 
     private val deviceLocationObserver = Observer<String> {
         viewModelScope.launch launchWhenCreated@{
-            if (repository.mainForecastLocation.value!=null){
+            if (repository.mainForecastLocation.value != null){
                 downloadWeatherData()
             }
         }
@@ -48,7 +45,7 @@ class WeatherForecastActivityViewModel @Inject constructor(
 
     private val weatherForecastLocationObserver = Observer<String> {
         viewModelScope.launch launchWhenCreated@{
-            if (repository.mainForecastLocation.value!=null){
+            if (repository.mainForecastLocation.value != null){
                 downloadWeatherData()
             }
         }
@@ -56,7 +53,7 @@ class WeatherForecastActivityViewModel @Inject constructor(
 
     private val unitOfMeasurementObserver = Observer<String> {
         viewModelScope.launch launchWhenCreated@{
-            if (repository.mainForecastLocation.value!=null){
+            if (repository.mainForecastLocation.value != null){
                 downloadWeatherData()
             }
         }
@@ -81,9 +78,10 @@ class WeatherForecastActivityViewModel @Inject constructor(
             } catch (e: HttpException){
                 return@launchWhenCreated
             }
-            if (currentWeatherDayResponse.isSuccessful && currentWeatherDayResponse.body() != null ) {
+            if (currentWeatherDayResponse.isSuccessful &&
+                currentWeatherDayResponse.body() != null ) {
                 currentWeatherData.value = currentWeatherDayResponse.body()
-                if (!repository.isTimezoneSet){
+                if (!repository.isTimezoneSet) {
                     repository.deviceTimezone = currentWeatherData.value!!.timezone
                     repository.isTimezoneSet = true
                 }
@@ -96,35 +94,38 @@ class WeatherForecastActivityViewModel @Inject constructor(
                         apiKey,
                         repository.unitOfMeasurement.value!!
                     )
-                }catch (e: IOException){
+                } catch (e: IOException) {
                     return@launchWhenCreated
 
-                } catch (e: HttpException){
+                } catch (e: HttpException) {
                     return@launchWhenCreated
                 }
-                if (weatherForecastDataResponse.isSuccessful && currentWeatherDayResponse.body() != null){
+                if (weatherForecastDataResponse.isSuccessful &&
+                    currentWeatherDayResponse.body() != null) {
                     weatherForecastData.value = weatherForecastDataResponse.body()
                 }
             }
         }
     }
 
-    fun updateDeviceLocation(location: String){
+    fun updateDeviceLocation(
+        location: String
+    ) {
         viewModelScope.launch {
             val currentWeatherDataResponse = repository.getCurrentWeatherDataResponse(
                 apiKey,
                 location,
                 repository.unitOfMeasurement.value!!
             )
-            if ( currentWeatherDataResponse.isSuccessful && currentWeatherDataResponse.body() != null ) {
+            if ( currentWeatherDataResponse.isSuccessful &&
+                currentWeatherDataResponse.body() != null ) {
                 repository.deviceLocation.value = location
                 repository.mainForecastLocation.value = location
             }
-            else{
+            else {
                 errorStatus.value = true
             }
         }
-
     }
 
     fun getApiCallTime(): String {
@@ -137,7 +138,7 @@ class WeatherForecastActivityViewModel @Inject constructor(
         )
     }
 
-    fun getHourlyForecastList(): List<HourlyForecastData>{
+    fun getHourlyForecastList(): List<HourlyForecastData> {
         val list: MutableList<HourlyForecastData> = mutableListOf()
 
         list.add(
@@ -147,7 +148,7 @@ class WeatherForecastActivityViewModel @Inject constructor(
             UiUtils.getWeatherIcon(currentWeatherData.value!!.weather[0].icon)
             )
         )
-        for (i in 1..24){
+        for (i in 1..24) {
             list.add(
                 HourlyForecastData(
                     ClockUtils.getTimeFromUnixTimestamp(
@@ -163,21 +164,19 @@ class WeatherForecastActivityViewModel @Inject constructor(
             )
         }
         return list
-
     }
 
-    fun getVerticalWeatherDataList(): VerticalWeatherData{
+    fun getVerticalWeatherDataList(): VerticalWeatherData {
         val dailyForecastList: List<DailyForecastData> = getDailyWeatherForecastList()
         val currentWeatherDataList: List<CurrentWeatherData> = getCurrentWeatherDataList(
             repository.unitOfMeasurement.value!!
         )
-
         return VerticalWeatherData(dailyForecastList,currentWeatherDataList)
     }
 
-    private fun getDailyWeatherForecastList(): List<DailyForecastData>{
+    private fun getDailyWeatherForecastList(): List<DailyForecastData> {
         val dailyForecastList: MutableList<DailyForecastData> = mutableListOf()
-        for (i in 1..7){
+        for (i in 1..7) {
             dailyForecastList.add(
                 DailyForecastData(
                     ClockUtils.getDayFromUnixTimestamp(
@@ -196,8 +195,9 @@ class WeatherForecastActivityViewModel @Inject constructor(
         return dailyForecastList
     }
 
-    private fun getCurrentWeatherDataList(unitOfMeasurement: String)
-    : List<CurrentWeatherData>{
+    private fun getCurrentWeatherDataList(
+        unitOfMeasurement: String
+    ): List<CurrentWeatherData> {
         val weatherDataList = mutableListOf(
             CurrentWeatherData(
                 "SUNRISE",
@@ -236,7 +236,7 @@ class WeatherForecastActivityViewModel @Inject constructor(
                 "${currentWeatherData.value!!.main.humidity}%"
             )
         )
-        if (unitOfMeasurement == UnitOfMeasurement.METRIC.value){
+        if (unitOfMeasurement == UnitOfMeasurement.METRIC.value) {
             weatherDataList.add(
                 CurrentWeatherData(
                     "Wind",
