@@ -68,7 +68,7 @@ class WeatherForecastActivityViewModel @Inject constructor(
         repository.unitOfMeasurement.observeForever(unitOfMeasurementObserver)
     }
 
-    private suspend fun downloadWeatherData(){
+     suspend fun downloadWeatherData(){
         viewModelScope.launch launchWhenCreated@{
             val currentWeatherDayResponse = try {
                 repository.getCurrentWeatherDataResponse(
