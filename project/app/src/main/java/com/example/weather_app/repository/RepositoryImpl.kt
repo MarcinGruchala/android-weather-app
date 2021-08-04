@@ -70,12 +70,15 @@ class RepositoryImpl(
         unitsSystem
     )
 
-    override suspend fun addCityShortcutToDatabase(cityShortcut: CityShortcut) {
+    override suspend fun addCityShortcutToDatabase(
+        cityShortcut: CityShortcut
+    ) {
         cityShortcutDao.addCityShortcut(cityShortcut)
     }
 
-    override suspend fun deleteCityShortcutFromDatabase(cityShortcut: CityShortcut) {
+    override suspend fun deleteCityShortcutFromDatabase(
+        cityShortcut: CityShortcut
+    ) {
         cityShortcutDao.deleteCityShortcut(cityShortcut)
     }
-
 }
