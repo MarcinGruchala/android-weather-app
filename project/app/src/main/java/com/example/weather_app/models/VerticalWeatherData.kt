@@ -6,5 +6,4 @@ class VerticalWeatherData(
 ) {
 
     fun getSize(): Int = dailyForecastList.size + currentWeatherDataList.size
-
 }
