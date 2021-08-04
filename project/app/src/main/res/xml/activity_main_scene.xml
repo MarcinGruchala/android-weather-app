@@ -4,12 +4,13 @@
     xmlns:motion="http://schemas.android.com/apk/res-auto">
 
     <Transition
-        motion:constraintSetEnd="@+id/end"
+        motion:constraintSetEnd="@+id/swipeDataEnd"
         motion:constraintSetStart="@id/start"
         motion:duration="1000">
         <OnSwipe
             motion:touchAnchorId="@+id/tvTemp"
-            motion:touchAnchorSide="bottom" />
+            motion:touchAnchorSide="bottom"
+            motion:dragDirection="dragUp"/>
         <KeyFrameSet >
             <KeyAttribute
                 motion:motionTarget="@+id/tvTemp"
@@ -41,6 +42,17 @@
                 android:alpha="0" />
 
         </KeyFrameSet>
+    </Transition>
+
+    <Transition
+        motion:constraintSetStart="@+id/start"
+        motion:constraintSetEnd="@+id/refreshBtnEnd"
+        motion:duration="1000">
+        <OnSwipe
+            motion:touchAnchorId="@+id/tvTemp"
+            motion:touchAnchorSide="top"
+            motion:dragDirection="dragDown"/>
+
     </Transition>
 
     <ConstraintSet android:id="@+id/start">
@@ -88,9 +100,11 @@
             motion:layout_constraintStart_toStartOf="parent"
             android:id="@+id/rvVerticalWeatherData"
             motion:layout_constraintEnd_toEndOf="parent"
-            motion:layout_constraintTop_toBottomOf="@id/dividerBottomHourlyForecast"
-            motion:layout_constraintBottom_toTopOf="@+id/btnCitySelection"
-            android:layout_marginTop="0dp" />
+            motion:layout_constraintTop_toBottomOf="@+id/rvHourlyForecast"
+            motion:layout_constraintBottom_toTopOf="@+id/divider"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="0dp"
+            motion:layout_constraintHorizontal_bias="0.5" />
         <Constraint
             motion:layout_constraintEnd_toEndOf="parent"
             android:layout_width="wrap_content"
@@ -109,9 +123,16 @@
             motion:layout_constraintBottom_toTopOf="@+id/rvVerticalWeatherData"
             android:layout_marginBottom="0dp"
             android:layout_marginTop="8dp" />
+        <Constraint
+            motion:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            motion:layout_constraintTop_toTopOf="parent"
+            motion:layout_constraintStart_toStartOf="parent"
+            android:id="@+id/btnRefresh" />
     </ConstraintSet>
 
-    <ConstraintSet android:id="@+id/end">
+    <ConstraintSet android:id="@+id/swipeDataEnd">
         <Constraint
             android:layout_height="1dp"
             android:layout_width="wrap_content"
@@ -157,8 +178,9 @@
             android:layout_width="0dp"
             android:id="@+id/rvVerticalWeatherData"
             motion:layout_constraintTop_toBottomOf="@id/dividerBottomHourlyForecast"
-            motion:layout_constraintBottom_toTopOf="@+id/btnCitySelection"
-            android:layout_marginTop="0dp" />
+            motion:layout_constraintBottom_toTopOf="@id/divider"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="0dp" />
         <Constraint
             android:layout_width="0dp"
             android:layout_height="1dp"
@@ -168,5 +190,60 @@
             motion:layout_constraintEnd_toEndOf="parent"
             motion:layout_constraintTop_toBottomOf="@+id/rvHourlyForecast"
             android:layout_marginTop="8dp" />
+        <Constraint
+            motion:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            motion:layout_constraintTop_toTopOf="parent"
+            motion:layout_constraintStart_toStartOf="parent"
+            android:id="@+id/btnRefresh" />
     </ConstraintSet>
+    <ConstraintSet android:id="@+id/refreshBtnEnd" >
+        <Constraint
+            android:layout_height="wrap_content"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="wrap_content"
+            android:id="@+id/tvCity"
+            motion:layout_constraintHorizontal_bias="0.498"
+            motion:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="70dp" />
+        <Constraint
+            motion:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            motion:layout_constraintStart_toStartOf="parent"
+            android:id="@+id/btnRefresh"
+            motion:layout_constraintTop_toTopOf="parent"
+            motion:layout_constraintBottom_toTopOf="@+id/tvCity"
+            android:layout_marginBottom="8dp" />
+        <Constraint
+            android:layout_height="0dp"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintBottom_toTopOf="@+id/btnCitySelection"
+            motion:layout_constraintHorizontal_bias="0.5"
+            motion:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="0dp"
+            android:id="@+id/rvVerticalWeatherData"
+            motion:layout_constraintTop_toBottomOf="@id/dividerBottomHourlyForecast" />
+        <Constraint
+            android:layout_width="409dp"
+            android:layout_height="1dp"
+            android:id="@+id/dividerBottomHourlyForecast"
+            motion:layout_constraintTop_toBottomOf="@+id/rvHourlyForecast"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintBottom_toTopOf="@+id/rvVerticalWeatherData"
+            android:layout_marginTop="8dp" />
+        <Constraint
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            motion:layout_constraintHorizontal_bias="0.5"
+            motion:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="0dp"
+            motion:layout_constraintTop_toBottomOf="@+id/tvH"
+            motion:layout_constraintStart_toStartOf="parent"
+            android:id="@+id/rvHourlyForecast" />
+    </ConstraintSet>
+
 </MotionScene>

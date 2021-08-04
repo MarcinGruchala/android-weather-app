@@ -11,6 +11,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weather_app.R
 import com.example.weather_app.adapters.HourlyForecastAdapter
@@ -23,6 +24,7 @@ import com.example.weather_app.webservices.model.weather_forecast_data.WeatherFo
 import com.google.android.gms.location.LocationServices
 import com.vmadalin.easypermissions.EasyPermissions
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import java.util.*
 
 private const val TAG = "WeatherForecastActivity"
@@ -99,6 +101,12 @@ class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionC
                 startActivity(it)
             }
         }
+
+        binding.btnRefresh.setOnClickListener {
+            lifecycleScope.launch {
+                viewModel.downloadWeatherData()
+            }
+        }
     }
 
     private fun setUpRecyclerViews(){
@@ -131,6 +139,10 @@ class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionC
             UiUtils.getHeaderColor(weatherTag)
         )
         binding.dividerBottomHourlyForecast.setBackgroundResource(
+            UiUtils.getHeaderColor(weatherTag)
+        )
+
+        binding.divider.setBackgroundResource(
             UiUtils.getHeaderColor(weatherTag)
         )
     }
