@@ -18,12 +18,14 @@ import com.example.weather_app.utils.UiUtils
 import com.example.weather_app.viewmodels.CitySelectionActivityViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
-private const val TAG = "CitySelectionActivity"
 @AndroidEntryPoint
 class CitySelectionActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCitySelectionBinding
     private val viewModel: CitySelectionActivityViewModel by viewModels()
-    override fun onCreate(savedInstanceState: Bundle?) {
+
+    override fun onCreate(
+        savedInstanceState: Bundle?
+    ) {
         super.onCreate(savedInstanceState)
         binding = ActivityCitySelectionBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -35,7 +37,6 @@ class CitySelectionActivity : AppCompatActivity() {
             updateRecyclerView()
         }
         viewModel.citySelectionList.observe(this,citySelectionListObserver)
-
         val errorStatusObserver = Observer<Boolean> { status ->
             if (status){
                 showErrorDialogWindow()
@@ -43,25 +44,21 @@ class CitySelectionActivity : AppCompatActivity() {
             }
         }
         viewModel.errorStatus.observe(this,errorStatusObserver)
-
     }
 
-    private fun recyclerViewsSetup(){
+    private fun recyclerViewsSetup() {
         binding.rvCitySelection.layoutManager = LinearLayoutManager(
             this,
             LinearLayoutManager.VERTICAL,
             false
         )
-
         binding.rvCitySelection.addItemDecoration(
             DividerItemDecoration(this,DividerItemDecoration.VERTICAL)
         )
-
         binding.rvCitySelection.adapter = CitySelectionAdapter(
             listOf(),
             viewModel.getUnitMode(),
             itemClickListener = { item ->
-                Log.d(TAG,"new location: ${item.cityName}")
                 viewModel.updateMainWeatherForecastLocation(item.cityName)
                 finish()
             },
@@ -77,14 +74,12 @@ class CitySelectionActivity : AppCompatActivity() {
         )
     }
 
-    private fun updateStatusBarColor(){
+    private fun updateStatusBarColor() {
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-
         window.statusBarColor =  ContextCompat.getColor(
             this,
             R.color.transparent
         )
-
         window.setBackgroundDrawable(
             ContextCompat.getDrawable(
                 this,
@@ -93,11 +88,10 @@ class CitySelectionActivity : AppCompatActivity() {
         )
     }
 
-    private fun updateRecyclerView(){
+    private fun updateRecyclerView() {
         binding.rvCitySelection.adapter = CitySelectionAdapter(viewModel.citySelectionList.value!!,
             viewModel.getUnitMode(),
             itemClickListener = { item ->
-                Log.d(TAG,"new location: ${item.cityName}")
                 viewModel.updateMainWeatherForecastLocation(item.cityName)
                 finish()
                                 },
@@ -125,5 +119,4 @@ class CitySelectionActivity : AppCompatActivity() {
             .create()
             .show()
     }
-
 }

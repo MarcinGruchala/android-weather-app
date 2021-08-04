@@ -14,7 +14,7 @@ import com.example.weather_app.utils.UiUtils
 private const val CITY_SHORTCUT_VIEW_TYPE = 10
 private const val CITY_SELECTION_VIEW_TYPE = 20
 class CitySelectionAdapter(
-    private val data: List<CityShortcut>,
+    private var data: List<CityShortcut>,
     private val unitMode: String,
     private val itemClickListener: (CityShortcut) -> Unit,
     private val deleteButtonClickListener: (CityShortcut) -> Unit,
