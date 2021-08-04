@@ -14,15 +14,16 @@ object SharedPreferencesModule {
 
     @Singleton
     @Provides
-    fun provideUnitsOfMeasurementSharedPreferences(application: WeatherApplication)
-    : SharedPreferences = application.getSharedPreferences(
+    fun provideUnitsOfMeasurementSharedPreferences(
+        application: WeatherApplication
+    ): SharedPreferences = application.getSharedPreferences(
         "unitOfMeasurement",
         Context.MODE_PRIVATE
     )
 
     @Singleton
     @Provides
-    fun provideUnitsOfMeasurementSharedPreferencesEditor(sharedPreferences: SharedPreferences)
-    : SharedPreferences.Editor = sharedPreferences.edit()
-
+    fun provideUnitsOfMeasurementSharedPreferencesEditor(
+        sharedPreferences: SharedPreferences
+    ): SharedPreferences.Editor = sharedPreferences.edit()
 }

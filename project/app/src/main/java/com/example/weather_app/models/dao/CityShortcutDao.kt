@@ -15,5 +15,4 @@ interface CityShortcutDao {
 
     @Query("SELECT * FROM cities_shortcuts ORDER BY id")
     fun getAllCityShortcuts(): LiveData<List<CityShortcut>>
-
 }

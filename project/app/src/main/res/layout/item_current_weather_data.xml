@@ -15,7 +15,7 @@
         android:textColor="@color/good_weather_header"
         android:textSize="17sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider3" />
+        app:layout_constraintTop_toBottomOf="@+id/itemDivider" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline3"
@@ -34,7 +34,7 @@
         android:textColor="@color/good_weather_header"
         android:textSize="17sp"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
-        app:layout_constraintTop_toTopOf="@id/divider3" />
+        app:layout_constraintTop_toTopOf="@id/itemDivider" />
 
     <TextView
         android:id="@+id/tvDataValueLeft"
@@ -63,7 +63,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tvDataHeaderRight" />
 
     <View
-        android:id="@+id/divider3"
+        android:id="@+id/itemDivider"
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_marginTop="4dp"

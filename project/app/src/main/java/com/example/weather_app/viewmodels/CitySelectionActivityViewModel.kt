@@ -1,7 +1,6 @@
 package com.example.weather_app.viewmodels
 
 import android.content.SharedPreferences
-import android.util.Log
 import androidx.lifecycle.*
 import androidx.lifecycle.Observer
 import com.example.weather_app.models.CityShortcutData
@@ -17,15 +16,12 @@ import java.io.IOException
 import java.util.*
 import javax.inject.Inject
 
-private const val TAG = "CitySelectionViewModel"
 @HiltViewModel
 class CitySelectionActivityViewModel @Inject constructor(
     private val repository: RepositoryImpl,
     private val apiKey: String,
     private val unitOfMeasurementSPEditor: SharedPreferences.Editor
 ) : ViewModel() {
-
-    private var isCityListLoaded = false
 
     val citySelectionList: MutableLiveData<MutableList<CityShortcut>> by lazy {
         MutableLiveData<MutableList<CityShortcut>>()
@@ -35,7 +31,9 @@ class CitySelectionActivityViewModel @Inject constructor(
         MutableLiveData<Boolean>(false)
     }
 
-    private val unitOfMeasurementObserver = Observer<String> { _ ->
+    private var isCityListLoaded = false
+
+    private val unitOfMeasurementObserver = Observer<String> {
         viewModelScope.launch {
             if (isCityListLoaded){
                 updateCitySelectionList()
@@ -66,25 +64,25 @@ class CitySelectionActivityViewModel @Inject constructor(
     }
 
     private fun updateCitySelectionList() {
-        Log.d(TAG,"Get city selection list: ${repository.allCityShortcutList.value}")
         val citiesList = repository.allCityShortcutList.value
         val cityShortcutList = mutableListOf<CityShortcut>()
-        viewModelScope.launch launchWhenCreated@{
+        viewModelScope.launch launchWhenCreated@ {
             if (citiesList != null) {
-                for (city in citiesList){
+                for (city in citiesList) {
                     val currentWeatherDataResponse = try {
                         repository.getCurrentWeatherDataResponse(
                             apiKey,
                             city.cityName,
                             repository.unitOfMeasurement.value!!
                         )
-                    }catch (e: IOException){
+                    }catch (e: IOException) {
                         return@launchWhenCreated
 
-                    } catch (e: HttpException){
+                    } catch (e: HttpException) {
                         return@launchWhenCreated
                     }
-                    if (currentWeatherDataResponse.isSuccessful && currentWeatherDataResponse.body() != null ){
+                    if (currentWeatherDataResponse.isSuccessful &&
+                        currentWeatherDataResponse.body() != null ) {
                         val utcTime = System.currentTimeMillis()
                         val timeZone = currentWeatherDataResponse.body()!!.timezone
                         val temp = currentWeatherDataResponse.body()!!.main.temp.toInt()
@@ -93,7 +91,7 @@ class CitySelectionActivityViewModel @Inject constructor(
                             timeZone*1000L,
                             repository.deviceTimezone * 1000L,
                             true,
-                            false
+                            clockPeriodMode = false
                         )
                         cityShortcutList.add (
                             CityShortcut(
@@ -112,13 +110,14 @@ class CitySelectionActivityViewModel @Inject constructor(
                     apiKey,
                     repository.deviceLocation.value!!,
                     repository.unitOfMeasurement.value!!)
-            }catch (e: IOException){
+            }catch (e: IOException) {
                 return@launchWhenCreated
 
-            } catch (e: HttpException){
+            } catch (e: HttpException) {
                 return@launchWhenCreated
             }
-            if (currentWeatherDayResponse.isSuccessful && currentWeatherDayResponse.body() != null ) {
+            if (currentWeatherDayResponse.isSuccessful &&
+                currentWeatherDayResponse.body() != null ) {
                 cityShortcutList.add(
                     CityShortcut(
                         1000,
@@ -133,19 +132,22 @@ class CitySelectionActivityViewModel @Inject constructor(
         }
     }
 
-    fun updateMainWeatherForecastLocation(newLocation: String){
+    fun updateMainWeatherForecastLocation(
+        newLocation: String
+    ) {
         repository.mainForecastLocation.value = newLocation
     }
 
-    fun addNewCityShortCutClickListener(cityName: String){
+    fun addNewCityShortCutClickListener(
+        cityName: String
+    ) {
         viewModelScope.launch(Dispatchers.Main) {
             val cityShortcutData = getCityShortcutData(cityName)
-            if (cityShortcutData!=null && !isInCitySelectionList(cityShortcutData.cityName)){
-                if (repository.deviceLocation.value == null){
+            if (cityShortcutData!=null && !isInCitySelectionList(cityShortcutData.cityName)) {
+                if (repository.deviceLocation.value == null) {
                     repository.deviceLocation.value = cityShortcutData.cityName
                     repository.mainForecastLocation.value = cityShortcutData.cityName
-                }
-                else{
+                } else {
                     insertCityShortcut(
                         CityShortcut(
                             0,
@@ -155,22 +157,25 @@ class CitySelectionActivityViewModel @Inject constructor(
                             cityShortcutData.icon
                         )
                     )
-                    Log.d(TAG, "Inserted Data to database")
                 }
             }
         }
     }
 
-    fun isInCitySelectionList(cityName: String): Boolean {
-        for(city in citySelectionList.value!!){
-            if (city.cityName == cityName){
+    private fun isInCitySelectionList(
+        cityName: String
+    ): Boolean {
+        for(city in citySelectionList.value!!) {
+            if (city.cityName == cityName) {
                 return true
             }
         }
         return false
     }
 
-    private suspend fun getCityShortcutData(cityName: String): CityShortcutData? {
+    private suspend fun getCityShortcutData(
+        cityName: String
+    ): CityShortcutData? {
         val currentWeatherDataResponse = repository.getCurrentWeatherDataResponse(
             apiKey,
             cityName,
@@ -184,7 +189,7 @@ class CitySelectionActivityViewModel @Inject constructor(
                 timeZone*1000L,
                 repository.deviceTimezone * 1000L,
                 true,
-                false
+                clockPeriodMode = false
             )
             return CityShortcutData(
                 currentWeatherDataResponse.body()!!.name,
@@ -197,25 +202,26 @@ class CitySelectionActivityViewModel @Inject constructor(
         return  null
     }
 
-    fun deleteCityShortCutClickListener(cityShortcut: CityShortcut){
-        viewModelScope.launch(Dispatchers.IO) {
-            repository.deleteCityShortcutFromDatabase(cityShortcut)
-        }
-    }
-
-    private fun insertCityShortcut(cityShortcut: CityShortcut){
+    private fun insertCityShortcut(
+        cityShortcut: CityShortcut
+    ) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.addCityShortcutToDatabase(cityShortcut)
         }
     }
 
-    fun getUnitMode() = repository.unitOfMeasurement.value!!
+    fun deleteCityShortCutClickListener(
+        cityShortcut: CityShortcut
+    ) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteCityShortcutFromDatabase(cityShortcut)
+        }
+    }
 
-    fun changeUnitClickListener(): String{
+    fun changeUnitClickListener(): String {
         if (repository.unitOfMeasurement.value == UnitOfMeasurement.METRIC.value) {
             repository.unitOfMeasurement.value = UnitOfMeasurement.IMPERIAL.value
-        }
-        else{
+        } else {
             repository.unitOfMeasurement.value = UnitOfMeasurement.METRIC.value
         }
         unitOfMeasurementSPEditor.apply {
@@ -225,4 +231,5 @@ class CitySelectionActivityViewModel @Inject constructor(
         return repository.unitOfMeasurement.value!!
     }
 
+    fun getUnitMode() = repository.unitOfMeasurement.value!!
 }

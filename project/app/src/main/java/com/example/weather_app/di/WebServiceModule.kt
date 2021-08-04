@@ -25,5 +25,4 @@ object WebServiceModule {
     @Singleton
     @Provides
     fun provideApiKey(): String = BuildConfig.APIKEY
-
 }

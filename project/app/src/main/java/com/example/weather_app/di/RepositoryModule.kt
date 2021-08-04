@@ -1,7 +1,6 @@
 package com.example.weather_app.di
 
 import android.content.SharedPreferences
-import com.example.weather_app.models.UnitOfMeasurement
 import com.example.weather_app.models.dao.CityShortcutDao
 import com.example.weather_app.repository.RepositoryImpl
 import com.example.weather_app.webservices.OpenWeatherAPIService
@@ -26,5 +25,4 @@ object RepositoryModule {
         cityShortcutDao,
         unitOfMeasurementSP
     )
-
 }
