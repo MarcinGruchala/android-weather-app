@@ -79,11 +79,6 @@ class CitySelectionAdapter(
     ) {
         val viewHolder = holder as CityShortcutViewHolder
         val reversePosition = data.size - position - 1
-        viewHolder.binding.root.setBackgroundResource(
-            UiUtils.getCityShortcutBackground(
-                data[reversePosition].icon
-            )
-        )
         if (reversePosition == itemCount - 2) {
             viewHolder.binding.apply {
                 root.getTransition(R.id.transitionCityShortcut).setEnable(false)
@@ -101,23 +96,35 @@ class CitySelectionAdapter(
                 clCityShortcutHandle.setOnClickListener {
                     itemClickListener(data[reversePosition])
                 }
+                root.setBackgroundResource(
+                    UiUtils.getCityShortcutBackground(
+                        data[reversePosition].icon
+                    )
+                )
             }
         } else {
-            viewHolder.binding.apply {
-                tvCityName.text = data[reversePosition].cityName
-                tvCityTemp.text = viewHolder.itemView.context.getString(
-                    R.string.temp,
-                    data[reversePosition].temp
-                )
-                tvLocalTime.text = data[reversePosition].localTime
-                ivCityShortcutWeatherIcon.setImageResource(
-                    UiUtils.getWeatherIcon(data[reversePosition].icon)
-                )
-                clCityShortcutHandle.setOnClickListener {
-                    itemClickListener(data[reversePosition])
-                }
-                btnDelete.setOnClickListener {
-                    deleteButtonClickListener(data[reversePosition])
+            if (position - 1 < itemCount - 2) {
+                viewHolder.binding.apply {
+                    tvCityName.text = data[position - 1].cityName
+                    tvCityTemp.text = viewHolder.itemView.context.getString(
+                        R.string.temp,
+                        data[position - 1].temp
+                    )
+                    tvLocalTime.text = data[position - 1].localTime
+                    ivCityShortcutWeatherIcon.setImageResource(
+                        UiUtils.getWeatherIcon(data[position - 1].icon)
+                    )
+                    clCityShortcutHandle.setOnClickListener {
+                        itemClickListener(data[position - 1])
+                    }
+                    btnDelete.setOnClickListener {
+                        deleteButtonClickListener(data[position - 1])
+                    }
+                    root.setBackgroundResource(
+                        UiUtils.getCityShortcutBackground(
+                            data[position - 1].icon
+                        )
+                    )
                 }
             }
         }
