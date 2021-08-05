@@ -32,7 +32,7 @@ object UiUtils {
             "11d", "11n" -> R.drawable.thunderstorm
             "13d", "13n" -> R.drawable.snow
             "50d", "50n" -> R.drawable.mist
-            else -> R.drawable.ic_few_clouds_dark
+            else -> R.drawable.few_clouds_day
         }
     }
 
