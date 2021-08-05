@@ -1,7 +1,6 @@
 package com.example.weather_app.views
 
 import android.os.Bundle
-import android.util.Log
 import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
