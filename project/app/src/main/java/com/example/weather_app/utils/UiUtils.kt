@@ -32,19 +32,19 @@ object UiUtils {
             "11d", "11n" -> R.drawable.thunderstorm
             "13d", "13n" -> R.drawable.snow
             "50d", "50n" -> R.drawable.mist
-            else -> R.drawable.ic_few_clouds_dark
+            else -> R.drawable.few_clouds_day
         }
     }
 
     fun getWeatherForecastBackground(iconTag: String): Int{
         return when(iconTag){
             in NIGHT_TAGS ->
-                R.drawable.gradient_background_clear_sky_night
+                R.drawable.gradient_background_night
             in GOOD_WEATHER_TAGS ->
-                R.drawable.gradient_background_clear_sky_day
+                R.drawable.gradient_background_good_weather
             in BAD_WEATHER_TAGS ->
-                R.drawable.gradient_background_clouds_day
-            else -> R.drawable.gradient_background_clear_sky_day
+                R.drawable.gradient_background_bad_weather
+            else -> R.drawable.gradient_background_good_weather
         }
     }
 
