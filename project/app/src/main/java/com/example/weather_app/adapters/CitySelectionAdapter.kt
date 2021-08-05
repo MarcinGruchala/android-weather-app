@@ -80,52 +80,10 @@ class CitySelectionAdapter(
         val viewHolder = holder as CityShortcutViewHolder
         val reversePosition = data.size - position - 1
         if (reversePosition == itemCount - 2) {
-            viewHolder.binding.apply {
-                root.getTransition(R.id.transitionCityShortcut).setEnable(false)
-                tvLocalTime.text = data[reversePosition].cityName
-                tvCityName.text =  viewHolder.itemView.context.getString(
-                    R.string.my_location_header
-                )
-                tvCityTemp.text =  viewHolder.itemView.context.getString(
-                    R.string.temp,
-                    data[reversePosition].temp
-                )
-                ivCityShortcutWeatherIcon.setImageResource(
-                    UiUtils.getWeatherIcon(data[reversePosition].icon)
-                )
-                clCityShortcutHandle.setOnClickListener {
-                    itemClickListener(data[reversePosition])
-                }
-                root.setBackgroundResource(
-                    UiUtils.getCityShortcutBackground(
-                        data[reversePosition].icon
-                    )
-                )
-            }
+            bindMyLocationItem(viewHolder,reversePosition)
         } else {
             if (position - 1 < itemCount - 2) {
-                viewHolder.binding.apply {
-                    tvCityName.text = data[position - 1].cityName
-                    tvCityTemp.text = viewHolder.itemView.context.getString(
-                        R.string.temp,
-                        data[position - 1].temp
-                    )
-                    tvLocalTime.text = data[position - 1].localTime
-                    ivCityShortcutWeatherIcon.setImageResource(
-                        UiUtils.getWeatherIcon(data[position - 1].icon)
-                    )
-                    clCityShortcutHandle.setOnClickListener {
-                        itemClickListener(data[position - 1])
-                    }
-                    btnDelete.setOnClickListener {
-                        deleteButtonClickListener(data[position - 1])
-                    }
-                    root.setBackgroundResource(
-                        UiUtils.getCityShortcutBackground(
-                            data[position - 1].icon
-                        )
-                    )
-                }
+                bindCityShortcutItem(viewHolder,position - 1)
             }
         }
     }
@@ -154,5 +112,62 @@ class CitySelectionAdapter(
                 }
             }
         }
+    }
+
+    private fun bindMyLocationItem(
+        holder: CityShortcutViewHolder,
+        position: Int
+    ) {
+        holder.binding.apply {
+            root.getTransition(R.id.transitionCityShortcut).setEnable(false)
+            tvLocalTime.text = data[position].cityName
+            tvCityName.text = holder.itemView.context.getString(
+                R.string.my_location_header
+            )
+            tvCityTemp.text = holder.itemView.context.getString(
+                R.string.temp,
+                data[position].temp
+            )
+            ivCityShortcutWeatherIcon.setImageResource(
+                UiUtils.getWeatherIcon(data[position].icon)
+            )
+            clCityShortcutHandle.setOnClickListener {
+                itemClickListener(data[position])
+            }
+            root.setBackgroundResource(
+                UiUtils.getCityShortcutBackground(
+                    data[position].icon
+                )
+            )
+        }
+    }
+
+    private fun bindCityShortcutItem(
+        holder: CityShortcutViewHolder,
+        position: Int
+    ) {
+        holder.binding.apply {
+            tvCityName.text = data[position].cityName
+            tvCityTemp.text = holder.itemView.context.getString(
+                R.string.temp,
+                data[position].temp
+            )
+            tvLocalTime.text = data[position].localTime
+            ivCityShortcutWeatherIcon.setImageResource(
+                UiUtils.getWeatherIcon(data[position].icon)
+            )
+            clCityShortcutHandle.setOnClickListener {
+                itemClickListener(data[position ])
+            }
+            btnDelete.setOnClickListener {
+                deleteButtonClickListener(data[position])
+            }
+            root.setBackgroundResource(
+                UiUtils.getCityShortcutBackground(
+                    data[position].icon
+                )
+            )
+        }
+
     }
 }

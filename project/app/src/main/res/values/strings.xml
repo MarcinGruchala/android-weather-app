@@ -34,5 +34,5 @@
     <string name="humidityHeader">HUMIDITY</string>
     <string name="windHeader">WIND</string>
     <string name="visibilityHeader">VISIBILITY</string>
-    <string name="lastUpdateHeader">Last update: </string>
+    <string name="lastUpdateHeader">Last update:\u2002</string>
 </resources>
