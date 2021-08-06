@@ -28,7 +28,13 @@ Weather application that is inspired by Apple Weather application. I wonted to c
 
 ## Build guide
 
-To build this projest the best option is to use Android Studio. Clone the repository and you are almost ready. Applicatione uses [weather API](https://openweathermap.org/api) and in prject folder you need to add file with api credebtials.
+To build this project the best option is to use Android Studio. Clone the repository and you are almost ready. The application uses [weather API](https://openweathermap.org/api) and in the project folder, you need to add the file with API credentials `project/apicredentials.properties` with the following text:
+
+```properties
+key="..."
+```
+
+To generate a key create a free acount on [OpenWearher site](https://openweathermap.org/i). Affter all of the project is ready to be built.
 
 ## Techonogies
 
