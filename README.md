@@ -85,12 +85,14 @@ The second activity of the application. Users can add or delete cities to the li
 
 There is still a lot of things that can be improved:
 
-- swipe betwen cities in weather forecast activity
+- swiping between cities in weather forecast activity
 
-- better backgrouns images
+- better background images
 
-- percentage chace of rain
+- percentage chance of rain
 
 - better communication with the user if an error occurs
 
-- more advanced system of city search box
+- more advanced system of the city search box
+
+I want to add those features in the future.
