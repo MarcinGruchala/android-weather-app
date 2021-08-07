@@ -48,7 +48,7 @@ To build this project the best option is to use Android Studio.
 
 ## Techonogies
 
-Application was has been made using:
+It is a native application that has been made using:
 
 - Kotlin
 - MVVM Architecture
