@@ -10,7 +10,7 @@
     <string name="celsius">°C</string>
     <string name="unitDivider">/</string>
     <string name="fahrenheit">°F</string>
-    <string name="pascals">%1$d Pa</string>
+    <string name="pascals">%1$d hPa</string>
     <string name="percentages">%1$d \%</string>
     <string name="kph">%1$d km/h</string>
     <string name="meters">%1$d m</string>
