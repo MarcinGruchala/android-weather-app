@@ -18,6 +18,8 @@ Apple iPhone weather app clone for Android.
 
 - [UI description](#ui-description)
 
+- [Comparison](#comparison)
+
 - [Place for improvements](#place-for-improvements)
 
 ## Description
@@ -46,6 +48,13 @@ To build this project the best option is to use Android Studio.
 
 ## Techonogies
 
+Application was has been made using:
+
+- Kotlin
+- MVVM Architecture
+- Retrofit
+- Room
+
 ## Permissions
 
 Application requires the following permissions:
@@ -56,4 +65,32 @@ Application requires the following permissions:
 
 ## UI description
 
+### Weather forecast activity
+
+The main activity of the application. The activity contains current weather data, hourly forecast and daily forecast. In the right bottom corner of the screen is a button that takes users to city selection activity.
+
+<img src="readme-files/WeatherForecastActivity1.png" alt="drawing" width="350"/>  <img src="readme-files/WeatherForecastActivity2.png" alt="drawing" width="350"/> 
+
+### City selection activity
+
+The second activity of the application. Users can add or delete cities to the list and enter every city in the list to see more detailed information about the weather. The first item in the list is always user location. Other items have information about local time, current temperature and icon representing current weather. Under the cities is the item with the setting of units of measurement and location search box.
+
+<img src="readme-files/CitySelectionActivity1.png" alt="drawing" width="350"/>  <img src="readme-files/CitySelectionActivity2.png" alt="drawing" width="350"/> 
+
+## Comparison
+
+![Dem0 gif](readme-files/weather-app-demo.gif) ![Dem0 gif](readme-files/iPhone-Weather-app.gif)
+
 ## Place for improvements
+
+There is still a lot of things that can be improved:
+
+- swipe betwen cities in weather forecast activity
+
+- better backgrouns images
+
+- percentage chace of rain
+
+- better communication with the user if an error occurs
+
+- more advanced system of city search box
