@@ -45,21 +45,23 @@ To build this project the best option is to use Android Studio.
     key="..."
     ```
 
-    To generate a key create a free acount on [OpenWearher site](https://openweathermap.org/i).
+    To generate a key create a free account on [OpenWearher site](https://openweathermap.org/i).
 3. Project is ready to be built
 
 ## Techonogies
 
 It is a native application that has been made using:
 
+- Android Studio
 - Kotlin
 - MVVM Architecture
-- Retrofit
-- Room
+- Hilt for dependency injection
+- Retrofit for API calls
+- Room for database connection
 
 ## Permissions
 
-Application requires the following permissions:
+The application requires the following permissions:
 
 - Network Access - is granted automatically
 
