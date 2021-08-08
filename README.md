@@ -20,7 +20,7 @@ Apple iPhone weather app clone for Android.
 
 - [Comparison](#comparison)
 
-- [Place for improvements](#place-for-improvements)
+- [Room for improvements](#room-for-improvements)
 
 ## Description
 
@@ -45,7 +45,7 @@ To build this project the best option is to use Android Studio.
     key="..."
     ```
 
-    To generate a key create a free account on [OpenWearher site](https://openweathermap.org/i).
+    To generate a key create a free account on [OpenWearher site](https://openweathermap.org).
 3. Project is ready to be built
 
 ## Techonogies
@@ -85,7 +85,7 @@ The second activity of the application. Users can add or delete cities to the li
 
 <img src="readme-files/weather-app-demo.gif" alt="drawing" width="300"/>  <img src="readme-files/iPhone-Weather-app.gif" alt="drawing" width="300"/>
 
-## Place for improvements
+## Room for improvements
 
 There is still a lot of things that can be improved:
 
