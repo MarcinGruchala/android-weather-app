@@ -28,7 +28,7 @@ Weather application that is inspired by Apple Weather application. I wanted to c
 
 ## Demo
 
-![Dem0 gif](readme-files/weather-app-demo.gif)
+<img src="readme-files/weather-app-demo.gif" alt="drawing" width="300"/> 
 
 ## Download APK file
 
@@ -69,17 +69,17 @@ Application requires the following permissions:
 
 The main activity of the application. The activity contains current weather data, hourly forecast and daily forecast. In the right bottom corner of the screen is a button that takes users to city selection activity.
 
-<img src="readme-files/WeatherForecastActivity1.png" alt="drawing" width="350"/>  <img src="readme-files/WeatherForecastActivity2.png" alt="drawing" width="350"/> 
+<img src="readme-files/WeatherForecastActivity1.png" alt="drawing" width="300"/>  <img src="readme-files/WeatherForecastActivity2.png" alt="drawing" width="300"/> 
 
 ### City selection activity
 
 The second activity of the application. Users can add or delete cities to the list and enter every city in the list to see more detailed information about the weather. The first item in the list is always user location. Other items have information about local time, current temperature and icon representing current weather. Under the cities is the item with the setting of units of measurement and location search box.
 
-<img src="readme-files/CitySelectionActivity1.png" alt="drawing" width="350"/>  <img src="readme-files/CitySelectionActivity2.png" alt="drawing" width="350"/> 
+<img src="readme-files/CitySelectionActivity1.png" alt="drawing" width="300"/>  <img src="readme-files/CitySelectionActivity2.png" alt="drawing" width="300"/> 
 
 ## Comparison
 
-![Dem0 gif](readme-files/weather-app-demo.gif) ![Dem0 gif](readme-files/iPhone-Weather-app.gif)
+<img src="readme-files/weather-app-demo.gif" alt="drawing" width="300"/>  <img src="readme-files/iPhone-Weather-app.gif" alt="drawing" width="300"/>
 
 ## Place for improvements
 
