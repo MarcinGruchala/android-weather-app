@@ -14,9 +14,6 @@ import com.example.weather_app.webservices.model.current_weather_data.CurrentWea
 import com.example.weather_app.webservices.model.weather_forecast_data.WeatherForecastDataResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
-import java.io.IOException
-import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -39,7 +36,7 @@ class WeatherForecastActivityViewModel @Inject constructor(
     }
 
     private val deviceLocationObserver = Observer<String> {
-        viewModelScope.launch launchWhenCreated@{
+        viewModelScope.launch {
             if (repository.mainForecastLocation.value != null){
                 downloadWeatherData()
             }
@@ -47,7 +44,7 @@ class WeatherForecastActivityViewModel @Inject constructor(
     }
 
     private val weatherForecastLocationObserver = Observer<String> {
-        viewModelScope.launch launchWhenCreated@{
+        viewModelScope.launch {
             if (repository.mainForecastLocation.value != null){
                 downloadWeatherData()
             }
@@ -55,7 +52,7 @@ class WeatherForecastActivityViewModel @Inject constructor(
     }
 
     private val unitOfMeasurementObserver = Observer<String> {
-        viewModelScope.launch launchWhenCreated@{
+        viewModelScope.launch {
             if (repository.mainForecastLocation.value != null){
                 downloadWeatherData()
             }
@@ -69,46 +66,30 @@ class WeatherForecastActivityViewModel @Inject constructor(
     }
 
      suspend fun downloadWeatherData(){
-        viewModelScope.launch launchWhenCreated@{
-            val currentWeatherDayResponse = try {
-                repository.getCurrentWeatherDataResponse(
-                    apiKey,
-                    repository.mainForecastLocation.value!!,
-                    repository.unitOfMeasurement.value!!)
-            }catch (e: IOException){
-                return@launchWhenCreated
-
-            } catch (e: HttpException){
-                return@launchWhenCreated
-            }
-            if (currentWeatherDayResponse.isSuccessful &&
-                currentWeatherDayResponse.body() != null ) {
-                currentWeatherData.value = currentWeatherDayResponse.body()
-                if (!repository.isTimezoneSet) {
-                    repository.deviceTimezone = currentWeatherData.value!!.timezone
-                    repository.isTimezoneSet = true
-                }
-
-                val weatherForecastDataResponse = try {
-                    repository.getWeatherForecastDataResponse(
-                        currentWeatherData.value?.coord!!.lat,
-                        currentWeatherData.value?.coord!!.lon,
-                        "current,minutely,alerts",
-                        apiKey,
-                        repository.unitOfMeasurement.value!!
-                    )
-                } catch (e: IOException) {
-                    return@launchWhenCreated
-
-                } catch (e: HttpException) {
-                    return@launchWhenCreated
-                }
-                if (weatherForecastDataResponse.isSuccessful &&
-                    currentWeatherDayResponse.body() != null) {
-                    weatherForecastData.value = weatherForecastDataResponse.body()
-                }
-            }
-        }
+         val currentWeatherDayResponse = repository.getCurrentWeatherDataResponse(
+                 apiKey,
+                 repository.mainForecastLocation.value!!,
+                 repository.unitOfMeasurement.value!!
+             )
+         if (currentWeatherDayResponse.isSuccessful &&
+             currentWeatherDayResponse.body() != null ) {
+                 currentWeatherData.value = currentWeatherDayResponse.body()
+             if (!repository.isTimezoneSet) {
+                 repository.deviceTimezone = currentWeatherData.value!!.timezone
+                 repository.isTimezoneSet = true
+             }
+             val weatherForecastDataResponse = repository.getWeatherForecastDataResponse(
+                     currentWeatherData.value?.coord!!.lat,
+                     currentWeatherData.value?.coord!!.lon,
+                     "current,minutely,alerts",
+                     apiKey,
+                     repository.unitOfMeasurement.value!!
+                 )
+             if (weatherForecastDataResponse.isSuccessful &&
+                 currentWeatherDayResponse.body() != null) {
+                     weatherForecastData.value = weatherForecastDataResponse.body()
+             }
+         }
     }
 
     fun updateDeviceLocation(

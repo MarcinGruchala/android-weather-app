@@ -1,8 +1,10 @@
 package com.example.weather_app.viewmodels
 
 import android.content.SharedPreferences
-import androidx.lifecycle.*
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.weather_app.models.CityShortcutData
 import com.example.weather_app.models.UnitOfMeasurement
 import com.example.weather_app.models.entities.CityShortcut
@@ -11,9 +13,6 @@ import com.example.weather_app.utils.ClockUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
-import java.io.IOException
-import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -66,56 +65,39 @@ class CitySelectionActivityViewModel @Inject constructor(
     private fun updateCitySelectionList() {
         val citiesList = repository.allCityShortcutList.value
         val cityShortcutList = mutableListOf<CityShortcut>()
-        viewModelScope.launch launchWhenCreated@ {
+        viewModelScope.launch  {
             if (citiesList != null) {
                 for (city in citiesList) {
-                    val currentWeatherDataResponse = try {
-                        repository.getCurrentWeatherDataResponse(
-                            apiKey,
-                            city.cityName,
-                            repository.unitOfMeasurement.value!!
-                        )
-                    }catch (e: IOException) {
-                        return@launchWhenCreated
-
-                    } catch (e: HttpException) {
-                        return@launchWhenCreated
-                    }
+                    val currentWeatherDataResponse = repository.getCurrentWeatherDataResponse(
+                        apiKey,
+                        city.cityName,
+                        repository.unitOfMeasurement.value!!
+                    )
                     if (currentWeatherDataResponse.isSuccessful &&
                         currentWeatherDataResponse.body() != null ) {
-                        val utcTime = System.currentTimeMillis()
-                        val timeZone = currentWeatherDataResponse.body()!!.timezone
-                        val temp = currentWeatherDataResponse.body()!!.main.temp.toInt()
-                        val localTime = ClockUtils.getTimeFromUnixTimestamp(
-                            utcTime,
-                            timeZone*1000L,
-                            repository.deviceTimezone * 1000L,
-                            true,
-                            clockPeriodMode = false
-                        )
                         cityShortcutList.add (
                             CityShortcut(
                                 city.id,
                                 city.cityName,
-                                localTime,
-                                temp,
+                                ClockUtils.getTimeFromUnixTimestamp(
+                                    System.currentTimeMillis(),
+                                    currentWeatherDataResponse.body()!!.timezone * 1000L,
+                                    repository.deviceTimezone * 1000L,
+                                    true,
+                                    clockPeriodMode = false
+                                ),
+                                currentWeatherDataResponse.body()!!.main.temp.toInt(),
                                 currentWeatherDataResponse.body()!!.weather[0].icon
                             )
                         )
                     }
                 }
             }
-            val currentWeatherDayResponse = try {
-                repository.getCurrentWeatherDataResponse(
-                    apiKey,
-                    repository.deviceLocation.value!!,
-                    repository.unitOfMeasurement.value!!)
-            }catch (e: IOException) {
-                return@launchWhenCreated
-
-            } catch (e: HttpException) {
-                return@launchWhenCreated
-            }
+            val currentWeatherDayResponse = repository.getCurrentWeatherDataResponse(
+                apiKey,
+                repository.deviceLocation.value!!,
+                repository.unitOfMeasurement.value!!
+            )
             if (currentWeatherDayResponse.isSuccessful &&
                 currentWeatherDayResponse.body() != null ) {
                 cityShortcutList.add(
@@ -182,18 +164,15 @@ class CitySelectionActivityViewModel @Inject constructor(
             repository.unitOfMeasurement.value!!
         )
         if ( currentWeatherDataResponse.isSuccessful && currentWeatherDataResponse.body() != null ) {
-            val utcTime = System.currentTimeMillis()
-            val timeZone = currentWeatherDataResponse.body()!!.timezone
-            val localTime = ClockUtils.getTimeFromUnixTimestamp(
-                utcTime,
-                timeZone*1000L,
-                repository.deviceTimezone * 1000L,
-                true,
-                clockPeriodMode = false
-            )
             return CityShortcutData(
                 currentWeatherDataResponse.body()!!.name,
-                localTime,
+                ClockUtils.getTimeFromUnixTimestamp(
+                    System.currentTimeMillis(),
+                    currentWeatherDataResponse.body()!!.timezone * 1000L,
+                    repository.deviceTimezone * 1000L,
+                    true,
+                    clockPeriodMode = false
+                ),
                 currentWeatherDataResponse.body()!!.main.temp.toInt(),
                 currentWeatherDataResponse.body()!!.weather[0].icon
             )
