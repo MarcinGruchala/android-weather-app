@@ -1,14 +1,16 @@
 package com.example.weather_app.utils
 
-import android.util.Log
 import java.util.*
 
-private const val TAG = "ClockUtils"
 object ClockUtils {
 
     var deviceTimezone = TimeZone.getDefault().rawOffset
 
-    fun getDayFromUnixTimestamp(unixTimeStamp: Long, timeZone: Long, deviceTimezone: Long): String{
+    fun getDayFromUnixTimestamp(
+        unixTimeStamp: Long,
+        timeZone: Long,
+        deviceTimezone: Long
+    ): String {
         val calendar = Calendar.getInstance(Locale.ENGLISH)
         calendar.timeInMillis = (unixTimeStamp - deviceTimezone) + timeZone
         return when(val day = calendar.get(Calendar.DAY_OF_WEEK)){
@@ -31,31 +33,35 @@ object ClockUtils {
         }
     }
 
-    fun getTimeFromUnixTimestamp(unixTimeStamp: Long, timeZone: Long, deviceTimezone: Long, minutesMode: Boolean, clockPeriodMode: Boolean): String{
-//        Log.d(TAG,"Device Timezone: ${TimeZone.getDefault().rawOffset}")
-//        Log.d(TAG,"UTC timestamp: ${unixTimeStamp - TimeZone.getDefault().rawOffset}")
+    fun getTimeFromUnixTimestamp(
+        unixTimeStamp: Long,
+        timeZone: Long,
+        deviceTimezone: Long,
+        minutesMode: Boolean,
+        clockPeriodMode: Boolean
+    ): String{
         val calendar = Calendar.getInstance(Locale.ENGLISH)
-
         calendar.timeInMillis = (unixTimeStamp - deviceTimezone) + timeZone
 
         var hour = calendar.get(Calendar.HOUR_OF_DAY)
         val minutes = calendar.get(Calendar.MINUTE)
-        if (clockPeriodMode){
+        if (clockPeriodMode) {
             val period = get12HourClockPeriod(hour)
-            if( hour == 0 ) hour = 12
-            if (minutesMode){
+            if( hour == 0 ) {
+                hour = 12
+            }
+            if (minutesMode) {
                 return "${getClockString(hour)}:${getClockString(minutes)} $period"
             }
             return "$hour $period"
         }
-        if (minutesMode){
+        if (minutesMode) {
             return "${getClockString(hour)}:${getClockString(minutes)}"
         }
         return "$hour"
     }
 
     private fun getClockString(timeUnit: Int): String{
-        Log.d(TAG,"time unit: $timeUnit")
         if(timeUnit<10){
             return "0$timeUnit"
         }

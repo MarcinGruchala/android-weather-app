@@ -1,15 +1,14 @@
 package com.example.weather_app.repository
 
 import android.content.SharedPreferences
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.weather_app.models.UnitOfMeasurement
-import com.example.weather_app.models.dao.CityShortcutDao
-import com.example.weather_app.models.entities.CityShortcut
+import com.example.weather_app.database.dao.CityShortcutDao
+import com.example.weather_app.database.entities.CityShortcut
 import com.example.weather_app.webservices.OpenWeatherAPIService
-import com.example.weather_app.webservices.model.current_weather_data.CurrentWeatherDataResponse
-import com.example.weather_app.webservices.model.weather_forecast_data.WeatherForecastDataResponse
+import com.example.weather_app.webservices.entities.currentweatherdata.CurrentWeatherDataResponse
+import com.example.weather_app.webservices.entities.weatherforecastdata.WeatherForecastDataResponse
 import retrofit2.Response
 import java.util.*
 
@@ -70,12 +69,15 @@ class RepositoryImpl(
         unitsSystem
     )
 
-    override suspend fun addCityShortcutToDatabase(cityShortcut: CityShortcut) {
+    override suspend fun addCityShortcutToDatabase(
+        cityShortcut: CityShortcut
+    ) {
         cityShortcutDao.addCityShortcut(cityShortcut)
     }
 
-    override suspend fun deleteCityShortcutFromDatabase(cityShortcut: CityShortcut) {
+    override suspend fun deleteCityShortcutFromDatabase(
+        cityShortcut: CityShortcut
+    ) {
         cityShortcutDao.deleteCityShortcut(cityShortcut)
     }
-
 }

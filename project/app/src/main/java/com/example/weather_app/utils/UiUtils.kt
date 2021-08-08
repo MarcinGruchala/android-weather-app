@@ -5,7 +5,9 @@ import com.example.weather_app.R
 object UiUtils {
 
     private val NIGHT_TAGS = listOf(
-        "01n","02n","03n","04n","09n","10n","11n","13n","50n"
+        "01n","02n","03n",
+        "04n","09n","10n",
+        "11n","13n","50n"
     )
 
     private val GOOD_WEATHER_TAGS = listOf(
@@ -30,43 +32,58 @@ object UiUtils {
             "11d", "11n" -> R.drawable.thunderstorm
             "13d", "13n" -> R.drawable.snow
             "50d", "50n" -> R.drawable.mist
-            else -> R.drawable.ic_few_clouds_dark
+            else -> R.drawable.few_clouds_day
         }
     }
 
     fun getWeatherForecastBackground(iconTag: String): Int{
         return when(iconTag){
-            in NIGHT_TAGS -> R.drawable.gradient_background_clear_sky_night
-            in GOOD_WEATHER_TAGS -> R.drawable.gradient_background_clear_sky_day
-            in BAD_WEATHER_TAGS -> R.drawable.gradient_background_clouds_day
-            else -> R.drawable.gradient_background_clear_sky_day
+            in NIGHT_TAGS ->
+                R.drawable.gradient_background_night
+            in GOOD_WEATHER_TAGS ->
+                R.drawable.gradient_background_good_weather
+            in BAD_WEATHER_TAGS ->
+                R.drawable.gradient_background_bad_weather
+            else -> R.drawable.gradient_background_good_weather
         }
     }
 
     fun getCityShortcutBackground(iconTag: String): Int {
         return when(iconTag){
-            in NIGHT_TAGS -> R.drawable.gradient_city_shortcut_night
-            in GOOD_WEATHER_TAGS -> R.drawable.gradient_city_shortcut_good_weather
-            in BAD_WEATHER_TAGS -> R.drawable.gradient_city_shortcut_bad_weather
-            else -> R.drawable.gradient_city_shortcut_good_weather
+            in NIGHT_TAGS ->
+                R.drawable.gradient_city_shortcut_night
+            in GOOD_WEATHER_TAGS ->
+                R.drawable.gradient_city_shortcut_good_weather
+            in BAD_WEATHER_TAGS ->
+                R.drawable.gradient_city_shortcut_bad_weather
+            else ->
+                R.drawable.gradient_city_shortcut_good_weather
         }
     }
 
     fun getStatusBarColor(iconTag: String): Int {
         return when(iconTag){
-            in NIGHT_TAGS -> R.color.night_status_bar
-            in GOOD_WEATHER_TAGS -> R.color.good_weather_status_bar
-            in BAD_WEATHER_TAGS -> R.color.bad_weather_status_bar
-            else -> R.color.good_weather_status_bar
+            in NIGHT_TAGS ->
+                R.color.night_status_bar
+            in GOOD_WEATHER_TAGS ->
+                R.color.good_weather_status_bar
+            in BAD_WEATHER_TAGS ->
+                R.color.bad_weather_status_bar
+            else ->
+                R.color.good_weather_status_bar
         }
     }
 
     fun getHeaderColor(iconTag: String): Int {
         return when(iconTag) {
-            in NIGHT_TAGS -> R.color.night_weather_header
-            in GOOD_WEATHER_TAGS -> R.color.good_weather_header
-            in BAD_WEATHER_TAGS -> R.color.bad_weather_header
-            else -> R.color.good_weather_header
+            in NIGHT_TAGS ->
+                R.color.night_weather_header
+            in GOOD_WEATHER_TAGS ->
+                R.color.good_weather_header
+            in BAD_WEATHER_TAGS ->
+                R.color.bad_weather_header
+            else ->
+                R.color.good_weather_header
         }
     }
 }

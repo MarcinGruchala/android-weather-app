@@ -1,16 +1,20 @@
 <resources>
-    <string name="app_name">weather-app</string>
+    <string name="app_name">Weather</string>
     <string name="no_data">--</string>
     <string name="cities_list">cities list</string>
-    <string name="main_temp">%1$d°</string>
+    <string name="temp">%1$d°</string>
     <string name="main_H_temp">H:%1$d°</string>
     <string name="main_L_temp">L:%1$d°</string>
-    <string name="secondary_temp">%1$d°</string>
     <string name="btnSearch">Search</string>
     <string name="etCityHint">Enter city</string>
     <string name="celsius">°C</string>
     <string name="unitDivider">/</string>
     <string name="fahrenheit">°F</string>
+    <string name="pascals">%1$d hPa</string>
+    <string name="percentages">%1$d \%</string>
+    <string name="kph">%1$d km/h</string>
+    <string name="meters">%1$d m</string>
+    <string name="miph">%1$d mi/h</string>
     <string name="CityShortcutWeatherIcon">WeatherIcon</string>
     <string name="insert_location_dialog_description">Application couldn\'t find your localization. Please insert your  nearest locality.</string>
     <string name="etInsertLocalityHint">Locality</string>
@@ -21,4 +25,14 @@
     <string name="no_permission_dialog_message">You didn\'t allow application to automatically localize your phone. Please insert location that will be your device location.</string>
     <string name="didnt_found_city">Application didn\'t found city. Please insert city name again.</string>
     <string name="btnRefresh">Refresh</string>
+    <string name="hourlyForecastNow">Now</string>
+    <string name="sunriseHeader">SUNRISE</string>
+    <string name="sunsetHeader">SUNSET</string>
+    <string name="localTimeHeader">LOCAL TIME</string>
+    <string name="feelsLikeHeader">FEELS LIKE</string>
+    <string name="pressureHeader">PRESSURE</string>
+    <string name="humidityHeader">HUMIDITY</string>
+    <string name="windHeader">WIND</string>
+    <string name="visibilityHeader">VISIBILITY</string>
+    <string name="lastUpdateHeader">Last update:\u2002</string>
 </resources>
