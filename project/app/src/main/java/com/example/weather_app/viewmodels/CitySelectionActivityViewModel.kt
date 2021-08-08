@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.weather_app.models.CityShortcutData
 import com.example.weather_app.models.UnitOfMeasurement
-import com.example.weather_app.models.entities.CityShortcut
+import com.example.weather_app.database.entities.CityShortcut
 import com.example.weather_app.repository.RepositoryImpl
 import com.example.weather_app.utils.ClockUtils
 import dagger.hilt.android.lifecycle.HiltViewModel

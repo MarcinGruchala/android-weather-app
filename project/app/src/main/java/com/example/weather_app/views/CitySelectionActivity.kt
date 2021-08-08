@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weather_app.R
 import com.example.weather_app.adapters.CitySelectionAdapter
 import com.example.weather_app.databinding.ActivityCitySelectionBinding
-import com.example.weather_app.models.entities.CityShortcut
+import com.example.weather_app.database.entities.CityShortcut
 import com.example.weather_app.utils.UiUtils
 import com.example.weather_app.viewmodels.CitySelectionActivityViewModel
 import dagger.hilt.android.AndroidEntryPoint

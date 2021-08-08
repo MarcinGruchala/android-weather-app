@@ -267,7 +267,7 @@ class WeatherForecastActivityViewModel @Inject constructor(
                 ),
                 application.getString(
                     R.string.miph,
-                    currentWeatherData.value!!.wind.speed
+                    currentWeatherData.value!!.wind.speed.toInt()
                 ),
                 application.getString(
                     R.string.visibilityHeader

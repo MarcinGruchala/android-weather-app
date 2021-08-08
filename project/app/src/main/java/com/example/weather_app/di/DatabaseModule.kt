@@ -1,8 +1,8 @@
 package com.example.weather_app.di
 
 import androidx.room.Room
-import com.example.weather_app.models.dao.CityShortcutDao
-import com.example.weather_app.models.databases.CityShortcutDatabase
+import com.example.weather_app.database.dao.CityShortcutDao
+import com.example.weather_app.database.CityShortcutDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

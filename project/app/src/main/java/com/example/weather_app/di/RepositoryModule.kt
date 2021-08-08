@@ -1,7 +1,7 @@
 package com.example.weather_app.di
 
 import android.content.SharedPreferences
-import com.example.weather_app.models.dao.CityShortcutDao
+import com.example.weather_app.database.dao.CityShortcutDao
 import com.example.weather_app.repository.RepositoryImpl
 import com.example.weather_app.webservices.OpenWeatherAPIService
 import dagger.Module

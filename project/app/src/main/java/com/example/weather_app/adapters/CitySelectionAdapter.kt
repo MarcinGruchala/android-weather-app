@@ -8,7 +8,7 @@ import com.example.weather_app.R
 import com.example.weather_app.databinding.ItemCitySelectionBinding
 import com.example.weather_app.databinding.ItemCityShortcutBinding
 import com.example.weather_app.models.UnitOfMeasurement
-import com.example.weather_app.models.entities.CityShortcut
+import com.example.weather_app.database.entities.CityShortcut
 import com.example.weather_app.utils.UiUtils
 
 private const val CITY_SHORTCUT_VIEW_TYPE = 10
