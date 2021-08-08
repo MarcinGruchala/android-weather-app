@@ -30,7 +30,9 @@ Weather application that is inspired by Apple Weather application. I wanted to c
 
 <img src="readme-files/weather-app-demo.gif" alt="drawing" width="300"/> 
 
-## Download APK file
+## [Download APK file](weather-app-1.0.apk)
+
+If apk file will download as zip file, rename .zip file to .apk file.
 
 ## Build guide
 
