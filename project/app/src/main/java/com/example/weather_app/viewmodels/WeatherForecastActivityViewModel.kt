@@ -10,8 +10,8 @@ import com.example.weather_app.models.*
 import com.example.weather_app.repository.RepositoryImpl
 import com.example.weather_app.utils.ClockUtils
 import com.example.weather_app.utils.UiUtils
-import com.example.weather_app.webservices.model.current_weather_data.CurrentWeatherDataResponse
-import com.example.weather_app.webservices.model.weather_forecast_data.WeatherForecastDataResponse
+import com.example.weather_app.webservices.entities.currentweatherdata.CurrentWeatherDataResponse
+import com.example.weather_app.webservices.entities.weatherforecastdata.WeatherForecastDataResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -267,7 +267,7 @@ class WeatherForecastActivityViewModel @Inject constructor(
                 ),
                 application.getString(
                     R.string.miph,
-                    currentWeatherData.value!!.wind.speed
+                    currentWeatherData.value!!.wind.speed.toInt()
                 ),
                 application.getString(
                     R.string.visibilityHeader

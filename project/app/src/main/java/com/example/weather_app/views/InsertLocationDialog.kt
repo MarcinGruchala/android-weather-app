@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import com.example.weather_app.databinding.DialogInsertLocationBinding
 
-private const val TAG = "WeatherForecastActivity"
 class InsertLocationDialog(
     private val dialogMessage: String,
     private val btnSubmitClickListener: (String) -> Unit

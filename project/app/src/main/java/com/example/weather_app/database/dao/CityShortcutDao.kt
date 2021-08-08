@@ -1,8 +1,8 @@
-package com.example.weather_app.models.dao
+package com.example.weather_app.database.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.example.weather_app.models.entities.CityShortcut
+import com.example.weather_app.database.entities.CityShortcut
 
 @Dao
 interface CityShortcutDao {
