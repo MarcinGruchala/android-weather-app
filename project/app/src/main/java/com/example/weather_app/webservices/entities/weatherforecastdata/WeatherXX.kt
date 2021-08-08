@@ -1,4 +1,4 @@
-package com.example.weather_app.webservices.model.weather_forecast_data
+package com.example.weather_app.webservices.entities.weatherforecastdata
 
 data class WeatherXX(
     val description: String,

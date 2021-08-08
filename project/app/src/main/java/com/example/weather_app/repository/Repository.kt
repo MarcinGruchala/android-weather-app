@@ -1,8 +1,8 @@
 package com.example.weather_app.repository
 
 import com.example.weather_app.database.entities.CityShortcut
-import com.example.weather_app.webservices.model.current_weather_data.CurrentWeatherDataResponse
-import com.example.weather_app.webservices.model.weather_forecast_data.WeatherForecastDataResponse
+import com.example.weather_app.webservices.entities.currentweatherdata.CurrentWeatherDataResponse
+import com.example.weather_app.webservices.entities.weatherforecastdata.WeatherForecastDataResponse
 import retrofit2.Response
 
 interface Repository {

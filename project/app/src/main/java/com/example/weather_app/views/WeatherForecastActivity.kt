@@ -17,8 +17,8 @@ import com.example.weather_app.adapters.VerticalWeatherDataAdapter
 import com.example.weather_app.databinding.ActivityWeatherForecastBinding
 import com.example.weather_app.utils.UiUtils
 import com.example.weather_app.viewmodels.WeatherForecastActivityViewModel
-import com.example.weather_app.webservices.model.current_weather_data.CurrentWeatherDataResponse
-import com.example.weather_app.webservices.model.weather_forecast_data.WeatherForecastDataResponse
+import com.example.weather_app.webservices.entities.currentweatherdata.CurrentWeatherDataResponse
+import com.example.weather_app.webservices.entities.weatherforecastdata.WeatherForecastDataResponse
 import com.google.android.gms.location.LocationServices
 import com.vmadalin.easypermissions.EasyPermissions
 import dagger.hilt.android.AndroidEntryPoint
