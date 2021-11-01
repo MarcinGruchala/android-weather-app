@@ -1,6 +1,6 @@
 package com.example.weather_app.domain
 
-import com.example.weather_app.persistence.entities.CityShortcut
+import com.example.weather_app.persistence.shortcut.CityShortcutEntity
 import com.example.weather_app.networking.entities.currentweatherdata.CurrentWeatherDataResponse
 import com.example.weather_app.networking.entities.weatherforecastdata.WeatherForecastDataResponse
 import retrofit2.Response
@@ -21,8 +21,8 @@ interface Repository {
         unitsSystem: String
     ) : Response<WeatherForecastDataResponse>
 
-    suspend fun addCityShortcutToDatabase(cityShortcut: CityShortcut)
+    suspend fun addCityShortcutToDatabase(cityShortcutEntity: CityShortcutEntity)
 
-    suspend fun deleteCityShortcutFromDatabase(cityShortcut: CityShortcut)
+    suspend fun deleteCityShortcutFromDatabase(cityShortcutEntity: CityShortcutEntity)
 
 }

@@ -1,10 +1,10 @@
-package com.example.weather_app.persistence.entities
+package com.example.weather_app.persistence.shortcut
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "cities_shortcuts")
-data class CityShortcut(
+data class CityShortcutEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
     val cityName: String,

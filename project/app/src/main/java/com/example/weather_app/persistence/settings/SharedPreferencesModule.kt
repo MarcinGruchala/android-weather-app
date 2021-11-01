@@ -1,4 +1,4 @@
-package com.example.weather_app.persistence
+package com.example.weather_app.persistence.settings
 
 import android.content.Context
 import android.content.SharedPreferences

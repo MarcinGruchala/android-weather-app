@@ -8,16 +8,16 @@ import com.example.weather_app.R
 import com.example.weather_app.databinding.ItemCitySelectionBinding
 import com.example.weather_app.databinding.ItemCityShortcutBinding
 import com.example.weather_app.domain.UnitOfMeasurement
-import com.example.weather_app.persistence.entities.CityShortcut
+import com.example.weather_app.persistence.shortcut.CityShortcutEntity
 import com.example.weather_app.presentation.common.UiUtils
 
 private const val CITY_SHORTCUT_VIEW_TYPE = 10
 private const val CITY_SELECTION_VIEW_TYPE = 20
 class CitySelectionAdapter(
-    private var data: List<CityShortcut>,
+    private var data: List<CityShortcutEntity>,
     private val unitMode: String,
-    private val itemClickListener: (CityShortcut) -> Unit,
-    private val deleteButtonClickListener: (CityShortcut) -> Unit,
+    private val itemClickListener: (CityShortcutEntity) -> Unit,
+    private val deleteButtonClickListener: (CityShortcutEntity) -> Unit,
     private val citySearchClickListener: (String) -> Unit,
     private val unitSelectionClickListener: () -> String
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {

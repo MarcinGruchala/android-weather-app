@@ -1,8 +1,7 @@
 package com.example.weather_app.domain
 
 import android.content.SharedPreferences
-import com.example.weather_app.persistence.dao.CityShortcutDao
-import com.example.weather_app.domain.RepositoryImpl
+import com.example.weather_app.persistence.shortcut.CityShortcutDao
 import com.example.weather_app.networking.OpenWeatherAPIService
 import dagger.Module
 import dagger.Provides

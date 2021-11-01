@@ -1,8 +1,8 @@
-package com.example.weather_app.persistence
+package com.example.weather_app.persistence.database
 
 import androidx.room.Room
 import com.example.weather_app.application.WeatherApplication
-import com.example.weather_app.persistence.dao.CityShortcutDao
+import com.example.weather_app.persistence.shortcut.CityShortcutDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

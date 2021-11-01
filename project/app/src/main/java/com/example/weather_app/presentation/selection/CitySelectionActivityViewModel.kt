@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.weather_app.domain.UnitOfMeasurement
 import com.example.weather_app.domain.RepositoryImpl
-import com.example.weather_app.persistence.entities.CityShortcut
+import com.example.weather_app.persistence.shortcut.CityShortcutEntity
 import com.example.weather_app.presentation.common.ClockUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -21,8 +21,8 @@ class CitySelectionActivityViewModel @Inject constructor(
     private val unitOfMeasurementSPEditor: SharedPreferences.Editor
 ) : ViewModel() {
 
-    val citySelectionList: MutableLiveData<MutableList<CityShortcut>> by lazy {
-        MutableLiveData<MutableList<CityShortcut>>()
+    val citySelectionListEntity: MutableLiveData<MutableList<CityShortcutEntity>> by lazy {
+        MutableLiveData<MutableList<CityShortcutEntity>>()
     }
 
     val errorStatus: MutableLiveData<Boolean> by lazy {
@@ -46,7 +46,7 @@ class CitySelectionActivityViewModel @Inject constructor(
             }
         }
     }
-    private val allCityShortcutListObserver = Observer<List<CityShortcut>> {
+    private val allCityShortcutListObserver = Observer<List<CityShortcutEntity>> {
         viewModelScope.launch {
             if (repository.deviceLocation.value != null){
                 updateCitySelectionList()
@@ -57,13 +57,13 @@ class CitySelectionActivityViewModel @Inject constructor(
 
     init {
         repository.deviceLocation.observeForever(deviceLocationObserver)
-        repository.allCityShortcutList.observeForever(allCityShortcutListObserver)
+        repository.allCityShortcutEntityList.observeForever(allCityShortcutListObserver)
         repository.unitOfMeasurement.observeForever(unitOfMeasurementObserver)
     }
 
     private fun updateCitySelectionList() {
-        val citiesList = repository.allCityShortcutList.value
-        val cityShortcutList = mutableListOf<CityShortcut>()
+        val citiesList = repository.allCityShortcutEntityList.value
+        val cityShortcutList = mutableListOf<CityShortcutEntity>()
         viewModelScope.launch  {
             if (citiesList != null) {
                 for (city in citiesList) {
@@ -75,7 +75,7 @@ class CitySelectionActivityViewModel @Inject constructor(
                     if (currentWeatherDataResponse.isSuccessful &&
                         currentWeatherDataResponse.body() != null ) {
                         cityShortcutList.add (
-                            CityShortcut(
+                            CityShortcutEntity(
                                 city.id,
                                 city.cityName,
                                 ClockUtils.getTimeFromUnixTimestamp(
@@ -100,7 +100,7 @@ class CitySelectionActivityViewModel @Inject constructor(
             if (currentWeatherDayResponse.isSuccessful &&
                 currentWeatherDayResponse.body() != null ) {
                 cityShortcutList.add(
-                    CityShortcut(
+                    CityShortcutEntity(
                         1000,
                         repository.deviceLocation.value!!,
                         "",
@@ -108,7 +108,7 @@ class CitySelectionActivityViewModel @Inject constructor(
                         currentWeatherDayResponse.body()!!.weather[0].icon
                     )
                 )
-                citySelectionList.value = cityShortcutList
+                citySelectionListEntity.value = cityShortcutList
             }
         }
     }
@@ -130,7 +130,7 @@ class CitySelectionActivityViewModel @Inject constructor(
                     repository.mainForecastLocation.value = cityShortcutData.cityName
                 } else {
                     insertCityShortcut(
-                        CityShortcut(
+                        CityShortcutEntity(
                             0,
                             cityShortcutData.cityName,
                             cityShortcutData.localTime,
@@ -146,7 +146,7 @@ class CitySelectionActivityViewModel @Inject constructor(
     private fun isInCitySelectionList(
         cityName: String
     ): Boolean {
-        for(city in citySelectionList.value!!) {
+        for(city in citySelectionListEntity.value!!) {
             if (city.cityName == cityName) {
                 return true
             }
@@ -181,18 +181,18 @@ class CitySelectionActivityViewModel @Inject constructor(
     }
 
     private fun insertCityShortcut(
-        cityShortcut: CityShortcut
+        cityShortcutEntity: CityShortcutEntity
     ) {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.addCityShortcutToDatabase(cityShortcut)
+            repository.addCityShortcutToDatabase(cityShortcutEntity)
         }
     }
 
     fun deleteCityShortCutClickListener(
-        cityShortcut: CityShortcut
+        cityShortcutEntity: CityShortcutEntity
     ) {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.deleteCityShortcutFromDatabase(cityShortcut)
+            repository.deleteCityShortcutFromDatabase(cityShortcutEntity)
         }
     }
 

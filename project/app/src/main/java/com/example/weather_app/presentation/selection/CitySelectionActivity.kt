@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weather_app.R
 import com.example.weather_app.databinding.ActivityCitySelectionBinding
-import com.example.weather_app.persistence.entities.CityShortcut
+import com.example.weather_app.persistence.shortcut.CityShortcutEntity
 import com.example.weather_app.presentation.common.UiUtils
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -29,11 +29,11 @@ class CitySelectionActivity : AppCompatActivity() {
 
         recyclerViewsSetup()
 
-        val citySelectionListObserver = Observer<MutableList<CityShortcut>> {
+        val citySelectionListObserver = Observer<MutableList<CityShortcutEntity>> {
             updateStatusBarColor()
             updateRecyclerView()
         }
-        viewModel.citySelectionList.observe(this,citySelectionListObserver)
+        viewModel.citySelectionListEntity.observe(this,citySelectionListObserver)
         val errorStatusObserver = Observer<Boolean> { status ->
             if (status){
                 showErrorDialogWindow()
@@ -80,13 +80,13 @@ class CitySelectionActivity : AppCompatActivity() {
         window.setBackgroundDrawable(
             ContextCompat.getDrawable(
                 this,
-                UiUtils.getCityShortcutBackground(viewModel.citySelectionList.value!!.last().icon)
+                UiUtils.getCityShortcutBackground(viewModel.citySelectionListEntity.value!!.last().icon)
             )
         )
     }
 
     private fun updateRecyclerView() {
-        binding.rvCitySelection.adapter = CitySelectionAdapter(viewModel.citySelectionList.value!!,
+        binding.rvCitySelection.adapter = CitySelectionAdapter(viewModel.citySelectionListEntity.value!!,
             viewModel.getUnitMode(),
             itemClickListener = { item ->
                 viewModel.updateMainWeatherForecastLocation(item.cityName)

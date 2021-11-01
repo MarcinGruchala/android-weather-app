@@ -3,8 +3,8 @@ package com.example.weather_app.domain
 import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.weather_app.persistence.dao.CityShortcutDao
-import com.example.weather_app.persistence.entities.CityShortcut
+import com.example.weather_app.persistence.shortcut.CityShortcutDao
+import com.example.weather_app.persistence.shortcut.CityShortcutEntity
 import com.example.weather_app.networking.OpenWeatherAPIService
 import com.example.weather_app.networking.entities.currentweatherdata.CurrentWeatherDataResponse
 import com.example.weather_app.networking.entities.weatherforecastdata.WeatherForecastDataResponse
@@ -33,7 +33,7 @@ class RepositoryImpl(
         MutableLiveData<String>()
     }
 
-    val allCityShortcutList: LiveData<List<CityShortcut>> by lazy {
+    val allCityShortcutEntityList: LiveData<List<CityShortcutEntity>> by lazy {
         cityShortcutDao.getAllCityShortcuts()
     }
 
@@ -69,14 +69,14 @@ class RepositoryImpl(
     )
 
     override suspend fun addCityShortcutToDatabase(
-        cityShortcut: CityShortcut
+        cityShortcutEntity: CityShortcutEntity
     ) {
-        cityShortcutDao.addCityShortcut(cityShortcut)
+        cityShortcutDao.addCityShortcut(cityShortcutEntity)
     }
 
     override suspend fun deleteCityShortcutFromDatabase(
-        cityShortcut: CityShortcut
+        cityShortcutEntity: CityShortcutEntity
     ) {
-        cityShortcutDao.deleteCityShortcut(cityShortcut)
+        cityShortcutDao.deleteCityShortcut(cityShortcutEntity)
     }
 }
