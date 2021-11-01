@@ -10,11 +10,11 @@ import com.example.weather_app.application.WeatherApplication
 import com.example.weather_app.domain.RepositoryImpl
 import com.example.weather_app.networking.entities.currentweatherdata.CurrentWeatherDataResponse
 import com.example.weather_app.networking.entities.weatherforecastdata.WeatherForecastDataResponse
-import com.example.weather_app.domain.CurrentWeatherData
-import com.example.weather_app.domain.DailyForecastData
-import com.example.weather_app.domain.HourlyForecastData
-import com.example.weather_app.domain.UnitOfMeasurement
-import com.example.weather_app.domain.VerticalWeatherData
+import com.example.weather_app.domain.forecast.CurrentWeather
+import com.example.weather_app.domain.forecast.DailyForecast
+import com.example.weather_app.domain.forecast.HourlyForecast
+import com.example.weather_app.domain.settings.UnitOfMeasurement
+import com.example.weather_app.domain.forecast.VerticalWeather
 import com.example.weather_app.presentation.common.ClockUtils
 import com.example.weather_app.presentation.common.UiUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -127,10 +127,10 @@ class WeatherForecastActivityViewModel @Inject constructor(
                 )
     }
 
-    fun getHourlyForecastList(): List<HourlyForecastData> {
-        val list: MutableList<HourlyForecastData> = mutableListOf()
+    fun getHourlyForecastList(): List<HourlyForecast> {
+        val list: MutableList<HourlyForecast> = mutableListOf()
         list.add(
-            HourlyForecastData(
+            HourlyForecast(
             application.getString(
                 string.hourlyForecastNow
             ),
@@ -140,7 +140,7 @@ class WeatherForecastActivityViewModel @Inject constructor(
         )
         for (i in 1..24) {
             list.add(
-                HourlyForecastData(
+                HourlyForecast(
                     ClockUtils.getTimeFromUnixTimestamp(
                         weatherForecastData.value!!.hourly[i].dt * 1000L,
                         weatherForecastData.value!!.timezone_offset * 1000L,
@@ -156,19 +156,19 @@ class WeatherForecastActivityViewModel @Inject constructor(
         return list
     }
 
-    fun getVerticalWeatherDataList(): VerticalWeatherData {
-        val dailyForecastList: List<DailyForecastData> = getDailyWeatherForecastList()
-        val currentWeatherDataList: List<CurrentWeatherData> = getCurrentWeatherDataList(
+    fun getVerticalWeatherDataList(): VerticalWeather {
+        val dailyForecastList: List<DailyForecast> = getDailyWeatherForecastList()
+        val currentWeatherList: List<CurrentWeather> = getCurrentWeatherDataList(
             repository.unitOfMeasurement.value!!
         )
-        return VerticalWeatherData(dailyForecastList,currentWeatherDataList)
+        return VerticalWeather(dailyForecastList,currentWeatherList)
     }
 
-    private fun getDailyWeatherForecastList(): List<DailyForecastData> {
-        val dailyForecastList: MutableList<DailyForecastData> = mutableListOf()
+    private fun getDailyWeatherForecastList(): List<DailyForecast> {
+        val dailyForecastList: MutableList<DailyForecast> = mutableListOf()
         for (i in 1..7) {
             dailyForecastList.add(
-                DailyForecastData(
+                DailyForecast(
                     ClockUtils.getDayFromUnixTimestamp(
                         weatherForecastData.value!!.daily[i].dt*1000L,
                         currentWeatherData.value!!.timezone * 1000L,
@@ -187,9 +187,9 @@ class WeatherForecastActivityViewModel @Inject constructor(
 
     private fun getCurrentWeatherDataList(
         unitOfMeasurement: String
-    ): List<CurrentWeatherData> {
+    ): List<CurrentWeather> {
         val weatherDataList = mutableListOf(
-            CurrentWeatherData(
+            CurrentWeather(
                 application.getString(
                     string.sunriseHeader
                 ),
@@ -211,7 +211,7 @@ class WeatherForecastActivityViewModel @Inject constructor(
                     clockPeriodMode = false
                 )
             ),
-            CurrentWeatherData(
+            CurrentWeather(
                 application.getString(
                     string.localTimeHeader
                 ),
@@ -230,7 +230,7 @@ class WeatherForecastActivityViewModel @Inject constructor(
                     currentWeatherData.value!!.main.feels_like.toInt()
                 )
             ),
-            CurrentWeatherData(
+            CurrentWeather(
                 application.getString(
                     string.pressureHeader
                 ),
@@ -246,7 +246,7 @@ class WeatherForecastActivityViewModel @Inject constructor(
         )
         if (unitOfMeasurement == UnitOfMeasurement.METRIC.value) {
             weatherDataList.add(
-                CurrentWeatherData(
+                CurrentWeather(
                     application.getString(
                         string.windHeader
                     ),
@@ -266,7 +266,7 @@ class WeatherForecastActivityViewModel @Inject constructor(
             return weatherDataList
         }
         weatherDataList.add(
-            CurrentWeatherData(
+            CurrentWeather(
                 application.getString(
                     string.windHeader
                 ),

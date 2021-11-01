@@ -1,12 +1,13 @@
-package com.example.weather_app.presentation.selection
+package com.example.weather_app.presentation.shortcut
 
 import android.content.SharedPreferences
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.weather_app.domain.UnitOfMeasurement
+import com.example.weather_app.domain.settings.UnitOfMeasurement
 import com.example.weather_app.domain.RepositoryImpl
+import com.example.weather_app.domain.shortcut.CityShortcut
 import com.example.weather_app.persistence.shortcut.CityShortcutEntity
 import com.example.weather_app.presentation.common.ClockUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -156,14 +157,14 @@ class CitySelectionActivityViewModel @Inject constructor(
 
     private suspend fun getCityShortcutData(
         cityName: String
-    ): com.example.weather_app.domain.CityShortcutData? {
+    ): CityShortcut? {
         val currentWeatherDataResponse = repository.getCurrentWeatherDataResponse(
             apiKey,
             cityName,
             repository.unitOfMeasurement.value!!
         )
         if ( currentWeatherDataResponse.isSuccessful && currentWeatherDataResponse.body() != null ) {
-            return com.example.weather_app.domain.CityShortcutData(
+            return CityShortcut(
               currentWeatherDataResponse.body()!!.name,
               ClockUtils.getTimeFromUnixTimestamp(
                 System.currentTimeMillis(),

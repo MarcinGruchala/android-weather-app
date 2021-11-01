@@ -15,7 +15,7 @@ import com.example.weather_app.R
 import com.example.weather_app.databinding.ActivityWeatherForecastBinding
 import com.example.weather_app.networking.entities.currentweatherdata.CurrentWeatherDataResponse
 import com.example.weather_app.networking.entities.weatherforecastdata.WeatherForecastDataResponse
-import com.example.weather_app.presentation.selection.CitySelectionActivity
+import com.example.weather_app.presentation.shortcut.CitySelectionActivity
 import com.example.weather_app.presentation.common.UiUtils
 import com.google.android.gms.location.LocationServices
 import com.vmadalin.easypermissions.EasyPermissions

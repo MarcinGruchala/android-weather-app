@@ -7,14 +7,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.weather_app.R
 import com.example.weather_app.databinding.ItemCurrentWeatherDataBinding
 import com.example.weather_app.databinding.ItemDailyForecastBinding
-import com.example.weather_app.domain.VerticalWeatherData
+import com.example.weather_app.domain.forecast.VerticalWeather
 import com.example.weather_app.presentation.common.UiUtils
 
 private const val DAILY_FORECAST_VIEW_TYPE = 10
 private const val CURRENT_WEATHER_DATA_VIEW_TYPE = 20
 class VerticalWeatherDataAdapter(
     private val weatherType: String,
-    private val data: VerticalWeatherData
+    private val data: VerticalWeather
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     class VerticalWeatherDataDailyForecastViewHolder(
@@ -110,13 +110,13 @@ class VerticalWeatherDataAdapter(
             tvDataHeaderRight.setTextColor(headerColor)
             tvDataHeaderLeft.setTextColor(headerColor)
             tvDataHeaderLeft.text =
-                data.currentWeatherDataList[position-data.dailyForecastList.size].headerLeft
+                data.currentWeatherList[position-data.dailyForecastList.size].headerLeft
             tvDataHeaderRight.text =
-                data.currentWeatherDataList[position-data.dailyForecastList.size].headerRight
+                data.currentWeatherList[position-data.dailyForecastList.size].headerRight
             tvDataValueLeft.text =
-                data.currentWeatherDataList[position-data.dailyForecastList.size].valueLeft
+                data.currentWeatherList[position-data.dailyForecastList.size].valueLeft
             tvDataValueRight.text =
-                data.currentWeatherDataList[position-data.dailyForecastList.size].valueRight
+                data.currentWeatherList[position-data.dailyForecastList.size].valueRight
         }
     }
 }

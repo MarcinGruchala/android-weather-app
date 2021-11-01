@@ -6,10 +6,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.weather_app.R
 import com.example.weather_app.databinding.ItemHourlyForecastBinding
 import com.example.weather_app.presentation.forecast.HourlyForecastAdapter.HourlyForecastViewHolder
-import com.example.weather_app.domain.HourlyForecastData
+import com.example.weather_app.domain.forecast.HourlyForecast
 
 class HourlyForecastAdapter(
-    private var forecasts: List<HourlyForecastData>
+    private var forecasts: List<HourlyForecast>
 ) : RecyclerView.Adapter<HourlyForecastViewHolder>() {
 
     class HourlyForecastViewHolder(

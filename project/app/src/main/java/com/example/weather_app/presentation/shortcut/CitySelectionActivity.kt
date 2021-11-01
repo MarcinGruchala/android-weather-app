@@ -1,4 +1,4 @@
-package com.example.weather_app.presentation.selection
+package com.example.weather_app.presentation.shortcut
 
 import android.os.Bundle
 import android.view.WindowManager

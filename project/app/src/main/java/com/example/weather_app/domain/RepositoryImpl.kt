@@ -3,6 +3,7 @@ package com.example.weather_app.domain
 import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.weather_app.domain.settings.UnitOfMeasurement
 import com.example.weather_app.persistence.shortcut.CityShortcutDao
 import com.example.weather_app.persistence.shortcut.CityShortcutEntity
 import com.example.weather_app.networking.OpenWeatherAPIService

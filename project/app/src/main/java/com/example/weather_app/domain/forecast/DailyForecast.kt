@@ -1,6 +1,6 @@
-package com.example.weather_app.domain
+package com.example.weather_app.domain.forecast
 
-data class DailyForecastData(
+data class DailyForecast(
     val day: String,
     val tempH: Int,
     val tempL: Int,

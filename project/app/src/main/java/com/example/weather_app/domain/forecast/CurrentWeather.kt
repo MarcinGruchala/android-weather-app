@@ -1,6 +1,6 @@
-package com.example.weather_app.domain
+package com.example.weather_app.domain.forecast
 
-data class CurrentWeatherData(
+data class CurrentWeather(
     val headerLeft: String,
     val valueLeft: String,
     val headerRight: String,

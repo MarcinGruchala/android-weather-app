@@ -1,4 +1,4 @@
-package com.example.weather_app.presentation.selection
+package com.example.weather_app.presentation.shortcut
 
 import android.graphics.Color
 import android.view.LayoutInflater
@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.weather_app.R
 import com.example.weather_app.databinding.ItemCitySelectionBinding
 import com.example.weather_app.databinding.ItemCityShortcutBinding
-import com.example.weather_app.domain.UnitOfMeasurement
+import com.example.weather_app.domain.settings.UnitOfMeasurement
 import com.example.weather_app.persistence.shortcut.CityShortcutEntity
 import com.example.weather_app.presentation.common.UiUtils
 

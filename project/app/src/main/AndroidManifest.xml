@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Weatherapp">
         <activity
-            android:name=".presentation.selection.CitySelectionActivity"
+            android:name=".presentation.shortcut.CitySelectionActivity"
             android:screenOrientation="portrait"/>
         <activity
             android:name=".presentation.forecast.WeatherForecastActivity"
