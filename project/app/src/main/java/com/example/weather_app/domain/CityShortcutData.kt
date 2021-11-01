@@ -1,0 +1,8 @@
+package com.example.weather_app.domain
+
+data class CityShortcutData(
+    val cityName: String,
+    var localTime: String,
+    var temp: Int,
+    var icon: String
+)
